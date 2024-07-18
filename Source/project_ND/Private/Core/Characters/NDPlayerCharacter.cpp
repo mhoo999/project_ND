@@ -1,7 +1,7 @@
 // Copyright by project_ND
 
 
-#include "Core/Characters/PlayerCharacter.h"
+#include "..\..\..\Public\Core\Characters\NDPlayerCharacter.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()

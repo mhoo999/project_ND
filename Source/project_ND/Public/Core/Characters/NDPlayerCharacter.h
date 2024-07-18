@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "PlayerCharacter.generated.h"
+#include "NDPlayerCharacter.generated.h"
 
 UCLASS()
 class PROJECT_ND_API APlayerCharacter : public ACharacter
