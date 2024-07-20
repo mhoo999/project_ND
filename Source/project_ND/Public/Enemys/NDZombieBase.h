@@ -7,22 +7,38 @@
 #include "NDZombieBase.generated.h"
 
 UCLASS()
-class PROJECT_ND_API AZombieBase : public ACharacter
+class PROJECT_ND_API ANDZombieBase : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AZombieBase();
+	ANDZombieBase();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	float HP;
+	float Damage;
+	float Speed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats", meta=(AllowPrivateAccess))
+	float InitialHP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats", meta=(AllowPrivateAccess))
+	float AttackDamage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats", meta=(AllowPrivateAccess))
+	float ZombieSpeed;
+	
+public:
+	void SetHP(float NewHP);
+
+	void TakeDamage(float DamageAmount);
+	
 };

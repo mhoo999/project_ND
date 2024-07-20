@@ -6,20 +6,48 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "NDAIController.generated.h"
 
+UENUM()
+enum EAIState : uint8
+{
+	Idle,
+	Patrol,
+	Chase,
+	Attack,
+	Dead
+};
+
 UCLASS()
 class PROJECT_ND_API ANDAIController : public AAIController
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ANDAIController();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	void SetAIState(EAIState NewState);
+	
+private:
+	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
+	UBehaviorTree* IdleBehaviorTree;
+
+	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
+	UBehaviorTree* PatrolBehaviorTree;
+
+	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
+	UBehaviorTree* ChaseBehaviorTree;
+	
+	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
+	UBehaviorTree* AttackBehaviorTree;
+
+	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
+	UBehaviorTree* DeadBehaviorTree;
+
+	EAIState CurrentState;
+	
+	void RunCurrentBehaviorTree();
+	
 };

@@ -3,30 +3,42 @@
 
 #include "..\..\Public\Enemys\NDZombieBase.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
 
-// Sets default values
-AZombieBase::AZombieBase()
+
+ANDZombieBase::ANDZombieBase()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	HP = InitialHP;
+	Damage = AttackDamage;
+	Speed = ZombieSpeed;
+
+	GetCharacterMovement()->MaxWalkSpeed = ZombieSpeed;
 }
 
-// Called when the game starts or when spawned
-void AZombieBase::BeginPlay()
+void ANDZombieBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
-void AZombieBase::Tick(float DeltaTime)
+void ANDZombieBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
-void AZombieBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ANDZombieBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ANDZombieBase::SetHP(float NewHP)
+{
+	HP = NewHP;
+}
+
+void ANDZombieBase::TakeDamage(float DamageAmount)
+{
+	HP -= DamageAmount;
 }
 
