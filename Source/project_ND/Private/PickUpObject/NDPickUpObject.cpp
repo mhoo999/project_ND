@@ -1,11 +1,11 @@
 ﻿// Copyright by project_ND
 
 
-#include "PickUpObject/NDPickupObject.h"
+#include "PickUpObject/NDPickUpObject.h"
 
 
 // Sets default values
-ANDPickupObject::ANDPickupObject()
+ANDPickUpObject::ANDPickUpObject()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -15,29 +15,29 @@ ANDPickupObject::ANDPickupObject()
 }
 
 // Called when the game starts or when spawned
-void ANDPickupObject::BeginPlay()
+void ANDPickUpObject::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ANDPickupObject::Tick(float DeltaTime)
+void ANDPickUpObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ANDPickupObject::OnPickedUp()
+void ANDPickUpObject::OnPickedUp()
 {
 	
 }
 
-void ANDPickupObject::SetItemName(FString Name)
+void ANDPickUpObject::SetItemName(FString Name)
 {
 	ItemName = Name;
 }
 
-void ANDPickupObject::SetItemMesh(UStaticMesh* Mesh) const
+void ANDPickUpObject::SetItemMesh(UStaticMesh* Mesh) const
 {
 	ItemMesh->SetStaticMesh(Mesh);
 }

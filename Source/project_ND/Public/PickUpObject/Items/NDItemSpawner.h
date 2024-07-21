@@ -6,21 +6,23 @@
 #include "GameFramework/Actor.h"
 #include "NDItemSpawner.generated.h"
 
+class ANDPickUpObject_ItemBase_Throwable;
+class ANDPickUpObject_ItemBase_Food;
+class ANDPickUpObject_ItemBase;
+class ANDPickUpObject_ItemBase_HealthPotion;
+
 UCLASS()
 class PROJECT_ND_API ANDItemSpawner : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ANDItemSpawner();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
@@ -28,7 +30,13 @@ private:
 	UDataTable* ItemDataTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
-	TSubclassOf<class ANDItemBase> ItemClass;
+	TSubclassOf<ANDPickUpObject_ItemBase_HealthPotion> ItemClass_HealthPotion;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
+	TSubclassOf<ANDPickUpObject_ItemBase_Food> ItemClass_Food;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
+	TSubclassOf<ANDPickUpObject_ItemBase_Throwable> ItemClass_Throwable;
 
 public:
 	UFUNCTION(BlueprintCallable, Category="Spawning")

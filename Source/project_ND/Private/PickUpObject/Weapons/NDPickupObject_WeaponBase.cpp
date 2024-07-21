@@ -1,30 +1,30 @@
 ﻿// Copyright by project_ND
 
 
-#include "..\..\..\Public\PickUpObject\Weapons\NDWeaponBase.h"
+#include "..\..\..\Public\PickUpObject\Weapons\NDPickupObject_WeaponBase.h"
 
 
 // Sets default values
-ANDWeapons::ANDWeapons()
+ANDPickupObject_WeaponBase::ANDPickupObject_WeaponBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void ANDWeapons::BeginPlay()
+void ANDPickupObject_WeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ANDWeapons::Tick(float DeltaTime)
+void ANDPickupObject_WeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ANDWeapons::Attack()
+void ANDPickupObject_WeaponBase::Attack()
 {
 	
 }

@@ -27,6 +27,8 @@ ANDNormalZombie::ANDNormalZombie()
 void ANDNormalZombie::BeginPlay()
 {
 	Super::BeginPlay();
+
+	
 }
 
 void ANDNormalZombie::Tick(float DeltaTime)

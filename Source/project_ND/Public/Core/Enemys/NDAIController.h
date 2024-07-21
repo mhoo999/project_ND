@@ -6,14 +6,17 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "NDAIController.generated.h"
 
+class UAISenseConfig_Hearing;
+class UAISenseConfig_Sight;
+
 UENUM()
 enum EAIState : uint8
 {
-	Idle,
-	Patrol,
-	Chase,
-	Attack,
-	Dead
+	Idle	UMETA(DisplayName = "Idle State"),
+	Patrol	UMETA(DisplayName = "Patrol State"),
+	Chase	UMETA(DisplayName = "Chase State"),
+	Attack	UMETA(DisplayName = "Attack State"),
+	Dead	UMETA(DisplayName = "Dead State")
 };
 
 UCLASS()
@@ -26,6 +29,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
 
 public:
 	void SetAIState(EAIState NewState);
@@ -49,5 +54,19 @@ private:
 	EAIState CurrentState;
 	
 	void RunCurrentBehaviorTree();
-	
+
+	void PrintState();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UAIPerceptionComponent* AIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UAISenseConfig_Sight* SightConfig;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UAISenseConfig_Hearing* HearingConfig;
+
+	UFUNCTION()
+	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
 };

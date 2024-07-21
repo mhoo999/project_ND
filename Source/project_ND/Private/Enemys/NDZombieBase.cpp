@@ -3,6 +3,7 @@
 
 #include "..\..\Public\Enemys\NDZombieBase.h"
 
+#include "Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -15,6 +16,8 @@ ANDZombieBase::ANDZombieBase()
 	Speed = ZombieSpeed;
 
 	GetCharacterMovement()->MaxWalkSpeed = ZombieSpeed;
+
+	AIControllerClass = ANDAIController::StaticClass();
 }
 
 void ANDZombieBase::BeginPlay()

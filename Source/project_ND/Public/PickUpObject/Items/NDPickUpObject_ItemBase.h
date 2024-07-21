@@ -4,8 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PickupObject/NDPickupObject.h"
-#include "NDItemBase.generated.h"
+#include "PickupObject/NDPickUpObject.h"
+#include "NDPickUpObject_ItemBase.generated.h"
+
+UENUM()
+enum EMyEnum
+{
+	HealthPotion,
+	Food,
+	Throwable
+};
 
 USTRUCT(BlueprintType)
 struct FItemBaseData : public FTableRowBase
@@ -30,25 +38,20 @@ struct FItemBaseData : public FTableRowBase
 };
 
 UCLASS()
-class PROJECT_ND_API ANDItemBase : public ANDPickupObject
+class PROJECT_ND_API ANDPickUpObject_ItemBase : public ANDPickUpObject
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
-	ANDItemBase();
+	ANDPickUpObject_ItemBase();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void InitializeItem(const struct FItemBaseData& ItemData);
-
-private:
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
 	FString ItemType;
 
@@ -59,6 +62,8 @@ private:
 	bool bIsEmpty;
 	
 public:
-	void Use();
+	virtual void InitializeItem(const struct FItemBaseData& ItemData);
+	
+	virtual void Use();
 	
 };
