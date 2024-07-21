@@ -29,6 +29,8 @@ void ANDItemBase::InitializeItem(const FItemBaseData& ItemData)
 	SetItemName(ItemData.ItemName);
 	ItemType = ItemData.ItemType;
 	RecoveryAmount = ItemData.RecoveryAmount;
+	bIsEmpty = ItemData.bIsEmpty;
+	
 	if (ItemData.ItemMesh)
 	{
 		SetItemMesh(ItemData.ItemMesh);

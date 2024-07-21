@@ -41,6 +41,11 @@ void ANDItemSpawner::SpawnItem()
 
 			if (SelectedItem)
 			{
+				if (SelectedItem->bIsEmpty)
+				{
+					return;
+				}
+				
 				FVector SpawnLocation = GetActorLocation();
 				FRotator SpawnRotation = GetActorRotation();
 				ANDItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDItemBase>(ItemClass, SpawnLocation, SpawnRotation);

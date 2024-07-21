@@ -23,6 +23,9 @@ struct FItemBaseData : public FTableRowBase
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
 	UStaticMesh* ItemMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
+	bool bIsEmpty;	
 	
 };
 
@@ -46,12 +49,15 @@ public:
 	void InitializeItem(const struct FItemBaseData& ItemData);
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
 	FString ItemType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
 	float RecoveryAmount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
+	bool bIsEmpty;
+	
 public:
 	void Use();
 	
