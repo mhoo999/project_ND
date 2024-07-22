@@ -2,6 +2,7 @@
 
 
 #include "..\..\..\Public\Core\Characters\NDPlayerCharacter.h"
+#include "EnhancedInputSubsystems.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -16,6 +17,17 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (PlayerController != nullptr)
+	{
+		UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+		if (IsValid(SubSystem))
+		{
+			SubSystem->AddMappingContext(MappingContext, 0);
+		}
+	}
 }
 
 // Called every frame
