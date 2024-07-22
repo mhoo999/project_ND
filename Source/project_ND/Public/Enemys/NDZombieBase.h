@@ -22,23 +22,33 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
+protected:
 	float HP;
-	float Damage;
-	float Speed;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
 	float InitialHP;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
+	float HearingAbility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
+	float MovementSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
 	float AttackDamage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats", meta=(AllowPrivateAccess))
-	float ZombieSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
+	float AttackRange;
 	
 public:
+	float GetHP();
+	
 	void SetHP(float NewHP);
 
 	void TakeDamage(float DamageAmount);
+
+	float GetHearingAbility() const;
+
+	void InitializeZombie();
 	
 };

@@ -6,6 +6,7 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "NDAIController.generated.h"
 
+class ANDZombieBase;
 class UAISenseConfig_Hearing;
 class UAISenseConfig_Sight;
 
@@ -32,8 +33,12 @@ protected:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual void OnPossess(APawn* InPawn) override;
+
 public:
-	void SetAIState(EAIState NewState);
+	void SetAIState(FString NewState);
+
+	EAIState StringToEAIState(const FString& StateString) const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
@@ -56,6 +61,9 @@ private:
 	void RunCurrentBehaviorTree();
 
 	void PrintState();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI", meta=(AllowPrivateAccess))
+	ANDZombieBase* Zombie;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")

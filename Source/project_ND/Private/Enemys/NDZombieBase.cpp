@@ -10,12 +10,8 @@
 ANDZombieBase::ANDZombieBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	HP = InitialHP;
-	Damage = AttackDamage;
-	Speed = ZombieSpeed;
-
-	GetCharacterMovement()->MaxWalkSpeed = ZombieSpeed;
+	
+	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
 
 	AIControllerClass = ANDAIController::StaticClass();
 }
@@ -35,6 +31,11 @@ void ANDZombieBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+float ANDZombieBase::GetHP()
+{
+	return HP;
+}
+
 void ANDZombieBase::SetHP(float NewHP)
 {
 	HP = NewHP;
@@ -43,5 +44,15 @@ void ANDZombieBase::SetHP(float NewHP)
 void ANDZombieBase::TakeDamage(float DamageAmount)
 {
 	HP -= DamageAmount;
+}
+
+float ANDZombieBase::GetHearingAbility() const
+{
+	return HearingAbility;
+}
+
+void ANDZombieBase::InitializeZombie()
+{
+	HP = InitialHP;
 }
 

@@ -2,7 +2,12 @@
 
 
 #include "Core/Enemys/NDAIController.h"
+
+#include <string>
+
 #include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Enemys/NDZombieBase.h"
 #include "GameFramework/Character.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
@@ -70,7 +75,7 @@ ANDAIController::ANDAIController()
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
 	AIPerceptionComponent->ConfigureSense(*HearingConfig);
 	AIPerceptionComponent->SetDominantSense(UAISense_Sight::StaticClass());
-
+	
 	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &ANDAIController::OnPerceptionUpdate);
 }
 
@@ -86,15 +91,44 @@ void ANDAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	PrintState();
+
+	if (Zombie)
+	{
+		if (Zombie->GetHP() == 0.0f)
+		{
+			SetAIState("Dead");
+		}
+	}
 }
 
-void ANDAIController::SetAIState(EAIState NewState)
+void ANDAIController::OnPossess(APawn* InPawn)
 {
-	if (CurrentState != NewState)
+	Super::OnPossess(InPawn);
+
+	Zombie = Cast<ANDZombieBase>(InPawn);
+	HearingConfig->HearingRange = Zombie->GetHearingAbility();
+	Zombie->InitializeZombie();
+}
+
+void ANDAIController::SetAIState(FString NewState)
+{
+	EAIState EnumState = StringToEAIState(NewState);
+	
+	if (CurrentState != EnumState)
 	{
-		CurrentState = NewState;
+		CurrentState = EnumState;
 		RunCurrentBehaviorTree();
 	}
+}
+
+EAIState ANDAIController::StringToEAIState(const FString& StateString) const
+{
+	if (StateString == "Patrol")	return EAIState::Patrol;
+	if (StateString == "Chase")		return EAIState::Chase;
+	if (StateString == "Attack")	return EAIState::Attack;
+	if (StateString == "Dead")		return EAIState::Dead;
+	
+	return EAIState::Idle;
 }
 
 void ANDAIController::RunCurrentBehaviorTree()
@@ -123,10 +157,22 @@ void ANDAIController::RunCurrentBehaviorTree()
 
 void ANDAIController::PrintState()
 {
+	// Zombie Info
 	FString StateString = UEnum::GetValueAsString(CurrentState);
 	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1);
+	float ZombieHP = Zombie->GetHP();
+	
+	// BlackBoard Values
+	AActor* TargetActor = Cast<AActor>(GetBlackboardComponent()->GetValueAsObject("Target"));
+	float TargetDistance = GetBlackboardComponent()->GetValueAsFloat("TargetDistance");
+	FVector Destination = GetBlackboardComponent()->GetValueAsVector("Destination");
 
-	DrawDebugString(GetWorld(), GetPawn()->GetActorLocation(), CleanStateString, nullptr, FColor::Yellow, 0, true, 1);
+	FString TargetActorInfo = TargetActor ? TargetActor->GetName() + TEXT(" @ ") + FString::SanitizeFloat(FMath::TruncToInt(TargetDistance)) : TEXT("None");
+	FString DestinationString = FString::Printf(TEXT("X: %lld, Y: %lld, Z: %lld"), FMath::TruncToInt(Destination.X), FMath::TruncToInt(Destination.Y), FMath::TruncToInt(Destination.Z));
+
+	FString DebugString = "HP: " + FString::SanitizeFloat(ZombieHP) + "\n" + "state: " + CleanStateString + "\n" + "Target: " + TargetActorInfo + "\n" + "Dest: " + DestinationString;
+	
+	DrawDebugString(GetWorld(), GetPawn()->GetActorLocation(), DebugString, nullptr, FColor::Yellow, 0, true, 1);
 }
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
@@ -142,8 +188,8 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			{
 				if (Stimulus.WasSuccessfullySensed())
 				{
-					SetAIState(EAIState::Chase);
-					// BB의 타겟을 Actor로 바꿔 Chase하도록 만들어야 함
+					SetAIState("Chase");
+					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
 					return;
 				}
 			}
@@ -151,8 +197,8 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			{
 				if (Stimulus.WasSuccessfullySensed())
 				{
-					SetAIState(EAIState::Patrol);
-					// BB의 타겟을 Stimulus.StimulusLocation으로
+					SetAIState("Patrol");
+					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
 					return;
 				}
 			}

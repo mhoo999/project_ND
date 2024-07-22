@@ -22,6 +22,13 @@ ANDNormalZombie::ANDNormalZombie()
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 		GetMesh()->SetAnimClass(ABP.Class);
 	}
+
+	InitialHP = 100.0f;
+	HearingAbility = 3000.0f;
+	MovementSpeed = 150.0f;
+	AttackDamage = 10.0f;
+	AttackRange = 100.0f;
+	
 }
 
 void ANDNormalZombie::BeginPlay()
