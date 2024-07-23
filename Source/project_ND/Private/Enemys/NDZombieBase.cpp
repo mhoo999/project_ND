@@ -11,8 +11,6 @@ ANDZombieBase::ANDZombieBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
-	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
-
 	AIControllerClass = ANDAIController::StaticClass();
 }
 
@@ -49,6 +47,16 @@ void ANDZombieBase::TakeDamage(float DamageAmount)
 float ANDZombieBase::GetHearingAbility() const
 {
 	return HearingAbility;
+}
+
+float ANDZombieBase::GetSightAbility() const
+{
+	return SightAbility;
+}
+
+float ANDZombieBase::GetMovementSpeed() const
+{
+	return MovementSpeed;
 }
 
 void ANDZombieBase::InitializeZombie()

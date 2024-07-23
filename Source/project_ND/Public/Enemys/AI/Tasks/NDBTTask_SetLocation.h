@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_SetLocation.generated.h"
+#include "NDBTTask_SetLocation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECT_ND_API UBTTask_SetLocation : public UBTTaskNode
+class PROJECT_ND_API UNDBTTask_SetLocation : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UBTTask_SetLocation();
+	UNDBTTask_SetLocation();
 };

@@ -3,12 +3,12 @@
 
 #include "Core/Enemys/NDAIController.h"
 
-#include <string>
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Enemys/NDZombieBase.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -19,7 +19,7 @@ ANDAIController::ANDAIController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// To initialize a BehaviorTree
+	// To initialize BehaviorTree
 	static ConstructorHelpers::FObjectFinder<UBehaviorTree> IdleBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Idle.BT_Idle'"));
 	if (IdleBTObject.Succeeded())
 	{
@@ -52,14 +52,14 @@ ANDAIController::ANDAIController()
 
 	CurrentState = EAIState::Idle;
 	
-	// To initialize a AI Perception
+	// To initialize AIPerception
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
 	SetPerceptionComponent(*AIPerceptionComponent);
 
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
-	SightConfig->SightRadius = 1000.0f;
-	SightConfig->LoseSightRadius = 1200.0f;
-	SightConfig->PeripheralVisionAngleDegrees = 90.0f;
+	SightConfig->SightRadius = 500.0f;
+	SightConfig->LoseSightRadius = 700.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
 	SightConfig->SetMaxAge(5.0f);
 	SightConfig->AutoSuccessRangeFromLastSeenLocation = 520.0f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
@@ -67,7 +67,7 @@ ANDAIController::ANDAIController()
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 
 	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Hearing Config"));
-	HearingConfig->HearingRange = 3000.0f;
+	HearingConfig->HearingRange = 1500.0f;
 	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
@@ -106,7 +106,10 @@ void ANDAIController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 
 	Zombie = Cast<ANDZombieBase>(InPawn);
-	HearingConfig->HearingRange = Zombie->GetHearingAbility();
+	SightConfig->SightRadius		= Zombie->GetSightAbility();
+	SightConfig->LoseSightRadius	= Zombie->GetSightAbility() + 200.0f;
+	HearingConfig->HearingRange		= Zombie->GetHearingAbility();
+	Zombie->GetCharacterMovement()->MaxWalkSpeed = Zombie->GetMovementSpeed();
 	Zombie->InitializeZombie();
 }
 
@@ -114,11 +117,11 @@ void ANDAIController::SetAIState(FString NewState)
 {
 	EAIState EnumState = StringToEAIState(NewState);
 	
-	if (CurrentState != EnumState)
-	{
+	// if (CurrentState != EnumState)
+	// {
 		CurrentState = EnumState;
 		RunCurrentBehaviorTree();
-	}
+	// }
 }
 
 EAIState ANDAIController::StringToEAIState(const FString& StateString) const
@@ -139,7 +142,7 @@ void ANDAIController::RunCurrentBehaviorTree()
 		RunBehaviorTree(IdleBehaviorTree);
 		break;
 	case EAIState::Patrol:
-		RunBehaviorTree(ChaseBehaviorTree);
+		RunBehaviorTree(PatrolBehaviorTree);
 		break;
 	case EAIState::Chase:
 		RunBehaviorTree(ChaseBehaviorTree);
@@ -177,15 +180,19 @@ void ANDAIController::PrintState()
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
+	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	
 	for (AActor* Actor : UpdatedActors)
 	{
 		FActorPerceptionBlueprintInfo Info;
 		AIPerceptionComponent->GetActorsPerception(Actor, Info);
-
+		
 		for (const auto& Stimulus : Info.LastSensedStimuli)
 		{
 			if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 			{
+				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
+				
 				if (Stimulus.WasSuccessfullySensed())
 				{
 					SetAIState("Chase");
@@ -195,10 +202,13 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			}
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 			{
+				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
+
 				if (Stimulus.WasSuccessfullySensed())
 				{
 					SetAIState("Patrol");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
 					return;
 				}
 			}

@@ -14,11 +14,3 @@ void ANDTestController::BeginPlay()
 	Super::BeginPlay();
 	
 }
-
-void ANDTestController::SetupInputComponent()
-{
-	Super::SetupInputComponent();
-
-	InputComponent->BindAxis("MoveForward");
-	InputComponent->BindAxis("MoveRight");
-}

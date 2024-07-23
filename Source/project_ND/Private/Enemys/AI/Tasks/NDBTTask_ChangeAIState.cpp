@@ -1,17 +1,17 @@
 ﻿// Copyright by project_ND
 
 
-#include "Enemys/AI/Tasks/BTTask_ChangeAIState.h"
+#include "Enemys/AI/Tasks/NDBTTask_ChangeAIState.h"
 
 #include "AIController.h"
 #include "Core/Enemys/NDAIController.h"
 
-UBTTask_ChangeAIState::UBTTask_ChangeAIState()
+UNDBTTask_ChangeAIState::UNDBTTask_ChangeAIState()
 {
 	NodeName = "Change ai state";
 }
 
-EBTNodeResult::Type UBTTask_ChangeAIState::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UNDBTTask_ChangeAIState::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ANDAIController* AIController = Cast<ANDAIController>(OwnerComp.GetAIOwner());
 

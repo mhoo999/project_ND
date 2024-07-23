@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTDecorator.h"
-#include "BTDecorator_bInAttackRange.generated.h"
+#include "NDBTDecorator_bInAttackRange.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECT_ND_API UBTDecorator_bInAttackRange : public UBTDecorator
+class PROJECT_ND_API UNDBTDecorator_bInAttackRange : public UBTDecorator
 {
 	GENERATED_BODY()
 
 public:
-	UBTDecorator_bInAttackRange();
+	UNDBTDecorator_bInAttackRange();
 
 	
 };

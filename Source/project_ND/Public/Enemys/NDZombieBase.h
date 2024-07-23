@@ -29,8 +29,11 @@ protected:
 	float InitialHP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
-	float HearingAbility;
+	float SightAbility;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
+	float HearingAbility;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
 	float MovementSpeed;
 	
@@ -48,6 +51,10 @@ public:
 	void TakeDamage(float DamageAmount);
 
 	float GetHearingAbility() const;
+
+	float GetSightAbility() const;
+
+	float GetMovementSpeed() const;
 
 	void InitializeZombie();
 	

@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_PlayRandomAnimation.generated.h"
+#include "NDBTTask_PlayRandomAnimation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECT_ND_API UBTTask_PlayRandomAnimation : public UBTTaskNode
+class PROJECT_ND_API UNDBTTask_PlayRandomAnimation : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UBTTask_PlayRandomAnimation();
+	UNDBTTask_PlayRandomAnimation();
 
 private:
 	UPROPERTY(EditAnywhere, Category="Animation")

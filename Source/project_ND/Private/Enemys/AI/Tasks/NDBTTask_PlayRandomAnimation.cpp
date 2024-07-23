@@ -1,17 +1,17 @@
 ﻿// Copyright by project_ND
 
 
-#include "Enemys/AI/Tasks/BTTask_PlayRandomAnimation.h"
+#include "Enemys/AI/Tasks/NDBTTask_PlayRandomAnimation.h"
 
 #include "Core/Enemys/NDAIController.h"
 #include "Enemys/NDZombieBase.h"
 
-UBTTask_PlayRandomAnimation::UBTTask_PlayRandomAnimation()
+UNDBTTask_PlayRandomAnimation::UNDBTTask_PlayRandomAnimation()
 {
 	NodeName = "Play Random Animation";
 }
 
-EBTNodeResult::Type UBTTask_PlayRandomAnimation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UNDBTTask_PlayRandomAnimation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ANDAIController* AIController = Cast<ANDAIController>(OwnerComp.GetAIOwner());
 	ANDZombieBase* Zombie = AIController->GetPawn<ANDZombieBase>();
