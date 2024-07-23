@@ -17,11 +17,11 @@ ANDNormalZombie::ANDNormalZombie()
 	}
 
 	InitialHP		= 100.0f;
-	SightAbility	= 500.0f;
+	SightAbility	= 1500.0f;
 	HearingAbility	= 1000.0f;
 	MovementSpeed	= 100.0f;
 	AttackDamage	= 10.0f;
-	AttackRange		= 100.0f;
+	AttackRange		= 200.0f;
 }
 
 void ANDNormalZombie::BeginPlay()

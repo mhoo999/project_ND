@@ -8,7 +8,7 @@
 
 UNDBTService_TargetLocationToDestination::UNDBTService_TargetLocationToDestination()
 {
-	NodeName = "Update distance from target";
+	NodeName = "Update the location of the target";
 }
 
 void UNDBTService_TargetLocationToDestination::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,

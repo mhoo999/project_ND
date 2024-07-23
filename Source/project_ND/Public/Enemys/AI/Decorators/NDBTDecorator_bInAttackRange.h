@@ -17,5 +17,7 @@ class PROJECT_ND_API UNDBTDecorator_bInAttackRange : public UBTDecorator
 public:
 	UNDBTDecorator_bInAttackRange();
 
-	
+private:
+	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
+
 };

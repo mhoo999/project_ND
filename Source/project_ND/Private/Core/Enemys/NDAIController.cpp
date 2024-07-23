@@ -57,8 +57,8 @@ ANDAIController::ANDAIController()
 	SetPerceptionComponent(*AIPerceptionComponent);
 
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
-	SightConfig->SightRadius = 500.0f;
-	SightConfig->LoseSightRadius = 700.0f;
+	SightConfig->SightRadius = 1500.0f;
+	SightConfig->LoseSightRadius = 1700.0f;
 	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
 	SightConfig->SetMaxAge(5.0f);
 	SightConfig->AutoSuccessRangeFromLastSeenLocation = 520.0f;
@@ -116,12 +116,20 @@ void ANDAIController::OnPossess(APawn* InPawn)
 void ANDAIController::SetAIState(FString NewState)
 {
 	EAIState EnumState = StringToEAIState(NewState);
+
+	if (NewState == "Patrol")
+	{
+		CurrentState = EAIState::Patrol;
+		RunCurrentBehaviorTree();
+
+		return;
+	}
 	
-	// if (CurrentState != EnumState)
-	// {
+	if (CurrentState != EnumState)
+	{
 		CurrentState = EnumState;
 		RunCurrentBehaviorTree();
-	// }
+	}
 }
 
 EAIState ANDAIController::StringToEAIState(const FString& StateString) const
@@ -181,6 +189,7 @@ void ANDAIController::PrintState()
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
 	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	bool bHasValidTarget = false;
 	
 	for (AActor* Actor : UpdatedActors)
 	{
@@ -197,6 +206,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+					bHasValidTarget = true;
 					return;
 				}
 			}
@@ -209,9 +219,20 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 					SetAIState("Patrol");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
 					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
+					bHasValidTarget = true;
 					return;
 				}
 			}
 		}
+
+		if (bHasValidTarget)
+		{
+			break;
+		}
+	}
+
+	if (!bHasValidTarget)
+	{
+		GetBlackboardComponent()->SetValueAsObject("Target", nullptr);
 	}
 }

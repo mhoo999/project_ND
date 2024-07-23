@@ -64,3 +64,8 @@ void ANDZombieBase::InitializeZombie()
 	HP = InitialHP;
 }
 
+float ANDZombieBase::GetAttackRange() const
+{
+	return AttackRange;
+}
+
