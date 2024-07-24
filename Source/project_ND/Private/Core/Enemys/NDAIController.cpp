@@ -64,9 +64,9 @@ void ANDAIController::SetAIState(FString NewState)
 	BrainComponent->StopLogic(TEXT("Stop Tree"));
 	EAIState EnumState = StringToEAIState(NewState);
 
-	if (NewState == "Patrol")
+	if (NewState == "Patrol" || NewState == "Chase")
 	{
-		CurrentState = EAIState::Patrol;
+		CurrentState = EnumState;
 		RunCurrentBehaviorTree();
 
 		return;
@@ -191,8 +191,6 @@ void ANDAIController::InitializeAIPerception() const
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
-	// bool bHasValidTarget = false;
-	
 	for (AActor* Actor : UpdatedActors)
 	{
 		FActorPerceptionBlueprintInfo Info;
@@ -208,7 +206,6 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-					// bHasValidTarget = true;
 					return;
 				}
 			}
@@ -216,25 +213,14 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
 
-				if (Stimulus.WasSuccessfullySensed())
+				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 				{
 					SetAIState("Patrol");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
 					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
-					// bHasValidTarget = true;
 					return;
 				}
 			}
 		}
-
-		// if (bHasValidTarget)
-		// {
-		// 	break;
-		// }
 	}
-
-	// if (!bHasValidTarget)
-	// {
-	// 	GetBlackboardComponent()->SetValueAsObject("Target", nullptr);
-	// }
 }

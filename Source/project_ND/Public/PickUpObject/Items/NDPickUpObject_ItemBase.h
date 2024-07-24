@@ -33,7 +33,10 @@ struct FItemBaseData : public FTableRowBase
 	UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
-	bool bIsEmpty;	
+	TSoftObjectPtr<UTexture2D> ItemThumbnail;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item", meta=(AllowPrivateAccess))
+	bool bIsEmpty;
 	
 };
 
