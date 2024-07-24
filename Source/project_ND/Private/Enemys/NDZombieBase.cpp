@@ -1,7 +1,7 @@
 ﻿// Copyright by project_ND
 
 
-#include "..\..\Public\Enemys\NDZombieBase.h"
+#include "../../Public/Enemys/NDZombieBase.h"
 
 #include "Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -10,19 +10,15 @@
 ANDZombieBase::ANDZombieBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	HP = InitialHP;
-	Damage = AttackDamage;
-	Speed = ZombieSpeed;
-
-	GetCharacterMovement()->MaxWalkSpeed = ZombieSpeed;
-
+	
 	AIControllerClass = ANDAIController::StaticClass();
 }
 
 void ANDZombieBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	InitializeZombie();
 }
 
 void ANDZombieBase::Tick(float DeltaTime)
@@ -35,6 +31,11 @@ void ANDZombieBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+float ANDZombieBase::GetHP() const
+{
+	return HP;
+}
+
 void ANDZombieBase::SetHP(float NewHP)
 {
 	HP = NewHP;
@@ -43,5 +44,18 @@ void ANDZombieBase::SetHP(float NewHP)
 void ANDZombieBase::TakeDamage(float DamageAmount)
 {
 	HP -= DamageAmount;
+}
+
+void ANDZombieBase::InitializeZombie()
+{
+	HP										= InitialHP;
+	GetCharacterMovement()->MaxWalkSpeed	= MovementSpeed;
+	Damage									= AttackDamage;
+	Range									= AttackRange;
+}
+
+float ANDZombieBase::GetAttackRange() const
+{
+	return AttackRange;
 }
 

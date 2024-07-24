@@ -2,8 +2,11 @@
 
 
 #include "Core/Enemys/NDAIController.h"
+
+
 #include "BehaviorTree/BehaviorTree.h"
-#include "GameFramework/Character.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Enemys/NDZombieBase.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -14,7 +17,124 @@ ANDAIController::ANDAIController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// To initialize a BehaviorTree
+	InitializeBehaviorTree();
+	
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
+	SetPerceptionComponent(*AIPerceptionComponent);
+
+	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
+	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Hearing Config"));
+	InitializeAIPerception();
+	
+	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &ANDAIController::OnPerceptionUpdate);
+}
+
+void ANDAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	RunCurrentBehaviorTree();
+}
+
+void ANDAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	PrintState();
+
+	if (Zombie)
+	{
+		if (Zombie->GetHP() == 0.0f)
+		{
+			AIPerceptionComponent->Deactivate();
+			SetAIState("Dead");
+		}
+	}
+}
+
+void ANDAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	Zombie = Cast<ANDZombieBase>(GetPawn());
+}
+
+void ANDAIController::SetAIState(FString NewState)
+{
+	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	EAIState EnumState = StringToEAIState(NewState);
+
+	if (NewState == "Patrol" || NewState == "Chase")
+	{
+		CurrentState = EnumState;
+		RunCurrentBehaviorTree();
+
+		return;
+	}
+	
+	if (CurrentState != EnumState)
+	{
+		CurrentState = EnumState;
+		RunCurrentBehaviorTree();
+	}
+}
+
+EAIState ANDAIController::StringToEAIState(const FString& StateString)
+{
+	if (StateString == "Patrol")	return EAIState::Patrol;
+	if (StateString == "Chase")		return EAIState::Chase;
+	if (StateString == "Attack")	return EAIState::Attack;
+	if (StateString == "Dead")		return EAIState::Dead;
+	
+	return EAIState::Idle;
+}
+
+void ANDAIController::RunCurrentBehaviorTree()
+{
+	switch (CurrentState)
+	{
+	case EAIState::Idle:
+		RunBehaviorTree(IdleBehaviorTree);
+		break;
+	case EAIState::Patrol:
+		RunBehaviorTree(PatrolBehaviorTree);
+		break;
+	case EAIState::Chase:
+		RunBehaviorTree(ChaseBehaviorTree);
+		break;
+	case EAIState::Attack:
+		RunBehaviorTree(AttackBehaviorTree);
+		break;
+	case EAIState::Dead:
+		RunBehaviorTree(DeadBehaviorTree);
+		break;
+	default:
+		break;
+	}
+}
+
+void ANDAIController::PrintState()
+{
+	// Zombie Info
+	FString StateString = UEnum::GetValueAsString(CurrentState);
+	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1);
+	float ZombieHP = Zombie->GetHP();
+	
+	// BlackBoard Values
+	AActor* TargetActor = Cast<AActor>(GetBlackboardComponent()->GetValueAsObject("Target"));
+	float TargetDistance = GetBlackboardComponent()->GetValueAsFloat("TargetDistance");
+	FVector Destination = GetBlackboardComponent()->GetValueAsVector("Destination");
+
+	FString TargetActorInfo = TargetActor ? TargetActor->GetName() + TEXT(" @ ") + FString::SanitizeFloat(FMath::TruncToInt(TargetDistance)) : TEXT("None");
+	FString DestinationString = FString::Printf(TEXT("X: %lld, Y: %lld, Z: %lld"), FMath::TruncToInt(Destination.X), FMath::TruncToInt(Destination.Y), FMath::TruncToInt(Destination.Z));
+
+	FString DebugString = "HP: " + FString::SanitizeFloat(ZombieHP) + "\n" + "state: " + CleanStateString + "\n" + "Target: " + TargetActorInfo + "\n" + "Dest: " + DestinationString;
+	
+	DrawDebugString(GetWorld(), GetPawn()->GetActorLocation(), DebugString, nullptr, FColor::Yellow, 0, true, 1);
+}
+
+void ANDAIController::InitializeBehaviorTree()
+{
 	static ConstructorHelpers::FObjectFinder<UBehaviorTree> IdleBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Idle.BT_Idle'"));
 	if (IdleBTObject.Succeeded())
 	{
@@ -46,23 +166,20 @@ ANDAIController::ANDAIController()
 	}
 
 	CurrentState = EAIState::Idle;
-	
-	// To initialize a AI Perception
-	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
-	SetPerceptionComponent(*AIPerceptionComponent);
+}
 
-	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
-	SightConfig->SightRadius = 1000.0f;
-	SightConfig->LoseSightRadius = 1200.0f;
-	SightConfig->PeripheralVisionAngleDegrees = 90.0f;
+void ANDAIController::InitializeAIPerception() const
+{
+	SightConfig->SightRadius = 700.0f;
+	SightConfig->LoseSightRadius = 900.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
 	SightConfig->SetMaxAge(5.0f);
-	SightConfig->AutoSuccessRangeFromLastSeenLocation = 520.0f;
+	SightConfig->AutoSuccessRangeFromLastSeenLocation = 500.0f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 
-	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Hearing Config"));
-	HearingConfig->HearingRange = 3000.0f;
+	HearingConfig->HearingRange = 1500.0f;
 	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
@@ -70,63 +187,6 @@ ANDAIController::ANDAIController()
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
 	AIPerceptionComponent->ConfigureSense(*HearingConfig);
 	AIPerceptionComponent->SetDominantSense(UAISense_Sight::StaticClass());
-
-	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &ANDAIController::OnPerceptionUpdate);
-}
-
-void ANDAIController::BeginPlay()
-{
-	Super::BeginPlay();
-
-	RunCurrentBehaviorTree();
-}
-
-void ANDAIController::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	PrintState();
-}
-
-void ANDAIController::SetAIState(EAIState NewState)
-{
-	if (CurrentState != NewState)
-	{
-		CurrentState = NewState;
-		RunCurrentBehaviorTree();
-	}
-}
-
-void ANDAIController::RunCurrentBehaviorTree()
-{
-	switch (CurrentState)
-	{
-	case EAIState::Idle:
-		RunBehaviorTree(IdleBehaviorTree);
-		break;
-	case EAIState::Patrol:
-		RunBehaviorTree(ChaseBehaviorTree);
-		break;
-	case EAIState::Chase:
-		RunBehaviorTree(ChaseBehaviorTree);
-		break;
-	case EAIState::Attack:
-		RunBehaviorTree(AttackBehaviorTree);
-		break;
-	case EAIState::Dead:
-		RunBehaviorTree(DeadBehaviorTree);
-		break;
-	default:
-		break;
-	}
-}
-
-void ANDAIController::PrintState()
-{
-	FString StateString = UEnum::GetValueAsString(CurrentState);
-	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1);
-
-	DrawDebugString(GetWorld(), GetPawn()->GetActorLocation(), CleanStateString, nullptr, FColor::Yellow, 0, true, 1);
 }
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
@@ -135,24 +195,29 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 	{
 		FActorPerceptionBlueprintInfo Info;
 		AIPerceptionComponent->GetActorsPerception(Actor, Info);
-
+		
 		for (const auto& Stimulus : Info.LastSensedStimuli)
 		{
 			if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 			{
+				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
+				
 				if (Stimulus.WasSuccessfullySensed())
 				{
-					SetAIState(EAIState::Chase);
-					// BB의 타겟을 Actor로 바꿔 Chase하도록 만들어야 함
+					SetAIState("Chase");
+					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
 					return;
 				}
 			}
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 			{
-				if (Stimulus.WasSuccessfullySensed())
+				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
+
+				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 				{
-					SetAIState(EAIState::Patrol);
-					// BB의 타겟을 Stimulus.StimulusLocation으로
+					SetAIState("Patrol");
+					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
 					return;
 				}
 			}

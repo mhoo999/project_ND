@@ -72,7 +72,7 @@ void ANDItemSpawner::SpawnItem()
 					return;
 				}
 
-				UE_LOG(LogTemp, Warning, TEXT("Selected type : %s"), *SelectedItem->ItemType);
+				// UE_LOG(LogTemp, Warning, TEXT("Selected type : %s"), *SelectedItem->ItemType);
 
 				if (SelectedClass)
 				{

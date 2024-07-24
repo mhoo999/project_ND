@@ -16,19 +16,15 @@ ANDNormalZombie::ANDNormalZombie()
 		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	}
 
-	ConstructorHelpers::FClassFinder<UAnimInstance> ABP(TEXT("/Script/Engine.AnimBlueprint'/Game/Project_ND/Enemys/ABP_NDNormalZombie.ABP_NDNormalZombie'"));
-	if (ABP.Succeeded())
-	{
-		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
-		GetMesh()->SetAnimClass(ABP.Class);
-	}
+	InitialHP		= 100.0f;
+	MovementSpeed	= 50.0f;
+	AttackDamage	= 10.0f;
+	AttackRange		= 200.0f;
 }
 
 void ANDNormalZombie::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 void ANDNormalZombie::Tick(float DeltaTime)
