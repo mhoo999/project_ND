@@ -1,9 +1,14 @@
 // Copyright by project_ND
 
 
-#include "Core/Characters/NDAnimPlayer.h"
-#include "Core/Characters/NDPlayerCharacter.h"
+#include "NDAnimPlayer.h"
+#include "NDPlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
+
+UNDAnimPlayer::UNDAnimPlayer()
+{
+}
 
 void UNDAnimPlayer::NativeBeginPlay()
 {
