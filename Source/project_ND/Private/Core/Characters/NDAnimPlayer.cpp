@@ -21,8 +21,15 @@ void UNDAnimPlayer::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = Player->GetVelocity().Size2D();
 
+	// Direction = Player->GetVelocity().Size2D();
+
+	Velocity = Player->GetCharacterMovement()->Velocity;
+
 	bIsFalling = Player->GetCharacterMovement()->IsFalling();
 
 	bIsCrouch = Player->GetIsCrouched();
+
+	FRotator BaseLotator = Player->GetActorRotation();
+	Direction = CalculateDirection(Velocity, BaseLotator);
 
 }
