@@ -16,4 +16,6 @@ class PROJECT_ND_API UNDBTTask_SetLocation : public UBTTaskNode
 
 public:
 	UNDBTTask_SetLocation();
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };
