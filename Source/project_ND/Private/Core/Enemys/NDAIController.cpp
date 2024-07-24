@@ -7,6 +7,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Enemys/NDZombieBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -189,6 +190,11 @@ void ANDAIController::InitializeAIPerception() const
 	AIPerceptionComponent->SetDominantSense(UAISense_Sight::StaticClass());
 }
 
+void ANDAIController::GetExcitement() const
+{
+	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 2;
+}
+
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
 	for (AActor* Actor : UpdatedActors)
@@ -206,6 +212,13 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+
+					if (!bIsExcitement)
+					{
+						bIsExcitement = true;
+						GetExcitement();
+					}
+					
 					return;
 				}
 			}

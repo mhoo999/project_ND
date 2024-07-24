@@ -68,6 +68,9 @@ private:
 	void InitializeBehaviorTree();
 	void InitializeAIPerception() const;
 
+	bool bIsExcitement;
+	void GetExcitement() const;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
 	UAIPerceptionComponent* AIPerceptionComponent;
