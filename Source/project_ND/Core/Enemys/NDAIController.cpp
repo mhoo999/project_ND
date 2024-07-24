@@ -65,6 +65,12 @@ void ANDAIController::SetAIState(FString NewState)
 	BrainComponent->StopLogic(TEXT("Stop Tree"));
 	EAIState EnumState = StringToEAIState(NewState);
 
+	if (bIsExcitement)
+	{
+		bIsExcitement = false;
+		GetRelax();
+	}
+	
 	if (NewState == "Patrol" || NewState == "Chase")
 	{
 		CurrentState = EnumState;
@@ -192,7 +198,12 @@ void ANDAIController::InitializeAIPerception() const
 
 void ANDAIController::GetExcitement() const
 {
-	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 2;
+	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 4.0f;
+}
+
+void ANDAIController::GetRelax() const
+{
+	Zombie->GetCharacterMovement()->MaxWalkSpeed = Zombie->GetMovementSpeed();
 }
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
