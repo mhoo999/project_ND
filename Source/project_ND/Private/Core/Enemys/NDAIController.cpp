@@ -7,8 +7,6 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Enemys/NDZombieBase.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -19,62 +17,14 @@ ANDAIController::ANDAIController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// To initialize BehaviorTree
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> IdleBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Idle.BT_Idle'"));
-	if (IdleBTObject.Succeeded())
-	{
-		IdleBehaviorTree = IdleBTObject.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> PatrolBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Patrol.BT_Patrol'"));
-	if (PatrolBTObject.Succeeded())
-	{
-		PatrolBehaviorTree = PatrolBTObject.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> ChaseBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Chase.BT_Chase'"));
-	if (ChaseBTObject.Succeeded())
-	{
-		ChaseBehaviorTree = ChaseBTObject.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> AttackBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Attack.BT_Attack'"));
-	if (AttackBTObject.Succeeded())
-	{
-		AttackBehaviorTree = AttackBTObject.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> DeadBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Dead.BT_Dead'"));
-	if (DeadBTObject.Succeeded())
-	{
-		DeadBehaviorTree = DeadBTObject.Object;
-	}
-
-	CurrentState = EAIState::Idle;
+	InitializeBehaviorTree();
 	
-	// To initialize AIPerception
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
 	SetPerceptionComponent(*AIPerceptionComponent);
 
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
-	SightConfig->SightRadius = 1500.0f;
-	SightConfig->LoseSightRadius = 1700.0f;
-	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
-	SightConfig->SetMaxAge(5.0f);
-	SightConfig->AutoSuccessRangeFromLastSeenLocation = 520.0f;
-	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
-	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
-	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-
 	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Hearing Config"));
-	HearingConfig->HearingRange = 1500.0f;
-	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
-	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
-	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
-
-	AIPerceptionComponent->ConfigureSense(*SightConfig);
-	AIPerceptionComponent->ConfigureSense(*HearingConfig);
-	AIPerceptionComponent->SetDominantSense(UAISense_Sight::StaticClass());
+	InitializeAIPerception();
 	
 	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &ANDAIController::OnPerceptionUpdate);
 }
@@ -89,13 +39,14 @@ void ANDAIController::BeginPlay()
 void ANDAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
+	
 	PrintState();
 
 	if (Zombie)
 	{
 		if (Zombie->GetHP() == 0.0f)
 		{
+			AIPerceptionComponent->Deactivate();
 			SetAIState("Dead");
 		}
 	}
@@ -105,16 +56,12 @@ void ANDAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	Zombie = Cast<ANDZombieBase>(InPawn);
-	SightConfig->SightRadius		= Zombie->GetSightAbility();
-	SightConfig->LoseSightRadius	= Zombie->GetSightAbility() + 200.0f;
-	HearingConfig->HearingRange		= Zombie->GetHearingAbility();
-	Zombie->GetCharacterMovement()->MaxWalkSpeed = Zombie->GetMovementSpeed();
-	Zombie->InitializeZombie();
+	Zombie = Cast<ANDZombieBase>(GetPawn());
 }
 
 void ANDAIController::SetAIState(FString NewState)
 {
+	BrainComponent->StopLogic(TEXT("Stop Tree"));
 	EAIState EnumState = StringToEAIState(NewState);
 
 	if (NewState == "Patrol")
@@ -132,7 +79,7 @@ void ANDAIController::SetAIState(FString NewState)
 	}
 }
 
-EAIState ANDAIController::StringToEAIState(const FString& StateString) const
+EAIState ANDAIController::StringToEAIState(const FString& StateString)
 {
 	if (StateString == "Patrol")	return EAIState::Patrol;
 	if (StateString == "Chase")		return EAIState::Chase;
@@ -186,10 +133,65 @@ void ANDAIController::PrintState()
 	DrawDebugString(GetWorld(), GetPawn()->GetActorLocation(), DebugString, nullptr, FColor::Yellow, 0, true, 1);
 }
 
+void ANDAIController::InitializeBehaviorTree()
+{
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> IdleBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Idle.BT_Idle'"));
+	if (IdleBTObject.Succeeded())
+	{
+		IdleBehaviorTree = IdleBTObject.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> PatrolBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Patrol.BT_Patrol'"));
+	if (PatrolBTObject.Succeeded())
+	{
+		PatrolBehaviorTree = PatrolBTObject.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> ChaseBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Chase.BT_Chase'"));
+	if (ChaseBTObject.Succeeded())
+	{
+		ChaseBehaviorTree = ChaseBTObject.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> AttackBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Attack.BT_Attack'"));
+	if (AttackBTObject.Succeeded())
+	{
+		AttackBehaviorTree = AttackBTObject.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> DeadBTObject(TEXT("/Script/AIModule.BehaviorTree'/Game/Project_ND/Core/Enemys/BT_Dead.BT_Dead'"));
+	if (DeadBTObject.Succeeded())
+	{
+		DeadBehaviorTree = DeadBTObject.Object;
+	}
+
+	CurrentState = EAIState::Idle;
+}
+
+void ANDAIController::InitializeAIPerception() const
+{
+	SightConfig->SightRadius = 700.0f;
+	SightConfig->LoseSightRadius = 900.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
+	SightConfig->SetMaxAge(5.0f);
+	SightConfig->AutoSuccessRangeFromLastSeenLocation = 500.0f;
+	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
+	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
+
+	HearingConfig->HearingRange = 1500.0f;
+	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
+	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
+
+	AIPerceptionComponent->ConfigureSense(*SightConfig);
+	AIPerceptionComponent->ConfigureSense(*HearingConfig);
+	AIPerceptionComponent->SetDominantSense(UAISense_Sight::StaticClass());
+}
+
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
-	BrainComponent->StopLogic(TEXT("Stop Tree"));
-	bool bHasValidTarget = false;
+	// bool bHasValidTarget = false;
 	
 	for (AActor* Actor : UpdatedActors)
 	{
@@ -206,7 +208,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-					bHasValidTarget = true;
+					// bHasValidTarget = true;
 					return;
 				}
 			}
@@ -219,20 +221,20 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 					SetAIState("Patrol");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
 					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
-					bHasValidTarget = true;
+					// bHasValidTarget = true;
 					return;
 				}
 			}
 		}
 
-		if (bHasValidTarget)
-		{
-			break;
-		}
+		// if (bHasValidTarget)
+		// {
+		// 	break;
+		// }
 	}
 
-	if (!bHasValidTarget)
-	{
-		GetBlackboardComponent()->SetValueAsObject("Target", nullptr);
-	}
+	// if (!bHasValidTarget)
+	// {
+	// 	GetBlackboardComponent()->SetValueAsObject("Target", nullptr);
+	// }
 }

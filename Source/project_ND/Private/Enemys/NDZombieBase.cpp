@@ -1,7 +1,7 @@
 ﻿// Copyright by project_ND
 
 
-#include "..\..\Public\Enemys\NDZombieBase.h"
+#include "../../Public/Enemys/NDZombieBase.h"
 
 #include "Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -17,6 +17,8 @@ ANDZombieBase::ANDZombieBase()
 void ANDZombieBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	InitializeZombie();
 }
 
 void ANDZombieBase::Tick(float DeltaTime)
@@ -29,7 +31,7 @@ void ANDZombieBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-float ANDZombieBase::GetHP()
+float ANDZombieBase::GetHP() const
 {
 	return HP;
 }
@@ -44,24 +46,12 @@ void ANDZombieBase::TakeDamage(float DamageAmount)
 	HP -= DamageAmount;
 }
 
-float ANDZombieBase::GetHearingAbility() const
-{
-	return HearingAbility;
-}
-
-float ANDZombieBase::GetSightAbility() const
-{
-	return SightAbility;
-}
-
-float ANDZombieBase::GetMovementSpeed() const
-{
-	return MovementSpeed;
-}
-
 void ANDZombieBase::InitializeZombie()
 {
-	HP = InitialHP;
+	HP										= InitialHP;
+	GetCharacterMovement()->MaxWalkSpeed	= MovementSpeed;
+	Damage									= AttackDamage;
+	Range									= AttackRange;
 }
 
 float ANDZombieBase::GetAttackRange() const

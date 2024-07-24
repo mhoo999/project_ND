@@ -24,15 +24,11 @@ public:
 
 protected:
 	float HP;
+	float Damage;
+	float Range;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
 	float InitialHP;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
-	float SightAbility;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
-	float HearingAbility;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
 	float MovementSpeed;
@@ -44,17 +40,11 @@ protected:
 	float AttackRange;
 	
 public:
-	float GetHP();
+	float GetHP() const;
 	
 	void SetHP(float NewHP);
 
 	void TakeDamage(float DamageAmount);
-
-	float GetHearingAbility() const;
-
-	float GetSightAbility() const;
-
-	float GetMovementSpeed() const;
 
 	void InitializeZombie();
 

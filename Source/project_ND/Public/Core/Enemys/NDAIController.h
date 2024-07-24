@@ -38,7 +38,7 @@ protected:
 public:
 	void SetAIState(FString NewState);
 
-	EAIState StringToEAIState(const FString& StateString) const;
+	static EAIState StringToEAIState(const FString& StateString);
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
@@ -64,6 +64,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI", meta=(AllowPrivateAccess))
 	ANDZombieBase* Zombie;
+	
+	void InitializeBehaviorTree();
+	void InitializeAIPerception() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
@@ -77,4 +80,5 @@ protected:
 
 	UFUNCTION()
 	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
+
 };
