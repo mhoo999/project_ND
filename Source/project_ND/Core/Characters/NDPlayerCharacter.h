@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "NDPlayerCharacter.generated.h"
 
+struct FInputActionValue;
+
 UCLASS()
 class PROJECT_ND_API APlayerCharacter : public ACharacter
 {
@@ -26,5 +28,46 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
+protected:
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void Walk(const FInputActionValue& Value);
+
+	void CrouchStart(const FInputActionValue& Value);
+	void CrouchEnd  (const FInputActionValue& Value);
+
+	void SprintStart();
+	void SprintEnd  ();
+
+	//void Crouched(const FInputActionValue& Value);
+
+public:
+
+	bool GetIsCrouched() { return bIsCrouched; }
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputMappingContext* MappingContext;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* MoveAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* JumpAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* LookAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* WalkAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* SprintAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* CrouchAction;
+
+	bool bIsWalking   = false;
+	bool bIsSprinting = false;
+	bool bIsCrouched  = false;
 };
