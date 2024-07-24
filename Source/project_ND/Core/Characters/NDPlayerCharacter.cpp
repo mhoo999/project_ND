@@ -1,7 +1,7 @@
 // Copyright by project_ND
 
 
-#include "..\..\..\Public\Core\Characters\NDPlayerCharacter.h"
+#include "NDPlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
