@@ -70,6 +70,7 @@ private:
 
 	bool bIsExcitement;
 	void GetExcitement() const;
+	void GetRelax() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
