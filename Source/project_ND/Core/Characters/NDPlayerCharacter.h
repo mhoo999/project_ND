@@ -7,6 +7,13 @@
 #include "NDPlayerCharacter.generated.h"
 
 struct FInputActionValue;
+class ANDWeapon;
+
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	UNARMED, FLASHLIGHT
+};
 
 UCLASS()
 class PROJECT_ND_API APlayerCharacter : public ACharacter
@@ -70,4 +77,14 @@ protected:
 	bool bIsWalking   = false;
 	bool bIsSprinting = false;
 	bool bIsCrouched  = false;
+
+	//Weapon
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<EWeaponType, ANDWeapon*> Weapons;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<EWeaponType, TSubclassOf<ANDWeapon>> WeaponClasses;
+
+
 };
