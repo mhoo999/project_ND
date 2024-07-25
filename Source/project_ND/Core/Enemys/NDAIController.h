@@ -69,6 +69,7 @@ private:
 	void InitializeAIPerception() const;
 
 	bool bIsExcitement;
+	FTimerHandle RelaxTimerHandle;
 	void GetExcitement() const;
 	void GetRelax() const;
 
