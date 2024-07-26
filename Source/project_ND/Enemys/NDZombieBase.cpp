@@ -41,9 +41,14 @@ void ANDZombieBase::SetHP(float NewHP)
 	HP = NewHP;
 }
 
-void ANDZombieBase::TakeDamage(float DamageAmount)
+void ANDZombieBase::TakeDamage(const float DamageAmount)
 {
 	HP -= DamageAmount;
+}
+
+void ANDZombieBase::Recovery(FString ItemType, const float RecoveryAmount)
+{
+	HP += RecoveryAmount;
 }
 
 void ANDZombieBase::InitializeZombie()

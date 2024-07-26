@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "project_ND/Core/Interface/NDCharacterInterface.h"
 #include "NDZombieBase.generated.h"
 
 UCLASS()
-class PROJECT_ND_API ANDZombieBase : public ACharacter
+class PROJECT_ND_API ANDZombieBase : public ACharacter, public INDCharacterInterface
 {
 	GENERATED_BODY()
 
@@ -40,11 +41,15 @@ protected:
 	float AttackRange;
 	
 public:
+	virtual void TakeDamage(float DamageAmount) override;
+
+	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
+	
+public:
 	float GetHP() const;
 	
 	void SetHP(float NewHP);
 
-	void TakeDamage(float DamageAmount);
 
 	void InitializeZombie();
 

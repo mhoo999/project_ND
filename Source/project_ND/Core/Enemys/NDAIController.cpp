@@ -127,7 +127,8 @@ void ANDAIController::PrintState()
 {
 	// Zombie Info
 	FString StateString = UEnum::GetValueAsString(CurrentState);
-	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1);
+	FString isExcitement = bIsExcitement ? "Excitement" : "Relax";
+	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1) + "(" + isExcitement + ")";
 	float ZombieHP = Zombie->GetHP();
 	
 	// BlackBoard Values
