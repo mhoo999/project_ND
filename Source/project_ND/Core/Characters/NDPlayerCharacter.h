@@ -50,46 +50,26 @@ protected:
 
 	void ChangeWeapon(EWeaponType InWeaponType);
 
+	void StrafeOn();
+	void StrafeOff();
+
+	void OnEquipEnd();
+
 	//void Crouched(const FInputActionValue& Value);
 
+
 public:
+	UFUNCTION(BlueprintCallable)
+	EWeaponType GetCurWeaponType() { return CurWeaponType; }
 
 	bool GetIsCrouched() { return bIsCrouched; }
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputMappingContext* MappingContext;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* MoveAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* JumpAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* LookAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* WalkAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* SprintAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* CrouchAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* ChangeWeaponAction;
-
-
 	bool bIsWalking   = false;
-	
 	bool bIsSprinting = false;
-	
 	bool bIsCrouched  = false;
 
 	//Weapon
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<EWeaponType, ANDWeapon*> Weapons;
 	
@@ -98,4 +78,7 @@ protected:
 
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
 	EWeaponType LastWeaponType = EWeaponType::UNARMED;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UNDInputComponent* MyInputComponent;
 };

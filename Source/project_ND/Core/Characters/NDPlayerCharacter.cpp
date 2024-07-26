@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
+#include "/Project/project_ND/Source/project_ND/Component/NDInputComponent.h"
 
 //class ANDWeapon;
 // Sets default values
@@ -15,6 +16,9 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
+
+	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 }
 
 // Called when the game starts or when spawned
@@ -30,7 +34,7 @@ void APlayerCharacter::BeginPlay()
 
 		if (IsValid(SubSystem))
 		{
-			SubSystem->AddMappingContext(MappingContext, 0);
+			SubSystem->AddMappingContext(MyInputComponent->MappingContext, 0);
 		}
 	}
 
@@ -63,19 +67,19 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (IsValid(EnhancedInputComponent))
 	{
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(MyInputComponent->JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
-		EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Started  , this, &APlayerCharacter::Walk);
+		EnhancedInputComponent->BindAction(MyInputComponent->MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(MyInputComponent->LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(MyInputComponent->WalkAction, ETriggerEvent::Started  , this, &APlayerCharacter::Walk);
 
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchEnd);
+		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
+		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchEnd);
 
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
+		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
+		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
-		EnhancedInputComponent->BindAction(ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
 
 
 		//UE_LOG(,)
@@ -163,17 +167,42 @@ void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 {
 	FString string = Value.ToString();
 
-	 CurWeaponType = EWeaponType::FLASHLIGHT;
+	ChangeWeapon(EWeaponType::FLASHLIGHT);
 }
 
 void APlayerCharacter::ChangeWeapon(EWeaponType InWeaponType)
 {
-	if (LastWeaponType == CurWeaponType)
+	if (InWeaponType == CurWeaponType)
 		return;
 
 	//Change Weapon
 
 	LastWeaponType = CurWeaponType;
+	 CurWeaponType =  InWeaponType;
+
+	OnEquipEnd();
+}
+
+void APlayerCharacter::StrafeOn()
+{
+	bUseControllerRotationYaw = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+}
+
+void APlayerCharacter::StrafeOff()
+{
+	bUseControllerRotationYaw = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+}
+
+void APlayerCharacter::OnEquipEnd()
+{
+	if (CurWeaponType == EWeaponType::UNARMED)
+		StrafeOff();
+	else
+		StrafeOn();
 }
 
 
