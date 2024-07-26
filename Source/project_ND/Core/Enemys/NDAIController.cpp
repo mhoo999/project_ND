@@ -47,7 +47,6 @@ void ANDAIController::Tick(float DeltaSeconds)
 	{
 		if (Zombie->GetHP() == 0.0f)
 		{
-			AIPerceptionComponent->Deactivate();
 			SetAIState("Dead");
 		}
 	}
@@ -62,9 +61,14 @@ void ANDAIController::OnPossess(APawn* InPawn)
 
 void ANDAIController::SetAIState(FString NewState)
 {
+	if (CurrentState == EAIState::Dead)
+	{
+		return;
+	}
+	
 	BrainComponent->StopLogic(TEXT("Stop Tree"));
 	EAIState EnumState = StringToEAIState(NewState);
-
+	
 	if (bChasePlayer && NewState == "Patrol")
 	{
 		return;
@@ -251,4 +255,23 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 void ANDAIController::ToggleBeChasePlayer()
 {
 	bChasePlayer = !bChasePlayer;
+}
+
+void ANDAIController::ZombieDie()
+{
+	if (AIPerceptionComponent)
+	{
+		GetAIPerceptionComponent()->Deactivate();
+	}
+
+	if (BrainComponent)
+	{
+		BrainComponent->StopLogic(TEXT("Stop Tree"));
+	}
+
+	if (Zombie)
+	{
+		Zombie->GetMesh()->SetSimulatePhysics(true);
+		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	}
 }

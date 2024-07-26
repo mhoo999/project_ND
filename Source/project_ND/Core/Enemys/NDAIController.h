@@ -91,4 +91,6 @@ protected:
 public:
 	void ToggleBeChasePlayer();
 
+	void ZombieDie();
+
 };
