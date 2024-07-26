@@ -59,3 +59,8 @@ float ANDZombieBase::GetAttackRange() const
 	return AttackRange;
 }
 
+float ANDZombieBase::GetMovementSpeed() const
+{
+	return MovementSpeed;
+}
+

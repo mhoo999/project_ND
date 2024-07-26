@@ -49,5 +49,7 @@ public:
 	void InitializeZombie();
 
 	float GetAttackRange() const;
+
+	float GetMovementSpeed() const;
 	
 };
