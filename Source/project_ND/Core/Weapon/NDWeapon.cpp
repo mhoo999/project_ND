@@ -25,3 +25,13 @@ void ANDWeapon::Tick(float DeltaTime)
 
 }
 
+bool ANDWeapon::Attach(USceneComponent* InParent)
+{
+	return AttachToComponent
+	(
+		InParent,
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+		HolsterSocketName
+	);
+}
+

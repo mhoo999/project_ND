@@ -6,7 +6,9 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
 
+//class ANDWeapon;
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -30,6 +32,17 @@ void APlayerCharacter::BeginPlay()
 		{
 			SubSystem->AddMappingContext(MappingContext, 0);
 		}
+	}
+
+	// Spawn Weapon 
+
+	for (auto& pair : WeaponClasses)
+	{
+		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value);
+
+		weapon->Attach(GetMesh());
+
+		Weapons.Add(pair.Key, weapon);
 	}
 }
 
@@ -59,10 +72,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchEnd);
 
-
-
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
+
+		EnhancedInputComponent->BindAction(ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
+
 
 		//UE_LOG(,)
 	}
@@ -143,6 +157,23 @@ void APlayerCharacter::SprintStart()
 void APlayerCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+}
+
+void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
+{
+	FString string = Value.ToString();
+
+	 CurWeaponType = EWeaponType::FLASHLIGHT;
+}
+
+void APlayerCharacter::ChangeWeapon(EWeaponType InWeaponType)
+{
+	if (LastWeaponType == CurWeaponType)
+		return;
+
+	//Change Weapon
+
+	LastWeaponType = CurWeaponType;
 }
 
 

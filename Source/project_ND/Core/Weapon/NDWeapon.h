@@ -23,4 +23,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	bool Attach(USceneComponent* InParent);
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName HolsterSocketName;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName EquipSocketName;
 };

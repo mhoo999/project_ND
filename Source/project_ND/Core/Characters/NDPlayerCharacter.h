@@ -46,6 +46,10 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
+	void OnFlashLightKey(const FInputActionValue& Value);
+
+	void ChangeWeapon(EWeaponType InWeaponType);
+
 	//void Crouched(const FInputActionValue& Value);
 
 public:
@@ -74,8 +78,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* CrouchAction;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* ChangeWeaponAction;
+
+
 	bool bIsWalking   = false;
+	
 	bool bIsSprinting = false;
+	
 	bool bIsCrouched  = false;
 
 	//Weapon
@@ -86,5 +96,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<EWeaponType, TSubclassOf<ANDWeapon>> WeaponClasses;
 
-
+	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
+	EWeaponType LastWeaponType = EWeaponType::UNARMED;
 };
