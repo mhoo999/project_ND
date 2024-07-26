@@ -72,18 +72,18 @@ void ANDAIController::SetAIState(FString NewState)
 		return;
 	}
 	
+	if (bIsExcitement)
+	{
+		bIsExcitement = false;
+		GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
+		GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
+		{
+			GetRelax();
+		}), 5.0f, false);
+	}
+	
 	if (CurrentState != EnumState)
 	{
-		if (bIsExcitement)
-		{
-			bIsExcitement = false;
-			GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
-			GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
-			{
-				GetRelax();
-			}), 5.0f, false);
-		}
-		
 		CurrentState = EnumState;
 		RunCurrentBehaviorTree();
 	}
@@ -214,6 +214,12 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
 	for (AActor* Actor : UpdatedActors)
 	{
+		if (!bIsExcitement)
+		{
+			bIsExcitement = true;
+			GetExcitement();
+		}
+		
 		FActorPerceptionBlueprintInfo Info;
 		AIPerceptionComponent->GetActorsPerception(Actor, Info);
 		
@@ -241,12 +247,6 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
 					return;
 				}
-			}
-			
-			if (!bIsExcitement)
-			{
-				bIsExcitement = true;
-				GetExcitement();
 			}
 		}
 	}

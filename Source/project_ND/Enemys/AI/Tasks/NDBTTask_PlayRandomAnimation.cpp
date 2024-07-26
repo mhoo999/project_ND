@@ -13,13 +13,15 @@ UNDBTTask_PlayRandomAnimation::UNDBTTask_PlayRandomAnimation()
 
 EBTNodeResult::Type UNDBTTask_PlayRandomAnimation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	ANDAIController* AIController = Cast<ANDAIController>(OwnerComp.GetAIOwner());
-	ANDZombieBase* Zombie = AIController->GetPawn<ANDZombieBase>();
+	const ANDZombieBase* Zombie = Cast<ANDAIController>(OwnerComp.GetAIOwner())->GetPawn<ANDZombieBase>();
+	if (!Zombie)
+	{
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
 
-	int8 LandNum = FMath::RandRange(0, Montages.Num() - 1);
-	UAnimSequence* SelectedSequence = Montages[LandNum];
+	const int8 LandNum = FMath::RandRange(0, Montages.Num() - 1);
 
-	if (SelectedSequence)
+	if (UAnimSequence* SelectedSequence = Montages[LandNum])
 	{
 		Zombie->GetMesh()->PlayAnimation(SelectedSequence, false);
 	}
