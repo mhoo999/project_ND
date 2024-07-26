@@ -64,15 +64,16 @@ void ANDAIController::SetAIState(FString NewState)
 {
 	BrainComponent->StopLogic(TEXT("Stop Tree"));
 	EAIState EnumState = StringToEAIState(NewState);
-	
-	if (NewState == "Patrol" || NewState == "Chase")
+
+	if (bChasePlayer && NewState == "Patrol")
 	{
-		CurrentState = EnumState;
-		RunCurrentBehaviorTree();
 		return;
 	}
 	
-	if (bIsExcitement)
+	CurrentState = EnumState;
+	RunCurrentBehaviorTree();
+	
+	if (CurrentState == EAIState::Idle)
 	{
 		bIsExcitement = false;
 		GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
@@ -80,12 +81,6 @@ void ANDAIController::SetAIState(FString NewState)
 		{
 			GetRelax();
 		}), 5.0f, false);
-	}
-	
-	if (CurrentState != EnumState)
-	{
-		CurrentState = EnumState;
-		RunCurrentBehaviorTree();
 	}
 }
 
@@ -233,6 +228,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+					bChasePlayer = true;
 					return;
 				}
 			}
@@ -250,4 +246,9 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			}
 		}
 	}
+}
+
+void ANDAIController::ToggleBeChasePlayer()
+{
+	bChasePlayer = !bChasePlayer;
 }

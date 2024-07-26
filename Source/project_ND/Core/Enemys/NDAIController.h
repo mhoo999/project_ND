@@ -73,6 +73,8 @@ private:
 	void GetExcitement() const;
 	void GetRelax() const;
 
+	bool bChasePlayer;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
 	UAIPerceptionComponent* AIPerceptionComponent;
@@ -85,5 +87,8 @@ protected:
 
 	UFUNCTION()
 	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
+
+public:
+	void ToggleBeChasePlayer();
 
 };
