@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "NDWeapon.generated.h"
 
+class UAnimMontage;
+
 UCLASS()
 class PROJECT_ND_API ANDWeapon : public AActor
 {
@@ -23,7 +25,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	bool Attach(USceneComponent* InParent);
+	bool AttachToHolster(USceneComponent* InParent);
+	bool AttachToHand   (USceneComponent* InParent);
+
+
+	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
+	UAnimMontage* GetSheathMontage() { return SheathMontage; }
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -31,4 +38,10 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName EquipSocketName;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UAnimMontage* DrawMontage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UAnimMontage* SheathMontage;
 };

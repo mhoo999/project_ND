@@ -44,7 +44,7 @@ void APlayerCharacter::BeginPlay()
 	{
 		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value);
 
-		weapon->Attach(GetMesh());
+		weapon->AttachToHolster(GetMesh());
 
 		Weapons.Add(pair.Key, weapon);
 	}
@@ -165,22 +165,36 @@ void APlayerCharacter::SprintEnd()
 
 void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 {
-	FString string = Value.ToString();
-
 	ChangeWeapon(EWeaponType::FLASHLIGHT);
 }
 
 void APlayerCharacter::ChangeWeapon(EWeaponType InWeaponType)
 {
-	if (InWeaponType == CurWeaponType)
-		return;
+	if (GetCurrentWeapon() != nullptr)
+	{
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetDrawMontage()))
+			return;
 
-	//Change Weapon
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetSheathMontage()))
+			return;
+	}
 
-	LastWeaponType = CurWeaponType;
-	 CurWeaponType =  InWeaponType;
+	switch (CurWeaponType)
+	{
+	case EWeaponType::UNARMED:
+		 CurWeaponType = InWeaponType;
+		NextWeaponType = InWeaponType;
 
-	OnEquipEnd();
+		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		break;
+	default:
+		PlayAnimMontage(GetCurrentWeapon()->GetSheathMontage());
+
+		if (CurWeaponType != InWeaponType)
+			NextWeaponType = InWeaponType;
+
+		break;
+	}
 }
 
 void APlayerCharacter::StrafeOn()
@@ -197,12 +211,33 @@ void APlayerCharacter::StrafeOff()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
-void APlayerCharacter::OnEquipEnd()
+void APlayerCharacter::OnDrawEnd()
 {
+	Weapons[NextWeaponType]->AttachToHand(GetMesh());
+
+	NextWeaponType = EWeaponType::UNARMED;
+
 	if (CurWeaponType == EWeaponType::UNARMED)
 		StrafeOff();
 	else
 		StrafeOn();
+}
+
+void APlayerCharacter::OnSheathEnd()
+{
+	GetCurrentWeapon()->AttachToHolster(GetMesh());
+
+	if (NextWeaponType == EWeaponType::UNARMED)
+	{
+		CurWeaponType = EWeaponType::UNARMED;
+		StrafeOff();
+	}
+	else
+	{
+		CurWeaponType = NextWeaponType;
+
+		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+	}
 }
 
 

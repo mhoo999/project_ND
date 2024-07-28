@@ -35,6 +35,19 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	bool GetIsCrouched() { return bIsCrouched; }
+
+	UFUNCTION(BlueprintCallable)
+	EWeaponType GetCurWeaponType() { return CurWeaponType; }
+
+	ANDWeapon* GetCurrentWeapon()
+	{
+		if (Weapons.Contains(CurWeaponType))
+			return Weapons[CurWeaponType];
+
+		return nullptr;
+	}
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -53,16 +66,13 @@ protected:
 	void StrafeOn();
 	void StrafeOff();
 
-	void OnEquipEnd();
+	UFUNCTION(BlueprintCallable)
+	void OnDrawEnd();
+
+	UFUNCTION(BlueprintCallable)
+	void OnSheathEnd();
 
 	//void Crouched(const FInputActionValue& Value);
-
-
-public:
-	UFUNCTION(BlueprintCallable)
-	EWeaponType GetCurWeaponType() { return CurWeaponType; }
-
-	bool GetIsCrouched() { return bIsCrouched; }
 
 protected:
 	bool bIsWalking   = false;
@@ -77,7 +87,7 @@ protected:
 	TMap<EWeaponType, TSubclassOf<ANDWeapon>> WeaponClasses;
 
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
-	EWeaponType LastWeaponType = EWeaponType::UNARMED;
+	EWeaponType NextWeaponType = EWeaponType::UNARMED;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UNDInputComponent* MyInputComponent;
