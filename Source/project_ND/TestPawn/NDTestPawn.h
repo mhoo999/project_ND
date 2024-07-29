@@ -42,4 +42,16 @@ public:
 
 	bool bCanSpawn = true;
 	FTimerHandle SpawnTimerHandle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings")
+	UStaticMeshComponent* Club;
+
+	void SetClubLeft(float Value);
+	void SetClubRight(float Value);
+	bool bClubLeft;
+	void Attack(float Value);
+	bool bAttacking;
+	
+	UFUNCTION()
+	void OnCollisionComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

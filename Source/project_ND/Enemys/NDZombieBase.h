@@ -35,8 +35,7 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void SetHitLocationByBoneName(const FName& BoneName);
 	
 protected:
 	float HP;
@@ -59,8 +58,6 @@ protected:
 	EHitLocation HitLocation;
 
 	bool bSuperArmor;
-
-	void SetHitLocationByBoneName(const FName& BoneName);
 	
 public:
 	virtual void TakeDamage(float DamageAmount) override;

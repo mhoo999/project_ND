@@ -13,11 +13,6 @@ ANDZombieBase::ANDZombieBase()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	AIControllerClass = ANDAIController::StaticClass();
-
-	if (UCapsuleComponent* ZombieCapsuleComponent = GetCapsuleComponent())
-	{
-		ZombieCapsuleComponent->OnComponentHit.AddDynamic(this, &ANDZombieBase::OnHit);
-	}
 }
 
 void ANDZombieBase::BeginPlay()
@@ -87,16 +82,6 @@ void ANDZombieBase::TakeDamage(const float DamageAmount)
 void ANDZombieBase::Recovery(FString ItemType, const float RecoveryAmount)
 {
 	HP += RecoveryAmount;
-}
-
-void ANDZombieBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	FVector NormalImpulse, const FHitResult& Hit)
-{
-	if (OtherComp && OtherComp->IsSimulatingPhysics())
-	{
-		FName BoneName = Hit.BoneName;
-		SetHitLocationByBoneName(BoneName);
-	}
 }
 
 void ANDZombieBase::InitializeZombie()
