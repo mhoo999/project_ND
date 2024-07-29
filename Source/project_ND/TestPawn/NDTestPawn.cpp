@@ -4,6 +4,7 @@
 #include "NDTestPawn.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
@@ -23,20 +24,25 @@ ANDTestPawn::ANDTestPawn()
 	CameraComponent->SetupAttachment(RootComponent);
 	CameraComponent->bUsePawnControlRotation = true;
 
-	Club = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Club Component"));
-	Club->SetupAttachment(RootComponent);
-	Club->SetRelativeLocation(FVector(150.0f, 50.0f, 0.0f));
-	Club->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
-	Club->SetRelativeScale3D(FVector(0.25f, 0.25f, 1.5f));
-	Club->SetCollisionProfileName(TEXT("Projectile"));
-	Club->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ClubCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Club Capsule Component"));
+	ClubCapsuleComponent->SetupAttachment(RootComponent);
+	ClubCapsuleComponent->SetRelativeLocation(FVector(150.0f, 150.0f, 0.0f));
+	ClubCapsuleComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	ClubCapsuleComponent->SetRelativeScale3D(FVector(1.0f, 1.0f, 2.0f));
+	ClubCapsuleComponent->SetCollisionProfileName(TEXT("Projectile"));
+	ClubCapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	ClubMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Club Mesh Component"));
+	ClubMeshComponent->SetupAttachment(ClubCapsuleComponent);
+	ClubMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -40.0f));
+	ClubMeshComponent->SetRelativeScale3D(FVector(0.2f, 0.2f, 0.8f));
 }
 
 void ANDTestPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Club->OnComponentBeginOverlap.AddDynamic(this, &ANDTestPawn::OnCollisionComponentBeginOverlap);
+	ClubCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ANDTestPawn::OnCollisionComponentBeginOverlap);
 }
 
 void ANDTestPawn::Tick(float DeltaTime)
@@ -117,8 +123,8 @@ void ANDTestPawn::SetClubLeft(float Value)
 	if (Value != 0.0)
 	{
 		bClubLeft = true;
-		Club->SetRelativeLocation(FVector(150.0f, -50.0f, 0.0f));
-		Club->SetRelativeRotation(FRotator(0.0f, 0.0f, -90.0f));
+		ClubCapsuleComponent->SetRelativeLocation(FVector(150.0f, -150.0f, 0.0f));
+		ClubCapsuleComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, -90.0f));
 	}
 }
 
@@ -127,8 +133,8 @@ void ANDTestPawn::SetClubRight(float Value)
 	if (Value != 0.0)
 	{
 		bClubLeft = false;
-		Club->SetRelativeLocation(FVector(150.0f, 50.0f, 0.0f));
-		Club->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+		ClubCapsuleComponent->SetRelativeLocation(FVector(150.0f, 150.0f, 0.0f));
+		ClubCapsuleComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 	}
 }
 
@@ -138,7 +144,16 @@ void ANDTestPawn::Attack(float Value)
 	{
 		if (!bAttacking)
 		{
-			Club->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
+			if (bClubLeft)
+			{
+				ClubCapsuleComponent->SetRelativeLocation(FVector(200.0f, -50.0f, 0.0f));
+				ClubCapsuleComponent->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
+			}
+			else
+			{
+				ClubCapsuleComponent->SetRelativeLocation(FVector(200.0f, 50.0f, 0.0f));
+				ClubCapsuleComponent->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
+			}
 		
 			FTimerHandle AttackHandle;
 			GetWorld()->GetTimerManager().ClearTimer(AttackHandle);
@@ -146,11 +161,13 @@ void ANDTestPawn::Attack(float Value)
 			{
 				if (bClubLeft)
 				{
-					Club->SetRelativeRotation(FRotator(0.0f, 0.0f, -90.0f));
+					ClubCapsuleComponent->SetRelativeLocation(FVector(150.0f, -150.0f, 0.0f));
+					ClubCapsuleComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, -90.0f));
 				}
 				else
 				{
-					Club->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+					ClubCapsuleComponent->SetRelativeLocation(FVector(150.0f, 150.0f, 0.0f));
+					ClubCapsuleComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 				}
 				
 				bAttacking = false;
@@ -162,6 +179,8 @@ void ANDTestPawn::Attack(float Value)
 void ANDTestPawn::OnCollisionComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("On Overlap"));
+	
 	if (OtherActor == GetOwner())
 	{
 		return;

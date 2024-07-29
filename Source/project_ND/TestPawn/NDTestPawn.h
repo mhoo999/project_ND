@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "NDTestPawn.generated.h"
 
+class UCapsuleComponent;
 class UArrowComponent;
 class ANDPickUpObject_ItemBase_Throwable;
 class UCameraComponent;
@@ -44,7 +45,10 @@ public:
 	FTimerHandle SpawnTimerHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings")
-	UStaticMeshComponent* Club;
+	UCapsuleComponent* ClubCapsuleComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings")
+	UStaticMeshComponent* ClubMeshComponent;
 
 	void SetClubLeft(float Value);
 	void SetClubRight(float Value);
