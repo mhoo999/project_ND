@@ -32,6 +32,8 @@ public:
 	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
 	UAnimMontage* GetSheathMontage() { return SheathMontage; }
 
+	void Attack();
+
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName HolsterSocketName;
@@ -44,4 +46,12 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UAnimMontage* SheathMontage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UAnimMontage* AttackMontage;
+
+	class APlayerCharacter* Character;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UShapeComponent* BodyCollider;
 };

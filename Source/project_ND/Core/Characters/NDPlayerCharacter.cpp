@@ -40,9 +40,13 @@ void APlayerCharacter::BeginPlay()
 
 	// Spawn Weapon 
 
+	FActorSpawnParameters Param;
+
+	Param.Owner = this;
+
 	for (auto& pair : WeaponClasses)
 	{
-		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value);
+		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value, Param);
 
 		weapon->AttachToHolster(GetMesh());
 
@@ -67,7 +71,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (IsValid(EnhancedInputComponent))
 	{
-		EnhancedInputComponent->BindAction(MyInputComponent->JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(MyInputComponent->JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::OnJump);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(MyInputComponent->LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
@@ -81,6 +85,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
 
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
 		//UE_LOG(,)
 	}
@@ -128,6 +133,14 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 	}
+}
+
+void APlayerCharacter::OnJump()
+{
+	if (CurWeaponType != EWeaponType::UNARMED || bIsCrouched)
+		return;
+
+	ACharacter::Jump();
 }
 
 void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
@@ -206,7 +219,7 @@ void APlayerCharacter::StrafeOn()
 
 void APlayerCharacter::StrafeOff()
 {
-	bUseControllerRotationYaw = false;
+	//bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
@@ -238,6 +251,31 @@ void APlayerCharacter::OnSheathEnd()
 
 		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
 	}
+}
+
+void APlayerCharacter::OnAttack()
+{
+	if (bIsAttacking)
+		return;
+
+	switch (CurWeaponType)
+	{
+	case EWeaponType::UNARMED:
+		break;
+	default:
+		GetCurrentWeapon()->Attack();
+		break;
+	}
+}
+
+void APlayerCharacter::OnAttackBegin()
+{
+	bIsAttacking = true;
+}
+
+void APlayerCharacter::OnAttackEnd()
+{
+	bIsAttacking = false;
 }
 
 

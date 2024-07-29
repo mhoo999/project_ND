@@ -52,6 +52,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Walk(const FInputActionValue& Value);
+	void OnJump();
 
 	void CrouchStart(const FInputActionValue& Value);
 	void CrouchEnd  (const FInputActionValue& Value);
@@ -72,6 +73,13 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnSheathEnd();
 
+	void OnAttack();
+
+	UFUNCTION(BlueprintCallable)
+	void OnAttackBegin();
+	
+	UFUNCTION(BlueprintCallable)
+	void OnAttackEnd();
 	//void Crouched(const FInputActionValue& Value);
 
 protected:
@@ -89,6 +97,8 @@ protected:
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
 	EWeaponType NextWeaponType = EWeaponType::UNARMED;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
+
+	bool bIsAttacking = false; 
 };

@@ -2,6 +2,7 @@
 
 
 #include "NDWeapon.h"
+#include "/Project/project_ND/Source/project_ND/Core/Characters/NDPlayerCharacter.h"
 
 // Sets default values
 ANDWeapon::ANDWeapon()
@@ -17,6 +18,7 @@ void ANDWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Character = Cast <APlayerCharacter>(GetOwner());
 }
 
 // Called every frame
@@ -44,5 +46,10 @@ bool ANDWeapon::AttachToHand(USceneComponent* InParent)
 		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
 		EquipSocketName
 	);
+}
+
+void ANDWeapon::Attack()
+{
+	Character->PlayAnimMontage(AttackMontage);
 }
 
