@@ -37,3 +37,16 @@ void ANDPickUpObject::SetItemMesh(UStaticMesh* Mesh) const
 	ItemMesh->SetStaticMesh(Mesh);
 }
 
+void ANDPickUpObject::InitializeItem(const FItemBaseData& ItemData)
+{
+	SetItemName(ItemData.ItemName);
+	ItemType = ItemData.Type;
+	RecoveryAmount = ItemData.RecoveryAmount;
+	bIsEmpty = ItemData.bNotUse;
+	
+	if (ItemData.ItemMesh)
+	{
+		SetItemMesh(ItemData.ItemMesh);
+	}
+}
+
