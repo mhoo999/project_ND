@@ -3,9 +3,9 @@
 
 #include "NDItemSpawner.h"
 
-#include "NDPickUpObject_ItemBase_Food.h"
-#include "NDPickUpObject_ItemBase_HealthPotion.h"
-#include "NDPickUpObject_ItemBase_Throwable.h"
+#include "Items/NDPickUpObject_ItemBase_Food.h"
+#include "Items/NDPickUpObject_ItemBase_HealthPotion.h"
+#include "Items/NDPickUpObject_ItemBase_Throwable.h"
 #include "project_ND/PickUpObject/Items/NDPickUpObject_ItemBase.h"
 
 
@@ -47,30 +47,30 @@ void ANDItemSpawner::SpawnItem()
 
 			if (SelectedItem)
 			{
-				if (SelectedItem->bIsEmpty)
+				if (SelectedItem->bNotUse)
 				{
 					return;
 				}
 
 				TSubclassOf<ANDPickUpObject_ItemBase> SelectedClass;
 
-				if (SelectedItem->ItemType == "HealthPotion")
-				{
-					SelectedClass = ItemClass_HealthPotion;
-				}
-				else if (SelectedItem->ItemType == "Food")
-				{
-					SelectedClass = ItemClass_Food;
-				}
-				else if (SelectedItem->ItemType == "Throwable")
-				{
-					SelectedClass = ItemClass_Throwable;
-				}
-				else
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Unknown item type : %s"), *SelectedItem->ItemType);
-					return;
-				}
+				// if (SelectedItem->ItemType == "HealthPotion")
+				// {
+				// 	SelectedClass = ItemClass_HealthPotion;
+				// }
+				// else if (SelectedItem->ItemType == "Food")
+				// {
+				// 	SelectedClass = ItemClass_Food;
+				// }
+				// else if (SelectedItem->ItemType == "Throwable")
+				// {
+				// 	SelectedClass = ItemClass_Throwable;
+				// }
+				// else
+				// {
+				// 	UE_LOG(LogTemp, Warning, TEXT("Unknown item type : %s"), *SelectedItem->ItemType);
+				// 	return;
+				// }
 
 				// UE_LOG(LogTemp, Warning, TEXT("Selected type : %s"), *SelectedItem->ItemType);
 
