@@ -1,6 +1,7 @@
 # Project_ND
 Content/Project_ND/Resource/*
-
+Content/Project_ND/Megascans/*
+Content/Project_ND/MSPresets/*
 
 # Visual Studio 2015 user specific files
 .vs/
