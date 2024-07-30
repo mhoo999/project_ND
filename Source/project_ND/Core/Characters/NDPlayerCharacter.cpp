@@ -84,6 +84,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
+		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
@@ -179,6 +180,11 @@ void APlayerCharacter::SprintEnd()
 void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::FLASHLIGHT);
+}
+
+void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
+{
+	ChangeWeapon(EWeaponType::BLUNTWEAPON);
 }
 
 void APlayerCharacter::ChangeWeapon(EWeaponType InWeaponType)

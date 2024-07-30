@@ -12,7 +12,7 @@ class ANDWeapon;
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	UNARMED, FLASHLIGHT
+	UNARMED, FLASHLIGHT, BLUNTWEAPON
 };
 
 UCLASS()
@@ -61,6 +61,8 @@ protected:
 	void SprintEnd  ();
 
 	void OnFlashLightKey(const FInputActionValue& Value);
+	void OnBluntWeaponKey(const FInputActionValue& Value);
+
 
 	void ChangeWeapon(EWeaponType InWeaponType);
 
