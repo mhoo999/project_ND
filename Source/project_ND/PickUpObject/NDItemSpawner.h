@@ -8,7 +8,6 @@
 
 class ANDPickUpObject_ItemBase_Throwable;
 class ANDPickUpObject_ItemBase_Food;
-class ANDPickUpObject_ItemBase;
 class ANDPickUpObject_ItemBase_HealthPotion;
 
 UCLASS()
