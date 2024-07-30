@@ -6,8 +6,8 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
-#include "/Project/project_ND/Source/project_ND/Component/NDInputComponent.h"
+#include "project_ND/Component/NDInputComponent.h"
+#include "project_ND/Core/Weapon/NDWeapon.h"
 
 //class ANDWeapon;
 // Sets default values
