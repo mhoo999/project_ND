@@ -2,7 +2,7 @@
 
 
 #include "NDWeapon.h"
-#include "/Project/project_ND/Source/project_ND/Core/Characters/NDPlayerCharacter.h"
+#include "project_ND/Core/Characters/NDPlayerCharacter.h"
 
 // Sets default values
 ANDWeapon::ANDWeapon()
