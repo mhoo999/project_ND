@@ -47,7 +47,6 @@ void ANDAIController::Tick(float DeltaSeconds)
 	{
 		if (Zombie->GetHP() == 0.0f)
 		{
-			AIPerceptionComponent->Deactivate();
 			SetAIState("Dead");
 		}
 	}
@@ -62,30 +61,30 @@ void ANDAIController::OnPossess(APawn* InPawn)
 
 void ANDAIController::SetAIState(FString NewState)
 {
-	BrainComponent->StopLogic(TEXT("Stop Tree"));
-	EAIState EnumState = StringToEAIState(NewState);
-	
-	if (NewState == "Patrol" || NewState == "Chase")
+	if (CurrentState == EAIState::Dead)
 	{
-		CurrentState = EnumState;
-		RunCurrentBehaviorTree();
 		return;
 	}
 	
-	if (CurrentState != EnumState)
+	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	EAIState EnumState = StringToEAIState(NewState);
+	
+	if (bChasePlayer && NewState == "Patrol")
 	{
-		if (bIsExcitement)
+		return;
+	}
+	
+	CurrentState = EnumState;
+	RunCurrentBehaviorTree();
+	
+	if (CurrentState == EAIState::Idle)
+	{
+		bIsExcitement = false;
+		GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
+		GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
 		{
-			bIsExcitement = false;
-			GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
-			GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
-			{
-				GetRelax();
-			}), 5.0f, false);
-		}
-		
-		CurrentState = EnumState;
-		RunCurrentBehaviorTree();
+			GetRelax();
+		}), 5.0f, false);
 	}
 }
 
@@ -127,7 +126,8 @@ void ANDAIController::PrintState()
 {
 	// Zombie Info
 	FString StateString = UEnum::GetValueAsString(CurrentState);
-	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1);
+	FString isExcitement = bIsExcitement ? "Excitement" : "Relax";
+	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1) + "(" + isExcitement + ")";
 	float ZombieHP = Zombie->GetHP();
 	
 	// BlackBoard Values
@@ -213,6 +213,12 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
 	for (AActor* Actor : UpdatedActors)
 	{
+		if (!bIsExcitement)
+		{
+			bIsExcitement = true;
+			GetExcitement();
+		}
+		
 		FActorPerceptionBlueprintInfo Info;
 		AIPerceptionComponent->GetActorsPerception(Actor, Info);
 		
@@ -226,6 +232,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+					bChasePlayer = true;
 					return;
 				}
 			}
@@ -241,12 +248,30 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 					return;
 				}
 			}
-			
-			if (!bIsExcitement)
-			{
-				bIsExcitement = true;
-				GetExcitement();
-			}
 		}
+	}
+}
+
+void ANDAIController::ToggleBeChasePlayer()
+{
+	bChasePlayer = !bChasePlayer;
+}
+
+void ANDAIController::ZombieDie()
+{
+	if (AIPerceptionComponent)
+	{
+		GetAIPerceptionComponent()->Deactivate();
+	}
+
+	if (BrainComponent)
+	{
+		BrainComponent->StopLogic(TEXT("Stop Tree"));
+	}
+
+	if (Zombie)
+	{
+		Zombie->GetMesh()->SetSimulatePhysics(true);
+		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	}
 }

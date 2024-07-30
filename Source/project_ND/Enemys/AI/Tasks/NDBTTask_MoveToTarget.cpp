@@ -14,16 +14,21 @@ UNDBTTask_MoveToTarget::UNDBTTask_MoveToTarget()
 EBTNodeResult::Type UNDBTTask_MoveToTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIController* AIController = OwnerComp.GetAIOwner();
-	UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
-
-	if (BlackboardComponent)
+	if (!AIController)
 	{
-		AActor* Target = Cast<AActor>(BlackboardComponent->GetValueAsObject("Target"));
-		
-		if (Target)
-		{
-			AIController->MoveToActor(Target);
-		}
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
+
+	const UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
+	if (!BlackboardComponent)
+	{
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
+
+	const FName TargetKey = "Target";
+	if (AActor* Target = Cast<AActor>(BlackboardComponent->GetValueAsObject(TargetKey)))
+	{
+		AIController->MoveToActor(Target);
 	}
 	
 	return Super::ExecuteTask(OwnerComp, NodeMemory);

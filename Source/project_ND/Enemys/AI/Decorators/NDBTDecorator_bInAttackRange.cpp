@@ -16,17 +16,26 @@ bool UNDBTDecorator_bInAttackRange::CalculateRawConditionValue(UBehaviorTreeComp
 	uint8* NodeMemory) const
 {
 	AAIController* AIController = OwnerComp.GetAIOwner();
-	ANDZombieBase* Zombie = Cast<ANDZombieBase>(AIController->GetPawn());
-	UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
-
-	float AttackRange = Zombie->GetAttackRange();
-	float TargetDistance = BlackboardComponent->GetValueAsFloat("TargetDistance");
-	
-	if (AttackRange >= TargetDistance)
+	if (!AIController)
 	{
-		return true;
+		return false;
+	}
+	
+	const ANDZombieBase* Zombie = Cast<ANDZombieBase>(AIController->GetPawn());
+	if (!Zombie)
+	{
+		return false;
+	}
+	
+	UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
+	if (!BlackboardComponent)
+	{
+		return false;
 	}
 
-	return false;
-	// return Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
+	const FName TargetDistanceKey = "TargetDistance";
+	const float AttackRange = Zombie->GetAttackRange();
+	const float TargetDistance = BlackboardComponent->GetValueAsFloat(TargetDistanceKey);
+	
+	return AttackRange >= TargetDistance;
 }

@@ -12,10 +12,13 @@ UNDBTTask_StopAI::UNDBTTask_StopAI()
 
 EBTNodeResult::Type UNDBTTask_StopAI::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	APawn* Pawn = AIController->GetPawn();
+	APawn* Pawn = OwnerComp.GetAIOwner()->GetPawn();
+	if (!Pawn)
+	{
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
 
-	FVector CurrentLoc = Pawn->GetActorLocation();
+	const FVector CurrentLoc = Pawn->GetActorLocation();
 	Pawn->SetActorLocation(CurrentLoc);
 	
 	return Super::ExecuteTask(OwnerComp, NodeMemory);
