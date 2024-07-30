@@ -6,13 +6,19 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
+#include "/Project/project_ND/Source/project_ND/Component/NDInputComponent.h"
 
+//class ANDWeapon;
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
+
+	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 }
 
 // Called when the game starts or when spawned
@@ -28,8 +34,23 @@ void APlayerCharacter::BeginPlay()
 
 		if (IsValid(SubSystem))
 		{
-			SubSystem->AddMappingContext(MappingContext, 0);
+			SubSystem->AddMappingContext(MyInputComponent->MappingContext, 0);
 		}
+	}
+
+	// Spawn Weapon 
+
+	FActorSpawnParameters Param;
+
+	Param.Owner = this;
+
+	for (auto& pair : WeaponClasses)
+	{
+		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value, Param);
+
+		weapon->AttachToHolster(GetMesh());
+
+		Weapons.Add(pair.Key, weapon);
 	}
 }
 
@@ -50,19 +71,21 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (IsValid(EnhancedInputComponent))
 	{
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(MyInputComponent->JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::OnJump);
 
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
-		EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Started  , this, &APlayerCharacter::Walk);
+		EnhancedInputComponent->BindAction(MyInputComponent->MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(MyInputComponent->LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(MyInputComponent->WalkAction, ETriggerEvent::Started  , this, &APlayerCharacter::Walk);
 
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchEnd);
+		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
+		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchEnd);
 
+		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
+		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
 
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
 		//UE_LOG(,)
 	}
@@ -112,6 +135,14 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 	}
 }
 
+void APlayerCharacter::OnJump()
+{
+	if (CurWeaponType != EWeaponType::UNARMED || bIsCrouched)
+		return;
+
+	ACharacter::Jump();
+}
+
 void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 {
 	bIsCrouched = !bIsCrouched;
@@ -143,6 +174,108 @@ void APlayerCharacter::SprintStart()
 void APlayerCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+}
+
+void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
+{
+	ChangeWeapon(EWeaponType::FLASHLIGHT);
+}
+
+void APlayerCharacter::ChangeWeapon(EWeaponType InWeaponType)
+{
+	if (GetCurrentWeapon() != nullptr)
+	{
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetDrawMontage()))
+			return;
+
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetSheathMontage()))
+			return;
+	}
+
+	switch (CurWeaponType)
+	{
+	case EWeaponType::UNARMED:
+		 CurWeaponType = InWeaponType;
+		NextWeaponType = InWeaponType;
+
+		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		break;
+	default:
+		PlayAnimMontage(GetCurrentWeapon()->GetSheathMontage());
+
+		if (CurWeaponType != InWeaponType)
+			NextWeaponType = InWeaponType;
+
+		break;
+	}
+}
+
+void APlayerCharacter::StrafeOn()
+{
+	bUseControllerRotationYaw = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+}
+
+void APlayerCharacter::StrafeOff()
+{
+	//bUseControllerRotationYaw = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+}
+
+void APlayerCharacter::OnDrawEnd()
+{
+	Weapons[NextWeaponType]->AttachToHand(GetMesh());
+
+	NextWeaponType = EWeaponType::UNARMED;
+
+	if (CurWeaponType == EWeaponType::UNARMED)
+		StrafeOff();
+	else
+		StrafeOn();
+}
+
+void APlayerCharacter::OnSheathEnd()
+{
+	GetCurrentWeapon()->AttachToHolster(GetMesh());
+
+	if (NextWeaponType == EWeaponType::UNARMED)
+	{
+		CurWeaponType = EWeaponType::UNARMED;
+		StrafeOff();
+	}
+	else
+	{
+		CurWeaponType = NextWeaponType;
+
+		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+	}
+}
+
+void APlayerCharacter::OnAttack()
+{
+	if (bIsAttacking)
+		return;
+
+	switch (CurWeaponType)
+	{
+	case EWeaponType::UNARMED:
+		break;
+	default:
+		GetCurrentWeapon()->Attack();
+		break;
+	}
+}
+
+void APlayerCharacter::OnAttackBegin()
+{
+	bIsAttacking = true;
+}
+
+void APlayerCharacter::OnAttackEnd()
+{
+	bIsAttacking = false;
 }
 
 
