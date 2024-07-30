@@ -35,10 +35,24 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	bool GetIsCrouched() { return bIsCrouched; }
+
+	UFUNCTION(BlueprintCallable)
+	EWeaponType GetCurWeaponType() { return CurWeaponType; }
+
+	ANDWeapon* GetCurrentWeapon()
+	{
+		if (Weapons.Contains(CurWeaponType))
+			return Weapons[CurWeaponType];
+
+		return nullptr;
+	}
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Walk(const FInputActionValue& Value);
+	void OnJump();
 
 	void CrouchStart(const FInputActionValue& Value);
 	void CrouchEnd  (const FInputActionValue& Value);
@@ -46,45 +60,45 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
+	void OnFlashLightKey(const FInputActionValue& Value);
+
+	void ChangeWeapon(EWeaponType InWeaponType);
+
+	void StrafeOn();
+	void StrafeOff();
+
+	UFUNCTION(BlueprintCallable)
+	void OnDrawEnd();
+
+	UFUNCTION(BlueprintCallable)
+	void OnSheathEnd();
+
+	void OnAttack();
+
+	UFUNCTION(BlueprintCallable)
+	void OnAttackBegin();
+	
+	UFUNCTION(BlueprintCallable)
+	void OnAttackEnd();
 	//void Crouched(const FInputActionValue& Value);
 
-public:
-
-	bool GetIsCrouched() { return bIsCrouched; }
-
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputMappingContext* MappingContext;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* MoveAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* JumpAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* LookAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* WalkAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* SprintAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* CrouchAction;
-
 	bool bIsWalking   = false;
 	bool bIsSprinting = false;
 	bool bIsCrouched  = false;
 
 	//Weapon
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<EWeaponType, ANDWeapon*> Weapons;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<EWeaponType, TSubclassOf<ANDWeapon>> WeaponClasses;
 
+	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
+	EWeaponType NextWeaponType = EWeaponType::UNARMED;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	class UNDInputComponent* MyInputComponent;
+
+	bool bIsAttacking = false; 
 };

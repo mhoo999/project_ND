@@ -20,8 +20,6 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void InitializeItem(const struct FItemBaseData& ItemData);
-
 	virtual void Use() override;
 
 };

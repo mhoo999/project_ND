@@ -19,11 +19,6 @@ void ANDPickUpObject_ItemBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ANDPickUpObject_ItemBase::InitializeItem(const FItemBaseData& ItemData)
-{
-	// 하위 클래스에서 생성
-}
-
 void ANDPickUpObject_ItemBase::Use()
 {
 	// 하위 클래스에서 생성

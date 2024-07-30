@@ -13,9 +13,17 @@ UNDBTTask_SetLocation::UNDBTTask_SetLocation()
 
 EBTNodeResult::Type UNDBTTask_SetLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
+	UBlackboardComponent* BlackboardComponent = OwnerComp.GetAIOwner()->GetBlackboardComponent();
+	if (!BlackboardComponent)
+	{
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
+	
 	const AActor* Target = Cast<AActor>(BlackboardComponent->GetValueAsObject("Target"));
+	if (!Target)
+	{
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
 
 	BlackboardComponent->SetValueAsVector("Destination", Target->GetActorLocation());
 	

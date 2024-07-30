@@ -35,4 +35,13 @@ void UNDAnimPlayer::NativeUpdateAnimation(float DeltaSeconds)
 	FRotator BaseRotator = Player->GetActorRotation();
 	Direction = CalculateDirection(Velocity, BaseRotator);
 
+	CurWeapon = Player->GetCurWeaponType();
+
+	//Direction
+
+	//const FRotator Rotation = Player->Controller->GetControlRotation();
+
+	//const FRotator YawRotation(0, Rotation.Yaw, 0);
+	// 
+	//Direction = CalculateDirection(Player->GetVelocity().GetSafeNormal2D(), YawRotation);
 }

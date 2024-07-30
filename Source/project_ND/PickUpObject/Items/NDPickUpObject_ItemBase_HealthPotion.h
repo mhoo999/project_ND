@@ -20,7 +20,5 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void InitializeItem(const FItemBaseData& ItemData) override;
-
 	virtual void Use() override;
 };

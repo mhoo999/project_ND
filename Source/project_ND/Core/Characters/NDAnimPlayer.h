@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "NDPlayerCharacter.h"
 #include "NDAnimPlayer.generated.h"
 
 /**
@@ -38,4 +39,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class APlayerCharacter* Player = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EWeaponType CurWeapon;
 };
