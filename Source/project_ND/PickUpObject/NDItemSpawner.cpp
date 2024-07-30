@@ -13,12 +13,6 @@ ANDItemSpawner::ANDItemSpawner()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	ConstructorHelpers::FObjectFinder<UDataTable> DTObject(TEXT("/Script/Engine.DataTable'/Game/Project_ND/PickUpObject/Items/DT_Items.DT_Items'"));
-	if (DTObject.Succeeded())
-	{
-		ItemDataTable = DTObject.Object;
-	}
-	
 }
 
 void ANDItemSpawner::BeginPlay()
@@ -54,23 +48,23 @@ void ANDItemSpawner::SpawnItem()
 
 				TSubclassOf<ANDPickUpObject_ItemBase> SelectedClass;
 
-				// if (SelectedItem->ItemType == "HealthPotion")
-				// {
-				// 	SelectedClass = ItemClass_HealthPotion;
-				// }
-				// else if (SelectedItem->ItemType == "Food")
-				// {
-				// 	SelectedClass = ItemClass_Food;
-				// }
-				// else if (SelectedItem->ItemType == "Throwable")
-				// {
-				// 	SelectedClass = ItemClass_Throwable;
-				// }
-				// else
-				// {
-				// 	UE_LOG(LogTemp, Warning, TEXT("Unknown item type : %s"), *SelectedItem->ItemType);
-				// 	return;
-				// }
+				if (SelectedItem->Type == EItemType::HealthPotion)
+				{
+					SelectedClass = ItemClass_HealthPotion;
+				}
+				else if (SelectedItem->Type == EItemType::Food)
+				{
+					SelectedClass = ItemClass_Food;
+				}
+				else if (SelectedItem->Type == EItemType::Throwable)
+				{
+					SelectedClass = ItemClass_Throwable;
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Unknown item type : %hhd"), SelectedItem->Type);
+					return;
+				}
 
 				// UE_LOG(LogTemp, Warning, TEXT("Selected type : %s"), *SelectedItem->ItemType);
 
