@@ -22,3 +22,13 @@ void UNDZombieAnim::NativeUpdateAnimation(float DeltaSeconds)
 		Speed = Velocity.Length();
 	}
 }
+
+void UNDZombieAnim::AnimNotify_StartATK()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Start zombie attack"));
+}
+
+void UNDZombieAnim::AnimNotify_EndATK()
+{
+	UE_LOG(LogTemp, Warning, TEXT("End zombie attack"));
+}

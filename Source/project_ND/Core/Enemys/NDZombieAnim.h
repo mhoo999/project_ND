@@ -20,9 +20,18 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Animation")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animation")
 	float Speed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Animation")
+	UPROPERTY()
 	ANDZombieBase* ZombieBase;
+
+	UPROPERTY(EditDefaultsOnly, Category="Anims")
+	UAnimMontage* AttackAnim;
+
+	UFUNCTION()
+	void AnimNotify_StartATK();
+
+	UFUNCTION()
+	void AnimNotify_EndATK();
 };
