@@ -23,12 +23,27 @@ void UNDZombieAnim::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
-void UNDZombieAnim::AnimNotify_StartATK()
+void UNDZombieAnim::PlayZombieAttack()
+{
+	if (Montage_IsPlaying(AttackAnim))
+	{
+		return;
+	}
+	
+	Montage_Play(AttackAnim);
+}
+
+float UNDZombieAnim::GetZombieAttackPlayTime() const
+{
+	return Montage_GetPlayRate(AttackAnim);
+}
+
+void UNDZombieAnim::AnimNotify_StartAtk()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Start zombie attack"));
 }
 
-void UNDZombieAnim::AnimNotify_EndATK()
+void UNDZombieAnim::AnimNotify_EndAtk()
 {
 	UE_LOG(LogTemp, Warning, TEXT("End zombie attack"));
 }
