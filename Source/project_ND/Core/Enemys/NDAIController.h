@@ -87,10 +87,10 @@ protected:
 
 	UFUNCTION()
 	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
-
+	
 public:
 	void ToggleBeChasePlayer();
 
 	void ZombieDie();
-
+	
 };

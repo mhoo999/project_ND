@@ -7,11 +7,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
-#include "/Project/project_ND/Source/project_ND/Component/NDInputComponent.h"
 #include "Components/ShapeComponent.h"
-#include "/Project/project_ND/Source/project_ND/Component/NDStatComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "project_ND/Component/NDInputComponent.h"
+#include "project_ND/Component/NDStatComponent.h"
 
 //class ANDWeapon;
 // Sets default values

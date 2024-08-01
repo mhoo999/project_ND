@@ -12,7 +12,15 @@ ANDZombieBase::ANDZombieBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
-	AIControllerClass = ANDAIController::StaticClass();
+	static ConstructorHelpers::FClassFinder<ANDAIController> AIController(TEXT("/Script/Engine.Blueprint'/Game/Project_ND/Core/Enemys/AIC_NDAIController.AIC_NDAIController'"));
+	if (AIController.Succeeded())
+	{
+		AIControllerClass = AIController.Class;
+	}
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	PerceptionSocket = "pelvis";
 }
 
 void ANDZombieBase::BeginPlay()
@@ -100,5 +108,16 @@ float ANDZombieBase::GetAttackRange() const
 float ANDZombieBase::GetMovementSpeed() const
 {
 	return MovementSpeed;
+}
+
+void ANDZombieBase::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const
+{
+	Super::GetActorEyesViewPoint(OutLocation, OutRotation);
+
+	// OutLocation = GetMesh()->GetSocketLocation(PerceptionSocket);
+
+	const FRotator SocketRotation = FRotator(0, GetMesh()->GetSocketRotation(PerceptionSocket).Yaw, 0);
+	const FRotator AdjustedRotation = SocketRotation + FRotator(0, 90, 0);
+	OutRotation = AdjustedRotation;
 }
 

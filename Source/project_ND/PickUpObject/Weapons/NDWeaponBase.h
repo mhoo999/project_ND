@@ -38,6 +38,35 @@ private:
 	int32 AmmoCount;
 
 public:
+	bool AttachToHolster(USceneComponent* InParent);
+	bool AttachToHand   (USceneComponent* InParent);
+
+
+	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
+	UAnimMontage* GetSheathMontage() { return SheathMontage; }
+
 	void Attack();
-	
+
+	UShapeComponent* GetBodyCollider() { return BodyCollider; }
+
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName HolsterSocketName;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName EquipSocketName;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UAnimMontage* DrawMontage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UAnimMontage* SheathMontage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UAnimMontage* AttackMontage;
+
+	class ANDMyCharacter* OwnerCharacter;
+
+	class UShapeComponent* BodyCollider;
 };
