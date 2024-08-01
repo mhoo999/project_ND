@@ -8,7 +8,7 @@
 
 class UCapsuleComponent;
 class UArrowComponent;
-class ANDPickUpObject_ItemBase_Throwable;
+class ANDThrowableBase;
 class UCameraComponent;
 
 UCLASS()
@@ -39,7 +39,7 @@ public:
 	UCameraComponent* CameraComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings")
-	TSubclassOf<ANDPickUpObject_ItemBase_Throwable> TestItem;
+	TSubclassOf<ANDThrowableBase> TestItem;
 
 	bool bCanSpawn = true;
 	FTimerHandle SpawnTimerHandle;
