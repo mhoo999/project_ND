@@ -1,35 +1,34 @@
 ﻿// Copyright by project_ND
 
 
-#include "NDItemSpawner.h"
+#include "NDItemSpawner_DT.h"
 
 #include "Items/NDFoodBase.h"
 #include "Items/NDHealthPotionBase.h"
 #include "Items/NDThrowableBase.h"
-#include "project_ND/PickUpObject/Items/NDItemBase.h"
 #include "Weapons/NDBluntBase.h"
 #include "Weapons/NDRevolverBase.h"
 
 
-ANDItemSpawner::ANDItemSpawner()
+ANDItemSpawner_DT::ANDItemSpawner_DT()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-void ANDItemSpawner::BeginPlay()
+void ANDItemSpawner_DT::BeginPlay()
 {
 	Super::BeginPlay();
 
 	SpawnItem();
 }
 
-void ANDItemSpawner::Tick(float DeltaTime)
+void ANDItemSpawner_DT::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ANDItemSpawner::SpawnItem()
+void ANDItemSpawner_DT::SpawnItem()
 {
 	if (ItemDataTable)
 	{
