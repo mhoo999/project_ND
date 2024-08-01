@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NDPickUpObject_ItemBase.h"
-#include "NDPickUpObject_ItemBase_Throwable.generated.h"
+#include "NDItemBase.h"
+#include "NDThrowableBase.generated.h"
 
 class UAIPerceptionStimuliSourceComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
-class PROJECT_ND_API ANDPickUpObject_ItemBase_Throwable : public ANDPickUpObject_ItemBase
+class PROJECT_ND_API ANDThrowableBase : public ANDItemBase
 {
 	GENERATED_BODY()
 
 public:
-	ANDPickUpObject_ItemBase_Throwable();
+	ANDThrowableBase();
 
 protected:
 	virtual void BeginPlay() override;

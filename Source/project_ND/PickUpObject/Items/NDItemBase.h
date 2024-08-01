@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "project_ND/PickUpObject/NDPickUpObject.h"
-#include "NDPickUpObject_ItemBase.generated.h"
+#include "NDItemBase.generated.h"
 
 
 UCLASS()
-class PROJECT_ND_API ANDPickUpObject_ItemBase : public ANDPickUpObject
+class PROJECT_ND_API ANDItemBase : public ANDPickUpObject
 {
 	GENERATED_BODY()
 
 public:
-	ANDPickUpObject_ItemBase();
+	ANDItemBase();
 
 protected:
 	virtual void BeginPlay() override;
