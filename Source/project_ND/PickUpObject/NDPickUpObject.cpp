@@ -27,11 +27,6 @@ void ANDPickUpObject::OnPickedUp()
 	
 }
 
-void ANDPickUpObject::SetItemName(FString Name)
-{
-	ItemName = Name;
-}
-
 void ANDPickUpObject::SetItemMesh(UStaticMesh* Mesh) const
 {
 	ItemMesh->SetStaticMesh(Mesh);
@@ -39,14 +34,19 @@ void ANDPickUpObject::SetItemMesh(UStaticMesh* Mesh) const
 
 void ANDPickUpObject::InitializeItem(const FItemBaseData& ItemData)
 {
-	SetItemName(ItemData.ItemName);
+	ItemID = ItemData.ItemID;
+	ItemName = ItemData.ItemName;
 	ItemType = ItemData.Type;
 	RecoveryAmount = ItemData.RecoveryAmount;
-	bIsEmpty = ItemData.bNotUse;
+	DamageAmount = ItemData.DamageAmount;
 	
 	if (ItemData.ItemMesh)
 	{
 		SetItemMesh(ItemData.ItemMesh);
 	}
+
+	ItemThumbnail = ItemData.ItemThumbnail;
+	Description = ItemData.Description;
+	bIsEmpty = ItemData.bNotUse;
 }
 
