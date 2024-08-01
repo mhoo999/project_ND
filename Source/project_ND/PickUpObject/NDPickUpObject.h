@@ -43,6 +43,9 @@ struct FItemBaseData : public FTableRowBase
 	TSoftObjectPtr<UTexture2D> ItemThumbnail;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	FText Description;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	bool bNotUse;
 };
 
@@ -81,6 +84,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	TSoftObjectPtr<UTexture2D> ItemThumbnail;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
+	FText Description;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	bool bIsEmpty;
