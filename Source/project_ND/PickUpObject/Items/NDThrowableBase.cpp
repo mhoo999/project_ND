@@ -1,19 +1,19 @@
 ﻿// Copyright by project_ND
 
 
-#include "NDPickUpObject_ItemBase_Throwable.h"
+#include "NDThrowableBase.h"
 
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Perception/AISense_Hearing.h"
 
 
-ANDPickUpObject_ItemBase_Throwable::ANDPickUpObject_ItemBase_Throwable()
+ANDThrowableBase::ANDThrowableBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	ItemMesh->SetSimulatePhysics(true);
-	ItemMesh->OnComponentHit.AddDynamic(this, &ANDPickUpObject_ItemBase_Throwable::OnHit);
+	ItemMesh->OnComponentHit.AddDynamic(this, &ANDThrowableBase::OnHit);
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Component"));
 	ProjectileMovementComponent->bAutoActivate = false;
@@ -22,12 +22,12 @@ ANDPickUpObject_ItemBase_Throwable::ANDPickUpObject_ItemBase_Throwable()
 	ProjectileMovementComponent->ProjectileGravityScale = 10.0f;
 }
 
-void ANDPickUpObject_ItemBase_Throwable::BeginPlay()
+void ANDThrowableBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void ANDPickUpObject_ItemBase_Throwable::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
+void ANDThrowableBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (bCanNoise)
@@ -50,27 +50,12 @@ void ANDPickUpObject_ItemBase_Throwable::OnHit(UPrimitiveComponent* HitComp, AAc
 	}
 }
 
-void ANDPickUpObject_ItemBase_Throwable::Tick(float DeltaTime)
+void ANDThrowableBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ANDPickUpObject_ItemBase_Throwable::InitializeItem(const FItemBaseData& ItemData)
-{
-	Super::InitializeItem(ItemData);
-
-	SetItemName(ItemData.ItemName);
-	ItemType = ItemData.ItemType;
-	RecoveryAmount = ItemData.RecoveryAmount;
-	bIsEmpty = ItemData.bIsEmpty;
-	
-	if (ItemData.ItemMesh)
-	{
-		SetItemMesh(ItemData.ItemMesh);
-	}
-}
-
-void ANDPickUpObject_ItemBase_Throwable::Use()
+void ANDThrowableBase::Use()
 {
 	Super::Use();
 

@@ -6,10 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "NDItemSpawner.generated.h"
 
-class ANDPickUpObject_ItemBase_Throwable;
-class ANDPickUpObject_ItemBase_Food;
-class ANDPickUpObject_ItemBase;
-class ANDPickUpObject_ItemBase_HealthPotion;
+class ANDRevolverBase;
+class ANDBluntBase;
+class ANDThrowableBase;
+class ANDFoodBase;
+class ANDHealthPotionBase;
 
 UCLASS()
 class PROJECT_ND_API ANDItemSpawner : public AActor
@@ -30,14 +31,20 @@ private:
 	UDataTable* ItemDataTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
-	TSubclassOf<ANDPickUpObject_ItemBase_HealthPotion> ItemClass_HealthPotion;
+	TSubclassOf<ANDHealthPotionBase> ItemClass_HealthPotion;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
-	TSubclassOf<ANDPickUpObject_ItemBase_Food> ItemClass_Food;
+	TSubclassOf<ANDFoodBase> ItemClass_Food;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
-	TSubclassOf<ANDPickUpObject_ItemBase_Throwable> ItemClass_Throwable;
+	TSubclassOf<ANDThrowableBase> ItemClass_Throwable;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
+	TSubclassOf<ANDBluntBase> ItemClass_Blunt;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Spawning", meta=(AllowPrivateAccess))
+	TSubclassOf<ANDRevolverBase> ItemClass_Revolver;
+	
 public:
 	UFUNCTION(BlueprintCallable, Category="Spawning")
 	void SpawnItem();

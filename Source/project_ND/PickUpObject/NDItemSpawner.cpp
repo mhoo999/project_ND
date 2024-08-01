@@ -3,22 +3,18 @@
 
 #include "NDItemSpawner.h"
 
-#include "NDPickUpObject_ItemBase_Food.h"
-#include "NDPickUpObject_ItemBase_HealthPotion.h"
-#include "NDPickUpObject_ItemBase_Throwable.h"
-#include "project_ND/PickUpObject/Items/NDPickUpObject_ItemBase.h"
+#include "Items/NDFoodBase.h"
+#include "Items/NDHealthPotionBase.h"
+#include "Items/NDThrowableBase.h"
+#include "project_ND/PickUpObject/Items/NDItemBase.h"
+#include "Weapons/NDBluntBase.h"
+#include "Weapons/NDRevolverBase.h"
 
 
 ANDItemSpawner::ANDItemSpawner()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	ConstructorHelpers::FObjectFinder<UDataTable> DTObject(TEXT("/Script/Engine.DataTable'/Game/Project_ND/PickUpObject/Items/DT_Items.DT_Items'"));
-	if (DTObject.Succeeded())
-	{
-		ItemDataTable = DTObject.Object;
-	}
-	
 }
 
 void ANDItemSpawner::BeginPlay()
@@ -47,28 +43,37 @@ void ANDItemSpawner::SpawnItem()
 
 			if (SelectedItem)
 			{
-				if (SelectedItem->bIsEmpty)
+				if (SelectedItem->bNotUse)
 				{
 					return;
 				}
 
-				TSubclassOf<ANDPickUpObject_ItemBase> SelectedClass;
+				TSubclassOf<ANDItemBase> SelectedClass;
 
-				if (SelectedItem->ItemType == "HealthPotion")
+				if (SelectedItem->Type == EItemType::HealthPotion)
 				{
 					SelectedClass = ItemClass_HealthPotion;
 				}
-				else if (SelectedItem->ItemType == "Food")
+				else if (SelectedItem->Type == EItemType::Food)
 				{
 					SelectedClass = ItemClass_Food;
 				}
-				else if (SelectedItem->ItemType == "Throwable")
+				else if (SelectedItem->Type == EItemType::Throwable)
 				{
 					SelectedClass = ItemClass_Throwable;
 				}
+				else if (SelectedItem->Type == EItemType::Blunt)
+				{
+					SelectedClass = ItemClass_Blunt;
+
+				}
+				else if (SelectedItem->Type == EItemType::Revolver)
+				{
+					SelectedClass = ItemClass_Revolver;
+				}
 				else
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Unknown item type : %s"), *SelectedItem->ItemType);
+					UE_LOG(LogTemp, Warning, TEXT("Unknown item type : %hhd"), SelectedItem->Type);
 					return;
 				}
 
@@ -79,7 +84,7 @@ void ANDItemSpawner::SpawnItem()
 					FVector SpawnLocation = GetActorLocation();
 					float RandYaw = FMath::RandRange(0.0f, 360.0f);
 					FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
-					ANDPickUpObject_ItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDPickUpObject_ItemBase>(SelectedClass, SpawnLocation, SpawnRotation);
+					ANDItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDItemBase>(SelectedClass, SpawnLocation, SpawnRotation);
 
 					if (SpawnedItem)
 					{

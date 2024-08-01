@@ -8,7 +8,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
-#include "project_ND/PickUpObject/Items/NDPickUpObject_ItemBase_Throwable.h"
+#include "project_ND/PickUpObject/Items/NDThrowableBase.h"
 
 
 ANDTestPawn::ANDTestPawn()
@@ -102,7 +102,7 @@ void ANDTestPawn::SpawnThrowable(float Value)
 		FTransform ThrowPosition = CameraComponent->GetComponentTransform();
 		FRotator SpawnRotation = CameraComponent->GetComponentRotation();
 
-		ANDPickUpObject_ItemBase_Throwable* ThrowableItem = GetWorld()->SpawnActor<ANDPickUpObject_ItemBase_Throwable>(TestItem, ThrowPosition);
+		ANDThrowableBase* ThrowableItem = GetWorld()->SpawnActor<ANDThrowableBase>(TestItem, ThrowPosition);
 		if (ThrowableItem)
 		{
 			FVector LauchDirection = SpawnRotation.Vector();
