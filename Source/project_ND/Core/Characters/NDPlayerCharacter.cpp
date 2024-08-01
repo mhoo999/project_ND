@@ -141,7 +141,7 @@ void APlayerCharacter::OnJump()
 
 void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 {
-	bIsCrouched = !StatComponent->bIsCrouched;
+	bIsCrouched = !bIsCrouched;
 
 	if (bIsCrouched)
 	{

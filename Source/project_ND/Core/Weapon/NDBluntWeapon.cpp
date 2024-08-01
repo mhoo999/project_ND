@@ -3,6 +3,9 @@
 
 #include "NDBluntWeapon.h"
 #include "Components/ShapeComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "project_ND/Component/NDStatComponent.h"
 
 void ANDBluntWeapon::BeginPlay()
 {
@@ -13,4 +16,12 @@ void ANDBluntWeapon::BeginPlay()
 
 void ANDBluntWeapon::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UGameplayStatics::ApplyDamage
+	(
+		OtherActor,
+		OwnerCharacter->GetStatComponent()->Damage,
+		OwnerCharacter->GetController(),
+		this,
+		nullptr
+	);
 }

@@ -7,6 +7,7 @@
 #include "NDMyCharacter.generated.h"
 
 class ANDWeapon;
+class UNDStatComponent;
 
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
@@ -46,9 +47,14 @@ public:
 	}
 
 	void ChangeWeapon(EWeaponType InWeaponType);
+	
+	UNDStatComponent* GetStatComponent() { return StatComponent; }
+
 
 private:
 	void SpawnWeapons();
+
+	float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
 protected:
 	//Weapon
@@ -61,5 +67,14 @@ protected:
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
 	EWeaponType NextWeaponType = EWeaponType::UNARMED;
 
-	class UNDStatComponent* StatComponent;
+
+	bool bIsCrouched = false;
+
+	UNDStatComponent* StatComponent;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UAnimMontage*   HitMontage;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UAnimMontage* DeathMontage;
 };

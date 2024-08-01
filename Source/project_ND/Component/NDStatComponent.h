@@ -29,8 +29,8 @@ public:
 	UNDStatComponent* SetIsAttacking(bool IsAttacking) { this->bIsAttacking = IsAttacking;  return this; }
 	UNDStatComponent* SetIsCrouched (bool IsCrouched ) { this->bIsCrouched  = IsCrouched;   return this; }
 
-	UNDStatComponent* SetCurHp    (float InCurHp)     { this->CurHp     = InCurHp;     return this; }  
-	UNDStatComponent* SetMaxHp    (float InMaxHp)     { this->MaxHp     = InMaxHp;     return this; }  
+	UNDStatComponent* SetCurHP    (float InCurHP)     { this->CurHP     = InCurHP;     return this; }  
+	UNDStatComponent* SetMaxHP    (float InMaxHP)     { this->MaxHP     = InMaxHP;     return this; }  
 	UNDStatComponent* SetDamage   (float InDamage)    { this->Damage    = InDamage;    return this; }  
 	UNDStatComponent* SetCurHungry(float InCurHungry) { this->CurHungry = InCurHungry; return this; }  
 	UNDStatComponent* SetMaxHungry(float InMaxHungry) { this->MaxHungry = InMaxHungry; return this; }
@@ -53,10 +53,10 @@ public:
 	bool bIsCrouched  = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHp     = 0;
+	float CurHP     = 0;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHp     = 0;
+	float MaxHP     = 0;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Damage    = 0;

@@ -53,7 +53,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UAnimMontage* AttackMontage;
 
-	class APlayerCharacter* Character;
+	class ANDMyCharacter* OwnerCharacter;
 
 	class UShapeComponent* BodyCollider;
 };

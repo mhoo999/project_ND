@@ -2,8 +2,9 @@
 
 
 #include "NDMyCharacter.h"
-#include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
-#include "/Project/project_ND/Source/project_ND/Component/NDStatComponent.h"
+#include "project_ND/Core/Weapon/NDWeapon.h"
+#include "project_ND/Component/NDStatComponent.h"
+#include "project_ND/Core/Weapon/NDBluntWeapon.h"
 
 // Sets default values
 ANDMyCharacter::ANDMyCharacter()
@@ -74,10 +75,23 @@ void ANDMyCharacter::SpawnWeapons()
 
 	for (auto& pair : WeaponClasses)
 	{
-		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value, Param);
+		//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
+
+		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value, Param); // class Reference
 
 		weapon->AttachToHolster(GetMesh());
 
 		Weapons.Add(pair.Key, weapon);
 	}
+}
+
+float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+
+
+	if (StatComponent->CurHP)
+
+	return 0.0f;
 }

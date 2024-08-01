@@ -17,7 +17,7 @@ void ANDWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Character = Cast <APlayerCharacter>(GetOwner());
+	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
 
 	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
 	//BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -52,6 +52,6 @@ bool ANDWeapon::AttachToHand(USceneComponent* InParent)
 
 void ANDWeapon::Attack()
 {
-	Character->PlayAnimMontage(AttackMontage);
+	OwnerCharacter->PlayAnimMontage(AttackMontage);
 }
 
