@@ -34,6 +34,9 @@ public:
 
 	void Attack();
 
+	UShapeComponent* GetBodyCollider() { return BodyCollider; }
+
+
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName HolsterSocketName;
@@ -52,6 +55,5 @@ protected:
 
 	class APlayerCharacter* Character;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UShapeComponent* BodyCollider;
 };

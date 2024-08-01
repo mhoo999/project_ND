@@ -4,19 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "/Project/project_ND/Source/project_ND/Core/Characters/NDMyCharacter.h"
 #include "NDPlayerCharacter.generated.h"
 
 struct FInputActionValue;
-class ANDWeapon;
 
-UENUM(BlueprintType)
-enum class EWeaponType : uint8
-{
-	UNARMED, FLASHLIGHT, BLUNTWEAPON
-};
 
 UCLASS()
-class PROJECT_ND_API APlayerCharacter : public ACharacter
+class PROJECT_ND_API APlayerCharacter : public ANDMyCharacter
 {
 	GENERATED_BODY()
 
@@ -37,17 +32,6 @@ public:
 
 	bool GetIsCrouched() { return bIsCrouched; }
 
-	UFUNCTION(BlueprintCallable)
-	EWeaponType GetCurWeaponType() { return CurWeaponType; }
-
-	ANDWeapon* GetCurrentWeapon()
-	{
-		if (Weapons.Contains(CurWeaponType))
-			return Weapons[CurWeaponType];
-
-		return nullptr;
-	}
-
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -62,9 +46,6 @@ protected:
 
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void OnBluntWeaponKey(const FInputActionValue& Value);
-
-
-	void ChangeWeapon(EWeaponType InWeaponType);
 
 	void StrafeOn();
 	void StrafeOff();
@@ -85,22 +66,6 @@ protected:
 	//void Crouched(const FInputActionValue& Value);
 
 protected:
-	bool bIsWalking   = false;
-	bool bIsSprinting = false;
-	bool bIsCrouched  = false;
-
-	//Weapon
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, ANDWeapon*> Weapons;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, TSubclassOf<ANDWeapon>> WeaponClasses;
-
-	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
-	EWeaponType NextWeaponType = EWeaponType::UNARMED;
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
-
-	bool bIsAttacking = false; 
 };
