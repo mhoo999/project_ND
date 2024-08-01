@@ -49,6 +49,9 @@ public:
 	class UInputAction* ChangeWeaponAction;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* EquipBluntWeapon;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* AttackAction;
 		
 };

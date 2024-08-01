@@ -2,15 +2,14 @@
 
 
 #include "NDWeapon.h"
-#include "project_ND/Core/Characters/NDPlayerCharacter.h"
+#include "/Project/project_ND/Source/project_ND/Core/Characters/NDPlayerCharacter.h"
+#include "Components/ShapeComponent.h"
 
 // Sets default values
 ANDWeapon::ANDWeapon()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	
 }
 
 // Called when the game starts or when spawned
@@ -18,7 +17,10 @@ void ANDWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Character = Cast <APlayerCharacter>(GetOwner());
+	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
+
+	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	//BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called every frame
@@ -50,6 +52,6 @@ bool ANDWeapon::AttachToHand(USceneComponent* InParent)
 
 void ANDWeapon::Attack()
 {
-	Character->PlayAnimMontage(AttackMontage);
+	OwnerCharacter->PlayAnimMontage(AttackMontage);
 }
 
