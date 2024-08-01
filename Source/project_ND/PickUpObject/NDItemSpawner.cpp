@@ -84,12 +84,9 @@ void ANDItemSpawner::SpawnItem()
 					const float RandYaw = FMath::RandRange(0.0f, 360.0f);
 					const FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
 
-					UE_LOG(LogTemp, Warning, TEXT("Spawn ready"));
-					
 					if (ANDPickUpObject* SpawnedItem = GetWorld()->SpawnActor<ANDPickUpObject>(SelectedClass, SpawnLocation, SpawnRotation))
 					{
 						SpawnedItem->InitializeItem(*SelectedItem);
-						UE_LOG(LogTemp, Warning, TEXT("Spawn complete"));
 					}
 				}
 			}

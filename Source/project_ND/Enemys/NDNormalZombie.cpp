@@ -17,7 +17,7 @@ ANDNormalZombie::ANDNormalZombie()
 	}
 
 	InitialHP		= 100.0f;
-	MovementSpeed	= 100.0f;
+	MovementSpeed	= 200.0f;
 	AttackDamage	= 10.0f;
 	AttackRange		= 200.0f;
 }
