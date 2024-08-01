@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "project_ND/PickUpObject/NDPickUpObject.h"
-#include "NDPickupObject_WeaponBase.generated.h"
+#include "NDWeaponBase.generated.h"
 
 UCLASS()
-class PROJECT_ND_API ANDPickupObject_WeaponBase : public ANDPickUpObject
+class PROJECT_ND_API ANDWeaponBase : public ANDPickUpObject
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ANDPickupObject_WeaponBase();
+	ANDWeaponBase();
 
 protected:
 	// Called when the game starts or when spawned

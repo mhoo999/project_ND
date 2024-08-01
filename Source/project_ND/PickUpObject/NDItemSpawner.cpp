@@ -3,10 +3,12 @@
 
 #include "NDItemSpawner.h"
 
-#include "Items/NDPickUpObject_ItemBase_Food.h"
-#include "Items/NDPickUpObject_ItemBase_HealthPotion.h"
-#include "Items/NDPickUpObject_ItemBase_Throwable.h"
-#include "project_ND/PickUpObject/Items/NDPickUpObject_ItemBase.h"
+#include "Items/NDFoodBase.h"
+#include "Items/NDHealthPotionBase.h"
+#include "Items/NDThrowableBase.h"
+#include "project_ND/PickUpObject/Items/NDItemBase.h"
+#include "Weapons/NDBluntBase.h"
+#include "Weapons/NDRevolverBase.h"
 
 
 ANDItemSpawner::ANDItemSpawner()
@@ -46,7 +48,7 @@ void ANDItemSpawner::SpawnItem()
 					return;
 				}
 
-				TSubclassOf<ANDPickUpObject_ItemBase> SelectedClass;
+				TSubclassOf<ANDItemBase> SelectedClass;
 
 				if (SelectedItem->Type == EItemType::HealthPotion)
 				{
@@ -59,6 +61,15 @@ void ANDItemSpawner::SpawnItem()
 				else if (SelectedItem->Type == EItemType::Throwable)
 				{
 					SelectedClass = ItemClass_Throwable;
+				}
+				else if (SelectedItem->Type == EItemType::Blunt)
+				{
+					SelectedClass = ItemClass_Blunt;
+
+				}
+				else if (SelectedItem->Type == EItemType::Revolver)
+				{
+					SelectedClass = ItemClass_Revolver;
 				}
 				else
 				{
@@ -73,7 +84,7 @@ void ANDItemSpawner::SpawnItem()
 					FVector SpawnLocation = GetActorLocation();
 					float RandYaw = FMath::RandRange(0.0f, 360.0f);
 					FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
-					ANDPickUpObject_ItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDPickUpObject_ItemBase>(SelectedClass, SpawnLocation, SpawnRotation);
+					ANDItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDItemBase>(SelectedClass, SpawnLocation, SpawnRotation);
 
 					if (SpawnedItem)
 					{
