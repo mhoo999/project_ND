@@ -5,6 +5,7 @@
 #include "project_ND/Core/Weapon/NDWeapon.h"
 #include "project_ND/Component/NDStatComponent.h"
 #include "project_ND/Core/Weapon/NDBluntWeapon.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ANDMyCharacter::ANDMyCharacter()
@@ -87,9 +88,22 @@ void ANDMyCharacter::SpawnWeapons()
 
 float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	//Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	//
-	//if (StatComponent->CurHP)
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	
+	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+	
+	UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), *GetName(), StatComponent->CurHP);
+	
+	if (StatComponent->CurHP > 0)
+		PlayAnimMontage(HitMontage);
+	else
+	{
+		PlayAnimMontage(DeathMontage);
+
+		// if Enemy = ones 
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	
 
 	return 0.0f;
 }
