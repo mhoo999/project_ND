@@ -53,25 +53,25 @@ public:
 	bool bIsCrouched  = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHP     = 0;
+	float CurHP;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHP     = 0;
+	float MaxHP;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float Damage    = 0;
+	float Damage;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHungry = 0;
+	float CurHungry;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHungry = 0;
+	float MaxHungry;
 
     // next // 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHeartbeat = 0;
+	float CurHeartbeat;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHeartbeat = 0;
+	float MaxHeartbeat;
 
 };

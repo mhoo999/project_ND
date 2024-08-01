@@ -7,6 +7,8 @@
 #include "NDMyCharacter.h"
 #include "NDPlayerCharacter.generated.h"
 
+
+
 struct FInputActionValue;
 
 
@@ -68,4 +70,10 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* PCamera;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class USpringArmComponent* SpringArm;
 };
