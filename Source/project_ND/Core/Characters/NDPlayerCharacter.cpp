@@ -6,8 +6,10 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "project_ND/Component/NDInputComponent.h"
-#include "project_ND/Core/Weapon/NDWeapon.h"
+#include "/Project/project_ND/Source/project_ND/Core/Weapon/NDWeapon.h"
+#include "/Project/project_ND/Source/project_ND/Component/NDInputComponent.h"
+#include "Components/ShapeComponent.h"
+#include "/Project/project_ND/Source/project_ND/Component/NDStatComponent.h"
 
 //class ANDWeapon;
 // Sets default values
@@ -17,8 +19,9 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
-
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
+
+	StatComponent->SetCurHp(100);
 }
 
 // Called when the game starts or when spawned
@@ -38,20 +41,6 @@ void APlayerCharacter::BeginPlay()
 		}
 	}
 
-	// Spawn Weapon 
-
-	FActorSpawnParameters Param;
-
-	Param.Owner = this;
-
-	for (auto& pair : WeaponClasses)
-	{
-		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value, Param);
-
-		weapon->AttachToHolster(GetMesh());
-
-		Weapons.Add(pair.Key, weapon);
-	}
 }
 
 // Called every frame
@@ -59,6 +48,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//bUseControllerRotation = false;
 }
 
 // Called to bind functionality to input
@@ -84,6 +74,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
+		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
@@ -93,6 +84,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
+	//if (CurWeaponType != EWeaponType::UNARMED)
+	//	bUseControllerRotationYaw = true;
+	bUseControllerRotationYaw = true;
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -106,8 +101,9 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(  RightDirection, MovementVector.X);
-
 	}
+
+	//bUseControllerRotationYaw = false;
 }
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
@@ -123,9 +119,9 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 
 void APlayerCharacter::Walk(const FInputActionValue& Value)
 {
-	bIsWalking = !bIsWalking;
+	StatComponent->bIsWalking = !StatComponent->bIsWalking;
 
-	if (bIsWalking)
+	if (StatComponent->bIsWalking)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	}
@@ -166,7 +162,7 @@ void APlayerCharacter::CrouchEnd(const FInputActionValue& Value)
 
 void APlayerCharacter::SprintStart()
 {
-	bIsWalking = false;
+	StatComponent->bIsWalking = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 }
@@ -181,33 +177,9 @@ void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 	ChangeWeapon(EWeaponType::FLASHLIGHT);
 }
 
-void APlayerCharacter::ChangeWeapon(EWeaponType InWeaponType)
+void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 {
-	if (GetCurrentWeapon() != nullptr)
-	{
-		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetDrawMontage()))
-			return;
-
-		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetSheathMontage()))
-			return;
-	}
-
-	switch (CurWeaponType)
-	{
-	case EWeaponType::UNARMED:
-		 CurWeaponType = InWeaponType;
-		NextWeaponType = InWeaponType;
-
-		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
-		break;
-	default:
-		PlayAnimMontage(GetCurrentWeapon()->GetSheathMontage());
-
-		if (CurWeaponType != InWeaponType)
-			NextWeaponType = InWeaponType;
-
-		break;
-	}
+	ChangeWeapon(EWeaponType::BLUNTWEAPON);
 }
 
 void APlayerCharacter::StrafeOn()
@@ -255,7 +227,7 @@ void APlayerCharacter::OnSheathEnd()
 
 void APlayerCharacter::OnAttack()
 {
-	if (bIsAttacking)
+	if (StatComponent->bIsAttacking)
 		return;
 
 	switch (CurWeaponType)
@@ -270,12 +242,18 @@ void APlayerCharacter::OnAttack()
 
 void APlayerCharacter::OnAttackBegin()
 {
-	bIsAttacking = true;
+	StatComponent->bIsAttacking = true;
+
+	GetCurrentWeapon()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCurrentWeapon()->GetBodyCollider()->bHiddenInGame = false;
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
-	bIsAttacking = false;
+	StatComponent->bIsAttacking = false;
+
+	GetCurrentWeapon()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCurrentWeapon()->GetBodyCollider()->bHiddenInGame = true;
 }
 
 

@@ -22,5 +22,4 @@ public:
 	virtual void TakeDamage(float DamageAmount)=0;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount)=0;
-	
 };
