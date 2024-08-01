@@ -48,7 +48,7 @@ void ANDItemSpawner::SpawnItem()
 					return;
 				}
 
-				TSubclassOf<ANDItemBase> SelectedClass;
+				TSubclassOf<ANDPickUpObject> SelectedClass;
 
 				if (SelectedItem->Type == EItemType::HealthPotion)
 				{
@@ -65,7 +65,6 @@ void ANDItemSpawner::SpawnItem()
 				else if (SelectedItem->Type == EItemType::Blunt)
 				{
 					SelectedClass = ItemClass_Blunt;
-
 				}
 				else if (SelectedItem->Type == EItemType::Revolver)
 				{
@@ -81,14 +80,16 @@ void ANDItemSpawner::SpawnItem()
 
 				if (SelectedClass)
 				{
-					FVector SpawnLocation = GetActorLocation();
-					float RandYaw = FMath::RandRange(0.0f, 360.0f);
-					FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
-					ANDItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDItemBase>(SelectedClass, SpawnLocation, SpawnRotation);
+					const FVector SpawnLocation = GetActorLocation();
+					const float RandYaw = FMath::RandRange(0.0f, 360.0f);
+					const FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
 
-					if (SpawnedItem)
+					UE_LOG(LogTemp, Warning, TEXT("Spawn ready"));
+					
+					if (ANDPickUpObject* SpawnedItem = GetWorld()->SpawnActor<ANDPickUpObject>(SelectedClass, SpawnLocation, SpawnRotation))
 					{
 						SpawnedItem->InitializeItem(*SelectedItem);
+						UE_LOG(LogTemp, Warning, TEXT("Spawn complete"));
 					}
 				}
 			}

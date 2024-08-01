@@ -54,7 +54,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Status", meta=(AllowPrivateAccess))
 	float AttackRange;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="HitLocation", meta=(AllowPrivateAccess))
 	EHitLocation HitLocation;
 
 	bool bSuperArmor;
@@ -73,5 +72,11 @@ public:
 	float GetAttackRange() const;
 
 	float GetMovementSpeed() const;
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI", meta=(AllowPrivateAccess))
+	FName PerceptionSocket;
+
+	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
 	
 };
