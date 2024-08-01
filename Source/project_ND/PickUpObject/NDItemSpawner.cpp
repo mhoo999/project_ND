@@ -65,11 +65,13 @@ void ANDItemSpawner::SpawnItem()
 				else if (SelectedItem->Type == EItemType::Blunt)
 				{
 					SelectedClass = ItemClass_Blunt;
+					UE_LOG(LogTemp, Warning, TEXT("selected Blunt"));
 
 				}
 				else if (SelectedItem->Type == EItemType::Revolver)
 				{
 					SelectedClass = ItemClass_Revolver;
+					UE_LOG(LogTemp, Warning, TEXT("selected Revolver"));
 				}
 				else
 				{
@@ -81,12 +83,11 @@ void ANDItemSpawner::SpawnItem()
 
 				if (SelectedClass)
 				{
-					FVector SpawnLocation = GetActorLocation();
-					float RandYaw = FMath::RandRange(0.0f, 360.0f);
-					FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
-					ANDItemBase* SpawnedItem = GetWorld()->SpawnActor<ANDItemBase>(SelectedClass, SpawnLocation, SpawnRotation);
+					const FVector SpawnLocation = GetActorLocation();
+					const float RandYaw = FMath::RandRange(0.0f, 360.0f);
+					const FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
 
-					if (SpawnedItem)
+					if (ANDPickUpObject* SpawnedItem = GetWorld()->SpawnActor<ANDPickUpObject>(SelectedClass, SpawnLocation, SpawnRotation))
 					{
 						SpawnedItem->InitializeItem(*SelectedItem);
 					}

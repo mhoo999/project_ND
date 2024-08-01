@@ -188,7 +188,7 @@ void ANDAIController::InitializeAIPerception() const
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-
+	
 	HearingConfig->HearingRange = 1500.0f;
 	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
@@ -201,7 +201,7 @@ void ANDAIController::InitializeAIPerception() const
 
 void ANDAIController::GetExcitement() const
 {
-	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 4.0f;
+	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 3.0f;
 }
 
 void ANDAIController::GetRelax() const
