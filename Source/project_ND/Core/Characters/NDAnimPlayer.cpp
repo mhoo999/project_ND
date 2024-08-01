@@ -33,15 +33,16 @@ void UNDAnimPlayer::NativeUpdateAnimation(float DeltaSeconds)
 	bIsCrouch = Player->GetIsCrouched();
 
 	FRotator BaseRotator = Player->GetActorRotation();
-	Direction = CalculateDirection(Velocity, BaseRotator);
+	
+	//Direction = CalculateDirection(Velocity, BaseRotator);
 
 	CurWeapon = Player->GetCurWeaponType();
 
 	//Direction
 
-	//const FRotator Rotation = Player->Controller->GetControlRotation();
+	const FRotator Rotation = Player->Controller->GetControlRotation();
 
 	//const FRotator YawRotation(0, Rotation.Yaw, 0);
-	// 
-	//Direction = CalculateDirection(Player->GetVelocity().GetSafeNormal2D(), YawRotation);
+	 
+	Direction = CalculateDirection(Player->GetVelocity().GetSafeNormal2D(), Rotation);
 }

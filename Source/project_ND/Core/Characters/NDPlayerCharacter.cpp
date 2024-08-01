@@ -3,6 +3,8 @@
 
 #include "NDPlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -18,10 +20,19 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
+	PCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	//Camera->SetupAttachment(CapsuleComponent);
+	SpringArm->SetupAttachment(RootComponent);
+	PCamera->SetupAttachment(SpringArm);
+	PCamera->bUsePawnControlRotation = true; 
+	//Camera->Setup
+
+
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
-	//StatComponent->SetCurHP(100);
+	StatComponent->SetCurHP(100)->SetDamage(40);
 }
 
 // Called when the game starts or when spawned
