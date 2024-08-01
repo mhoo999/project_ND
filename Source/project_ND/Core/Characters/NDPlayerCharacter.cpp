@@ -21,7 +21,7 @@ APlayerCharacter::APlayerCharacter()
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
-	StatComponent->SetCurHp(100);
+	//StatComponent->SetCurHP(100);
 }
 
 // Called when the game starts or when spawned
