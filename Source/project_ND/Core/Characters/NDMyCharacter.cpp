@@ -87,11 +87,9 @@ void ANDMyCharacter::SpawnWeapons()
 
 float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
-
-
-	if (StatComponent->CurHP)
+	//Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	//
+	//if (StatComponent->CurHP)
 
 	return 0.0f;
 }
