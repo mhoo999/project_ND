@@ -2,9 +2,7 @@
 
 
 #include "NDMyCharacter.h"
-#include "project_ND/Core/Weapon/NDWeapon.h"
 #include "project_ND/Component/NDStatComponent.h"
-#include "project_ND/Core/Weapon/NDBluntWeapon.h"
 
 // Sets default values
 ANDMyCharacter::ANDMyCharacter()
@@ -77,7 +75,7 @@ void ANDMyCharacter::SpawnWeapons()
 	{
 		//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
 
-		ANDWeapon* weapon = GetWorld()->SpawnActor<ANDWeapon>(pair.Value, Param); // class Reference
+		ANDWeaponBase* weapon = GetWorld()->SpawnActor<ANDWeaponBase>(pair.Value, Param); // class Reference
 
 		weapon->AttachToHolster(GetMesh());
 

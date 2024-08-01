@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "project_ND/PickUpObject/Weapons/NDWeaponBase.h"
 #include "NDMyCharacter.generated.h"
 
+class ANDWeaponBase;
 class ANDWeapon;
 class UNDStatComponent;
 
@@ -38,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EWeaponType GetCurWeaponType() { return CurWeaponType; }
 
-	ANDWeapon* GetCurrentWeapon()
+	ANDWeaponBase* GetCurrentWeapon()
 	{
 		if (Weapons.Contains(CurWeaponType))
 			return Weapons[CurWeaponType];
@@ -59,10 +61,10 @@ private:
 protected:
 	//Weapon
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, ANDWeapon*> Weapons;
+	TMap<EWeaponType, ANDWeaponBase*> Weapons;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, TSubclassOf<ANDWeapon>> WeaponClasses;
+	TMap<EWeaponType, TSubclassOf<ANDWeaponBase>> WeaponClasses;
 
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
 	EWeaponType NextWeaponType = EWeaponType::UNARMED;

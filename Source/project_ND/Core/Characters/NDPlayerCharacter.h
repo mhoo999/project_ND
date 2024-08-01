@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "/Project/project_ND/Source/project_ND/Core/Characters/NDMyCharacter.h"
+#include "NDMyCharacter.h"
 #include "NDPlayerCharacter.generated.h"
 
 struct FInputActionValue;
