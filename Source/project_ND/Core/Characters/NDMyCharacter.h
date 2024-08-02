@@ -14,7 +14,7 @@ class UNDStatComponent;
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	UNARMED, FLASHLIGHT, BLUNTWEAPON
+	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE
 };
 
 UCLASS()

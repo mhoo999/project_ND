@@ -38,6 +38,9 @@ protected:
 	bool bIsCrouch = false; 
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool bIsThrowring = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class APlayerCharacter* Player = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

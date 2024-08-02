@@ -46,6 +46,8 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
+	void Throw();
+
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void OnBluntWeaponKey(const FInputActionValue& Value);
 
@@ -66,6 +68,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnAttackEnd();
 	//void Crouched(const FInputActionValue& Value);
+
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

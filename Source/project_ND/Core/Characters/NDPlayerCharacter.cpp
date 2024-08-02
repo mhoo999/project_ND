@@ -88,6 +88,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
+		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throw);
+
 		//UE_LOG(,)
 	}
 }
@@ -264,6 +266,10 @@ void APlayerCharacter::OnAttackEnd()
 
 	GetCurrentWeapon()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCurrentWeapon()->GetBodyCollider()->bHiddenInGame = true;
+}
+
+void APlayerCharacter::Throw()
+{
 }
 
 
