@@ -29,5 +29,5 @@ private:
 	void SpawnItem();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
-	bool bRandSpawn;
+	bool bCanSkipSpawn;
 };

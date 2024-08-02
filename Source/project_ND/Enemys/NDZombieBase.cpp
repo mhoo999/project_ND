@@ -6,6 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "project_ND/Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "project_ND/Core/Enemys/NDZombieAnim.h"
+#include "Storage/Nodes/FileEntry.h"
 
 
 ANDZombieBase::ANDZombieBase()
@@ -119,5 +121,31 @@ void ANDZombieBase::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRot
 	const FRotator SocketRotation = FRotator(0, GetMesh()->GetSocketRotation(PerceptionSocket).Yaw, 0);
 	const FRotator AdjustedRotation = SocketRotation + FRotator(0, 90, 0);
 	OutRotation = AdjustedRotation;
+}
+
+bool ANDZombieBase::GetIsAttacking() const
+{
+	return bIsAttacking;
+}
+
+bool ANDZombieBase::GetIsDamaged() const
+{
+	return bIsDamaged;
+}
+
+void ANDZombieBase::ChangeStateAttack()
+{
+	bIsAttacking = !bIsAttacking;
+	UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(GetMesh()->GetAnimInstance());
+	ZombieAnim->bIsAttacking = bIsAttacking;
+
+	UE_LOG(LogTemp, Warning, TEXT("bIsAttacking : %hhd"), bIsAttacking);
+}
+
+void ANDZombieBase::ChangeStateDamaged()
+{
+	bIsDamaged = !bIsDamaged;
+	UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(GetMesh()->GetAnimInstance());
+	ZombieAnim->bIsDamaged = bIsDamaged;
 }
 
