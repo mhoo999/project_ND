@@ -79,7 +79,6 @@ void ANDAIController::SetAIState(FString NewState)
 	
 	if (CurrentState == EAIState::Idle)
 	{
-		bIsExcitement = false;
 		GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
 		GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
 		{
@@ -204,9 +203,10 @@ void ANDAIController::GetExcitement() const
 	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 3.0f;
 }
 
-void ANDAIController::GetRelax() const
+void ANDAIController::GetRelax()
 {
 	Zombie->GetCharacterMovement()->MaxWalkSpeed = Zombie->GetMovementSpeed();
+	bIsExcitement = false;
 }
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
