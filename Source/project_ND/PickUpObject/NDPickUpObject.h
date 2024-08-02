@@ -94,9 +94,7 @@ protected:
 public:
 	virtual void OnPickedUp();
 
-	void SetItemName(FString Name);
-
 	void SetItemMesh(UStaticMesh* Mesh) const;
-
+	
 	virtual void InitializeItem(const FItemBaseData& ItemData);
 };

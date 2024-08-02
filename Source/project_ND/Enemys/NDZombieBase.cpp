@@ -20,7 +20,7 @@ ANDZombieBase::ANDZombieBase()
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	PerceptionSocket = "head";
+	PerceptionSocket = "pelvis";
 }
 
 void ANDZombieBase::BeginPlay()
@@ -114,10 +114,10 @@ void ANDZombieBase::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRot
 {
 	Super::GetActorEyesViewPoint(OutLocation, OutRotation);
 
-	OutLocation = GetMesh()->GetSocketLocation(PerceptionSocket);
+	// OutLocation = GetMesh()->GetSocketLocation(PerceptionSocket);
 
-	const FRotator SocketRotation = GetMesh()->GetSocketRotation(PerceptionSocket);
-	const FRotator AdjustedRotation = SocketRotation + FRotator(120, -120, 0);
+	const FRotator SocketRotation = FRotator(0, GetMesh()->GetSocketRotation(PerceptionSocket).Yaw, 0);
+	const FRotator AdjustedRotation = SocketRotation + FRotator(0, 90, 0);
 	OutRotation = AdjustedRotation;
 }
 

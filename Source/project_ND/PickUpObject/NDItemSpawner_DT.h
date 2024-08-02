@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "NDItemSpawner.generated.h"
+#include "NDItemSpawner_DT.generated.h"
 
 class ANDRevolverBase;
 class ANDBluntBase;
@@ -13,12 +13,12 @@ class ANDFoodBase;
 class ANDHealthPotionBase;
 
 UCLASS()
-class PROJECT_ND_API ANDItemSpawner : public AActor
+class PROJECT_ND_API ANDItemSpawner_DT : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	ANDItemSpawner();
+	ANDItemSpawner_DT();
 
 protected:
 	virtual void BeginPlay() override;

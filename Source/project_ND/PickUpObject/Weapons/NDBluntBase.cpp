@@ -3,6 +3,10 @@
 
 #include "NDBluntBase.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "project_ND/Component/NDStatComponent.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
+
 
 // Sets default values
 ANDBluntBase::ANDBluntBase()
@@ -22,5 +26,18 @@ void ANDBluntBase::BeginPlay()
 void ANDBluntBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UGameplayStatics::ApplyDamage
+	(
+		OtherActor,
+		OwnerCharacter->GetStatComponent()->Damage,
+		OwnerCharacter->GetController(),
+		this,
+		nullptr
+	);
 }
 

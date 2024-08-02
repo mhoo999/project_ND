@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NDWeapon.h"
+#include "project_ND/PickUpObject/Weapons/NDWeaponBase.h"
 #include "NDFlashLight.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECT_ND_API ANDFlashLight : public ANDWeapon
+class PROJECT_ND_API ANDFlashLight : public ANDWeaponBase
 {
 	GENERATED_BODY()
 	
