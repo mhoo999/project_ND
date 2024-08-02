@@ -7,6 +7,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -42,14 +43,6 @@ void ANDAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	PrintState();
-
-	if (Zombie)
-	{
-		if (Zombie->GetHP() == 0.0f)
-		{
-			SetAIState("Dead");
-		}
-	}
 }
 
 void ANDAIController::OnPossess(APawn* InPawn)
@@ -274,4 +267,7 @@ void ANDAIController::ZombieDie()
 		Zombie->GetMesh()->SetSimulatePhysics(true);
 		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	}
+
+	// WBP_ChooseUpgradeSelector 호출
+	// UGameplayStatics::SetGamePaused(GetWorld(), true);
 }

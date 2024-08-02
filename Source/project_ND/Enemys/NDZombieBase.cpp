@@ -98,6 +98,12 @@ void ANDZombieBase::SetHitLocationByBoneName(const FName& BoneName)
 void ANDZombieBase::TakeDamage(const float DamageAmount)
 {
 	HP -= DamageAmount;
+
+	if (HP <= 0)
+	{
+		ANDAIController* AIController = Cast<ANDAIController>(GetController());
+		AIController->SetAIState("Dead");
+	}
 }
 
 void ANDZombieBase::Recovery(FString ItemType, const float RecoveryAmount)
