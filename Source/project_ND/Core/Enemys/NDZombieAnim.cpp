@@ -5,21 +5,34 @@
 
 #include "project_ND/Enemys/NDZombieBase.h"
 
+void UNDZombieAnim::NativeBeginPlay()
+{
+	Super::NativeBeginPlay();
+	
+	Zombie = Cast<ANDZombieBase>(TryGetPawnOwner());
+	
+	if (!Zombie)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("is not initialized"));
+	}
+}
+
 void UNDZombieAnim::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	
-	ZombieBase = Cast<ANDZombieBase>(TryGetPawnOwner());
 }
 
 void UNDZombieAnim::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	if (ZombieBase)
+	if (Zombie)
 	{
-		const FVector Velocity = ZombieBase->GetVelocity();
+		const FVector Velocity = Zombie->GetVelocity();
 		Speed = Velocity.Length();
+
+		bIsAttacking = Zombie->GetIsAttacking();
+		bIsDamaged = Zombie->GetIsDamaged();
 	}
 }
 
@@ -46,4 +59,9 @@ void UNDZombieAnim::AnimNotify_StartAtk()
 void UNDZombieAnim::AnimNotify_EndAtk()
 {
 	UE_LOG(LogTemp, Warning, TEXT("End zombie attack"));
+}
+
+void UNDZombieAnim::AnimNotify_ChangeStateIsAttack()
+{
+	Zombie->ChangeStateAttack();
 }

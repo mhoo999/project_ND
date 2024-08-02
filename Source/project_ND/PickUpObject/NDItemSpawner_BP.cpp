@@ -25,7 +25,7 @@ void ANDItemSpawner_BP::Tick(float DeltaTime)
 
 void ANDItemSpawner_BP::SpawnItem()
 {
-	if (bRandSpawn)
+	if (bCanSkipSpawn)
 	{
 		if (const float RandNum = FMath::RandRange(0, 9); RandNum >= 5)
 		{
