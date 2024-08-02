@@ -78,5 +78,15 @@ private:
 	FName PerceptionSocket;
 
 	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
+
+	bool bIsAttacking;
+
+	bool bIsDamaged;
+
+public:
+	bool GetIsAttacking() const;
+	bool GetIsDamaged() const;
 	
+	void ChangeStateAttack();
+	void ChangeStateDamaged();
 };
