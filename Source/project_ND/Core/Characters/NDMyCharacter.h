@@ -72,6 +72,7 @@ protected:
 
 	bool bIsCrouched = false;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UNDStatComponent* StatComponent;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
