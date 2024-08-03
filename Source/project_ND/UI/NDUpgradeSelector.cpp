@@ -3,11 +3,48 @@
 
 #include "NDUpgradeSelector.h"
 
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
+
+void UNDUpgradeSelector::OptionSorting()
+{
+	if (UpgradeOptionTable)
+	{
+		static const FString ContextString(TEXT("OptionSorting"));
+		TArray<FUpgradeOptionTable*> Options;
+		UpgradeOptionTable->GetAllRows<FUpgradeOptionTable>(ContextString, Options);
+
+		TSet<int32> SelectedIndices;
+		while (SelectedIndices.Num() < 3 && SelectedIndices.Num() < Options.Num())
+		{
+			int32 RandomIndex = FMath::RandRange(0, Options.Num() - 1);
+			SelectedIndices.Add(RandomIndex);
+		}
+
+		TArray<UImage*> OptionImages = { Option01, Option02, Option03 };
+		int32 Index = 0;
+
+		for (auto SelectedIndex : SelectedIndices)
+		{
+			if (Options.IsValidIndex(SelectedIndex) && OptionImages.IsValidIndex(Index))
+			{
+				UTexture2D* SelectedTexture = Options[SelectedIndex]->Image;
+				
+				if (SelectedTexture && OptionImages[Index])
+				{
+					OptionImages[Index]->SetBrushFromTexture(SelectedTexture);
+				}
+				
+				Index++;
+			}
+		}
+	}
+}
 
 void UNDUpgradeSelector::ChooseUpgrade()
 {
 	// PlayerState 접근하여 기능 업그레이드
+	
 	
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
 }
