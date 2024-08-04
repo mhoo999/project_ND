@@ -6,6 +6,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "project_ND/Component/NDStatComponent.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "Components/ShapeComponent.h"
+#include "project_ND/Enemys/NDZombieBase.h"
+
 
 
 // Sets default values
@@ -20,6 +23,8 @@ void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
+		
 }
 
 // Called every frame
@@ -34,6 +39,9 @@ void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCom
 	UGameplayStatics::ApplyDamage
 	(
 		OtherActor,
+		//Target = Cast<ANDZombieBase>(OtherActor);
+		//Target->TakeDamage(10)->Damage,
+		//Target->GetController(),
 		OwnerCharacter->GetStatComponent()->Damage,
 		OwnerCharacter->GetController(),
 		this,

@@ -11,6 +11,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "project_ND/Component/NDInputComponent.h"
 #include "project_ND/Component/NDStatComponent.h"
+#include "project_ND/Enemys/NDZombieBase.h"
+
 
 //class ANDWeapon;
 // Sets default values
@@ -27,11 +29,15 @@ APlayerCharacter::APlayerCharacter()
 	PCamera->bUsePawnControlRotation = true; 
 	//Camera->Setup
 
+	//Target = cast<ANDZombieBase>();
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
 	StatComponent->SetCurHP(100)->SetDamage(40);
+
+	//Target = Cast<ANDZombieBase>();
+	//Target->TakeDamage(40);
 }
 
 // Called when the game starts or when spawned
@@ -58,7 +64,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//bUseControllerRotation = false;
+	//bUseControllerRotationYaw = false;
 }
 
 // Called to bind functionality to input
@@ -98,7 +104,6 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	//if (CurWeaponType != EWeaponType::UNARMED)
 	//	bUseControllerRotationYaw = true;
-	bUseControllerRotationYaw = true;
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -196,7 +201,7 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 
 void APlayerCharacter::StrafeOn()
 {
-	bUseControllerRotationYaw = true;
+	//bUseControllerRotationYaw = true;
 
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
