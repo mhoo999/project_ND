@@ -36,16 +36,21 @@ void ANDBluntBase::Tick(float DeltaTime)
 void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UGameplayStatics::ApplyDamage
-	(
-		OtherActor,
-		//Target = Cast<ANDZombieBase>(OtherActor);
-		//Target->TakeDamage(10)->Damage,
-		//Target->GetController(),
-		OwnerCharacter->GetStatComponent()->Damage,
-		OwnerCharacter->GetController(),
-		this,
-		nullptr
-	);
+	Target = Cast<ANDZombieBase>(OtherActor);
+	
+	if(Target)
+		Target->TakeDamage(10);
+
+	//UGameplayStatics::ApplyDamage
+	//(
+	//	OtherActor,
+	//	Target = Cast<ANDZombieBase>(OtherActor);
+	//	Target->TakeDamage(10)->Damage,
+	//	Target->GetController(),
+	//	OwnerCharacter->GetStatComponent()->Damage,
+	//	OwnerCharacter->GetController(),
+	//	this,
+	//	nullptr
+	//);
 }
 
