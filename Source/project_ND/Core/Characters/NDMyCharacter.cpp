@@ -2,7 +2,8 @@
 
 
 #include "NDMyCharacter.h"
-#include "project_ND/Component/NDStatComponent.h"
+
+#include "project_ND/Core/Components/NDStatComponent.h"
 
 // Sets default values
 ANDMyCharacter::ANDMyCharacter()
