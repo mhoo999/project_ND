@@ -67,6 +67,8 @@ protected:
 	UAnimMontage* AttackMontage;
 
 	class ANDMyCharacter* OwnerCharacter;
+	
+	class ANDZombieBase* Target;
 
 	class UShapeComponent* BodyCollider;
 };

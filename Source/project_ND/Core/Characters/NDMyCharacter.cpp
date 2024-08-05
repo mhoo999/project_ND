@@ -83,11 +83,34 @@ void ANDMyCharacter::SpawnWeapons()
 	}
 }
 
-float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+//void ANDMyCharacter::TakeDamage(float DamageAmount)
+//{
+//	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+//
+//	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
+//
+//	if (StatComponent->CurHP > 0)
+//		PlayAnimMontage(HitMontage);
+//	else
+//		PlayAnimMontage(DeathMontage);
+//
+//}
+
+/*
+* float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	//Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	//
-	//if (StatComponent->CurHP)
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+
+	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
+
+	if (StatComponent->CurHP > 0)
+		PlayAnimMontage(HitMontage);
+	else
+		PlayAnimMontage(DeathMontage);
 
 	return 0.0f;
 }
+*/
+

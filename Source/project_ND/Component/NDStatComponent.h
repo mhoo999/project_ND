@@ -38,6 +38,15 @@ public:
 	UNDStatComponent* SetCurHeartbeat(float InCurHeartbeat) { this->CurHeartbeat = InCurHeartbeat; return this; }
 	UNDStatComponent* SetMaxHeartbeat(float InMaxHeartbeat) { this->MaxHeartbeat = InMaxHeartbeat; return this; }
 
+	float GetCurHP();       
+	float GetMaxHP();       
+	float GetDamage();      
+	float GetCurHungry();   
+	float GetMaxHungry(); 
+
+	float GetCurHeartbeat();
+	float GetMaxHeartbeat();
+
 public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

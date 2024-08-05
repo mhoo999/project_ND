@@ -91,6 +91,7 @@ protected:
 public:
 	void ToggleBeChasePlayer();
 
+	UFUNCTION(BlueprintNativeEvent)
 	void ZombieDie();
-	
+	virtual void ZombieDie_Implementation();
 };

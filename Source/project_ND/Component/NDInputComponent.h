@@ -53,5 +53,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* AttackAction;
-		
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* ThrowAction;
 };
