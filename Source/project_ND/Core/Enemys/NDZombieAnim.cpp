@@ -53,12 +53,12 @@ float UNDZombieAnim::GetZombieAttackPlayTime() const
 
 void UNDZombieAnim::AnimNotify_StartAtk()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Start zombie attack"));
+	Zombie->SetTrueAttackTrace();
 }
 
 void UNDZombieAnim::AnimNotify_EndAtk()
 {
-	UE_LOG(LogTemp, Warning, TEXT("End zombie attack"));
+	Zombie->SetFalseAttackTrace();
 }
 
 void UNDZombieAnim::AnimNotify_ChangeStateIsAttack()

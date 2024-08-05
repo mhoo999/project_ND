@@ -6,6 +6,9 @@
 #include "Components/CapsuleComponent.h"
 #include "project_ND/Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "project_ND/Component/NDStatComponent.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "project_ND/Core/Characters/NDPlayerCharacter.h"
 #include "project_ND/Core/Enemys/NDZombieAnim.h"
 #include "Storage/Nodes/FileEntry.h"
 
@@ -23,6 +26,9 @@ ANDZombieBase::ANDZombieBase()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	PerceptionSocket = "pelvis";
+	
+	TraceRadius = 20.0f;
+	TraceLength = 100.0f;
 }
 
 void ANDZombieBase::BeginPlay()
@@ -35,6 +41,11 @@ void ANDZombieBase::BeginPlay()
 void ANDZombieBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bIsAttackTrace)
+	{
+		PerformHandSphereTraces();
+	}
 }
 
 void ANDZombieBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -87,6 +98,12 @@ void ANDZombieBase::SetHitLocationByBoneName(const FName& BoneName)
 void ANDZombieBase::TakeDamage(const float DamageAmount)
 {
 	HP -= DamageAmount;
+
+	if (HP <= 0)
+	{
+		ANDAIController* AIController = Cast<ANDAIController>(GetController());
+		AIController->SetAIState("Dead");
+	}
 }
 
 void ANDZombieBase::Recovery(FString ItemType, const float RecoveryAmount)
@@ -116,11 +133,56 @@ void ANDZombieBase::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRot
 {
 	Super::GetActorEyesViewPoint(OutLocation, OutRotation);
 
-	// OutLocation = GetMesh()->GetSocketLocation(PerceptionSocket);
-
 	const FRotator SocketRotation = FRotator(0, GetMesh()->GetSocketRotation(PerceptionSocket).Yaw, 0);
 	const FRotator AdjustedRotation = SocketRotation + FRotator(0, 90, 0);
 	OutRotation = AdjustedRotation;
+}
+
+void ANDZombieBase::PerformHandSphereTraces()
+{
+	FVector LeftHandLocation = GetMesh()->GetSocketLocation(FName("hand_l"));
+	FVector RightHandLocation = GetMesh()->GetSocketLocation(FName("hand_r"));
+
+	FVector LeftHandEnd = LeftHandLocation + GetMesh()->GetForwardVector() * TraceLength;
+	FVector RightHandEnd = RightHandLocation + GetMesh()->GetForwardVector() * TraceLength;
+
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+
+	FHitResult LeftHitResult;
+	bool bLeftHit = GetWorld()->SweepSingleByChannel(LeftHitResult, LeftHandLocation, LeftHandEnd, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(TraceRadius),CollisionParams);
+
+	DrawDebugSphere(GetWorld(), LeftHandLocation, TraceRadius, 12, FColor::Red, false, 1.0f);
+	if (bLeftHit)
+	{
+		DrawDebugSphere(GetWorld(), LeftHandLocation, TraceRadius, 12, FColor::Green, false, 1.0f);
+		bIsAttackTrace = false;
+		ANDMyCharacter* Player = Cast<ANDMyCharacter>(LeftHitResult.GetActor());
+		if (Player)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Left hand hit player"));
+			UNDStatComponent* StatComponent = Player->GetComponentByClass<UNDStatComponent>();
+		}
+	}
+
+	FHitResult RightHitResult;
+	bool bRightHit = GetWorld()->SweepSingleByChannel(RightHitResult, RightHandLocation, RightHandEnd, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(TraceRadius),CollisionParams);
+
+	DrawDebugSphere(GetWorld(), RightHandLocation, TraceRadius, 12, FColor::Red, false, 1.0f);
+	if (bRightHit)
+	{
+		DrawDebugSphere(GetWorld(), RightHandLocation, TraceRadius, 12, FColor::Green, false, 1.0f);
+		bIsAttackTrace = false;
+		ANDMyCharacter* Player = Cast<ANDMyCharacter>(RightHitResult.GetActor());
+		if (Player)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Right hand hit player"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Right hand hit me"));
+		}
+	}
 }
 
 bool ANDZombieBase::GetIsAttacking() const
@@ -138,8 +200,6 @@ void ANDZombieBase::ChangeStateAttack()
 	bIsAttacking = !bIsAttacking;
 	UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(GetMesh()->GetAnimInstance());
 	ZombieAnim->bIsAttacking = bIsAttacking;
-
-	UE_LOG(LogTemp, Warning, TEXT("bIsAttacking : %hhd"), bIsAttacking);
 }
 
 void ANDZombieBase::ChangeStateDamaged()
@@ -149,3 +209,12 @@ void ANDZombieBase::ChangeStateDamaged()
 	ZombieAnim->bIsDamaged = bIsDamaged;
 }
 
+void ANDZombieBase::SetTrueAttackTrace()
+{
+	bIsAttackTrace = true;
+}
+
+void ANDZombieBase::SetFalseAttackTrace()
+{
+	bIsAttackTrace = false;
+}

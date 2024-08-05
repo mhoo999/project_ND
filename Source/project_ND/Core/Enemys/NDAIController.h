@@ -71,7 +71,7 @@ private:
 	bool bIsExcitement;
 	FTimerHandle RelaxTimerHandle;
 	void GetExcitement() const;
-	void GetRelax() const;
+	void GetRelax();
 
 	bool bChasePlayer;
 
