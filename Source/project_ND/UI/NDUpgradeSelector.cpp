@@ -4,6 +4,7 @@
 #include "NDUpgradeSelector.h"
 
 #include "Components/Image.h"
+#include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
 
 void UNDUpgradeSelector::OptionSorting()
@@ -43,8 +44,18 @@ void UNDUpgradeSelector::OptionSorting()
 
 void UNDUpgradeSelector::ChooseUpgrade()
 {
-	// PlayerState 접근하여 기능 업그레이드
-	
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		// PlayerState 접근하여 기능 업그레이드
+		// if (APlayerState* PlayerState = PlayerController->GetPlayerState<>())
+		
+		
+		// UI 숨기기 & 게임 재개
+		if (AHUD* PlayerHUD = PlayerController->GetHUD())
+		{
+			
+		}
+	}
 	
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
 }

@@ -269,5 +269,13 @@ void ANDAIController::ZombieDie()
 	}
 
 	// WBP_ChooseUpgradeSelector 호출
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		if (AHUD* PlayerHUD = PlayerController->GetHUD())
+		{
+			
+		}
+	}	
+	
 	// UGameplayStatics::SetGamePaused(GetWorld(), true);
 }

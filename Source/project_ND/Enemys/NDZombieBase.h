@@ -59,6 +59,7 @@ protected:
 	bool bSuperArmor;
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	virtual void TakeDamage(float DamageAmount) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
