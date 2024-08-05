@@ -46,6 +46,8 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
+	void Throw();
+
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void OnBluntWeaponKey(const FInputActionValue& Value);
 
@@ -67,6 +69,8 @@ protected:
 	void OnAttackEnd();
 	//void Crouched(const FInputActionValue& Value);
 
+
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
@@ -76,4 +80,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USpringArmComponent* SpringArm;
+
+	//ANDZombieBase* Target;
+	class ANDZombieBase* Target;
 };

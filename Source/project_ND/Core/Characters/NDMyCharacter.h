@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "project_ND/PickUpObject/Weapons/NDWeaponBase.h"
 #include "NDMyCharacter.generated.h"
+//#include "project_ND/Core/Interface/NDCharacterInterface.h"
 
 class ANDWeaponBase;
 class ANDWeapon;
@@ -14,7 +15,7 @@ class UNDStatComponent;
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	UNARMED, FLASHLIGHT, BLUNTWEAPON
+	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE
 };
 
 UCLASS()
@@ -56,7 +57,9 @@ public:
 private:
 	void SpawnWeapons();
 
-	float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+	//virtual void TakeDamage(float DamageAmount) override;
+
 
 protected:
 	//Weapon

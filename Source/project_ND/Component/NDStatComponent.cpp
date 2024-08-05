@@ -32,3 +32,37 @@ void UNDStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+float UNDStatComponent::GetCurHP()
+{
+	return 0.0f;
+}
+
+float UNDStatComponent::GetMaxHP()
+{
+	return 0.0f;
+}
+
+float UNDStatComponent::GetDamage()
+{
+	return 0.0f;
+}
+
+float UNDStatComponent::GetCurHungry()
+{
+	return 0.0f;
+}
+
+float UNDStatComponent::GetMaxHungry()
+{
+	return 0.0f;
+}
+
+float UNDStatComponent::GetCurHeartbeat()
+{
+	return 0.0f;
+}
+
+float UNDStatComponent::GetMaxHeartbeat()
+{
+	return 0.0f;
+}
