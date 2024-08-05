@@ -47,7 +47,12 @@ private:
 	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
 	UImage* Option03;
 
+
+public:
+	UFUNCTION(BlueprintCallable)
 	void OptionSorting();
-	
+
+	UFUNCTION(BlueprintNativeEvent)
 	void ChooseUpgrade();
+	virtual void ChooseUpgrade_Implementation();
 };
