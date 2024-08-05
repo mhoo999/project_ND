@@ -71,7 +71,7 @@ private:
 	bool bIsExcitement;
 	FTimerHandle RelaxTimerHandle;
 	void GetExcitement() const;
-	void GetRelax() const;
+	void GetRelax();
 
 	bool bChasePlayer;
 
@@ -91,6 +91,7 @@ protected:
 public:
 	void ToggleBeChasePlayer();
 
+	UFUNCTION(BlueprintNativeEvent)
 	void ZombieDie();
-	
+	virtual void ZombieDie_Implementation();
 };

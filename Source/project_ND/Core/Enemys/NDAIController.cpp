@@ -7,6 +7,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -42,14 +43,6 @@ void ANDAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	PrintState();
-
-	if (Zombie)
-	{
-		if (Zombie->GetHP() == 0.0f)
-		{
-			SetAIState("Dead");
-		}
-	}
 }
 
 void ANDAIController::OnPossess(APawn* InPawn)
@@ -79,7 +72,6 @@ void ANDAIController::SetAIState(FString NewState)
 	
 	if (CurrentState == EAIState::Idle)
 	{
-		bIsExcitement = false;
 		GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
 		GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
 		{
@@ -204,9 +196,10 @@ void ANDAIController::GetExcitement() const
 	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 3.0f;
 }
 
-void ANDAIController::GetRelax() const
+void ANDAIController::GetRelax()
 {
 	Zombie->GetCharacterMovement()->MaxWalkSpeed = Zombie->GetMovementSpeed();
+	bIsExcitement = false;
 }
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
@@ -257,7 +250,7 @@ void ANDAIController::ToggleBeChasePlayer()
 	bChasePlayer = !bChasePlayer;
 }
 
-void ANDAIController::ZombieDie()
+void ANDAIController::ZombieDie_Implementation()
 {
 	if (AIPerceptionComponent)
 	{
@@ -273,5 +266,10 @@ void ANDAIController::ZombieDie()
 	{
 		Zombie->GetMesh()->SetSimulatePhysics(true);
 		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+
+		// BP
+		// UGameplayStatics::SetGamePaused(GetWorld(), true);
+		// WBP_ChooseUpgradeSelector show
+		// upgradeSelector OptionSort() 실행
 	}
 }

@@ -59,6 +59,7 @@ protected:
 	bool bSuperArmor;
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	virtual void TakeDamage(float DamageAmount) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
@@ -78,5 +79,27 @@ private:
 	FName PerceptionSocket;
 
 	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
+
+	bool bIsAttacking;
+	bool bIsDamaged;
+	bool bIsAttackTrace;
+
+	void PerformHandSphereTraces();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack", meta=(AllowPrivateAccess))
+	float TraceRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attack", meta=(AllowPrivateAccess))
+	float TraceLength;
 	
+public:
+	bool GetIsAttacking() const;
+	bool GetIsDamaged() const;
+	
+	void ChangeStateAttack();
+	void ChangeStateDamaged();
+
+	void SetTrueAttackTrace();
+	void SetFalseAttackTrace();
+
 };
