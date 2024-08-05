@@ -250,7 +250,7 @@ void ANDAIController::ToggleBeChasePlayer()
 	bChasePlayer = !bChasePlayer;
 }
 
-void ANDAIController::ZombieDie()
+void ANDAIController::ZombieDie_Implementation()
 {
 	if (AIPerceptionComponent)
 	{
@@ -266,16 +266,10 @@ void ANDAIController::ZombieDie()
 	{
 		Zombie->GetMesh()->SetSimulatePhysics(true);
 		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	}
 
-	// WBP_ChooseUpgradeSelector 호출
-	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
-	{
-		if (AHUD* PlayerHUD = PlayerController->GetHUD())
-		{
-			
-		}
-	}	
-	
-	// UGameplayStatics::SetGamePaused(GetWorld(), true);
+		// BP
+		// UGameplayStatics::SetGamePaused(GetWorld(), true);
+		// WBP_ChooseUpgradeSelector show
+		// upgradeSelector OptionSort() 실행
+	}
 }
