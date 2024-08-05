@@ -2,7 +2,8 @@
 
 
 #include "NDMyCharacter.h"
-#include "project_ND/Component/NDStatComponent.h"
+
+#include "project_ND/Core/Components/NDStatComponent.h"
 
 // Sets default values
 ANDMyCharacter::ANDMyCharacter()
@@ -83,18 +84,23 @@ void ANDMyCharacter::SpawnWeapons()
 	}
 }
 
-//void ANDMyCharacter::TakeDamage(float DamageAmount)
-//{
-//	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
-//
-//	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
-//
-//	if (StatComponent->CurHP > 0)
-//		PlayAnimMontage(HitMontage);
-//	else
-//		PlayAnimMontage(DeathMontage);
-//
-//}
+void ANDMyCharacter::TakeDamage(float DamageAmount)
+{
+	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+
+	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
+
+	if (StatComponent->CurHP > 0)
+		PlayAnimMontage(HitMontage);
+	else
+		PlayAnimMontage(DeathMontage);
+
+}
+
+void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
+{
+	
+}
 
 /*
 * float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

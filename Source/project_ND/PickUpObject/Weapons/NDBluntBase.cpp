@@ -4,10 +4,11 @@
 #include "NDBluntBase.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "project_ND/Component/NDStatComponent.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "Components/ShapeComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
+#include "project_ND/Core/Components/NDStatComponent.h"
+
 
 
 
@@ -23,7 +24,7 @@ void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
+	// BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
 		
 }
 

@@ -9,8 +9,8 @@
 #include "EnhancedInputComponent.h"
 #include "Components/ShapeComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "project_ND/Component/NDInputComponent.h"
-#include "project_ND/Component/NDStatComponent.h"
+#include "project_ND/Core/Components/NDInputComponent.h"
+#include "project_ND/Core/Components/NDStatComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 
 

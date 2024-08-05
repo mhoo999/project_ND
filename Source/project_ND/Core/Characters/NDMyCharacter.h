@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "project_ND/Core/Interface/NDCharacterInterface.h"
 #include "project_ND/PickUpObject/Weapons/NDWeaponBase.h"
 #include "NDMyCharacter.generated.h"
 //#include "project_ND/Core/Interface/NDCharacterInterface.h"
@@ -19,7 +20,7 @@ enum class EWeaponType : uint8
 };
 
 UCLASS()
-class PROJECT_ND_API ANDMyCharacter : public ACharacter
+class PROJECT_ND_API ANDMyCharacter : public ACharacter, public INDCharacterInterface
 {
 	GENERATED_BODY()
 
@@ -58,8 +59,9 @@ private:
 	void SpawnWeapons();
 
 	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
-	//virtual void TakeDamage(float DamageAmount) override;
+	virtual void TakeDamage(float DamageAmount) override;
 
+	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
 
 protected:
 	//Weapon
