@@ -23,7 +23,7 @@ void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
+	// BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
 		
 }
 
