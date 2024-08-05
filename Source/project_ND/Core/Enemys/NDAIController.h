@@ -87,6 +87,9 @@ protected:
 
 	UFUNCTION()
 	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
+
+	UFUNCTION()
+	void OnTargetForgotten();
 	
 public:
 	void ToggleBeChasePlayer();

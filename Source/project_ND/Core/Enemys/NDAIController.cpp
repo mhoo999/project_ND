@@ -245,6 +245,11 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 	}
 }
 
+void ANDAIController::OnTargetForgotten()
+{
+	
+}
+
 void ANDAIController::ToggleBeChasePlayer()
 {
 	bChasePlayer = !bChasePlayer;
