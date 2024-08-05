@@ -12,23 +12,18 @@
 
 
 
-// Sets default values
 ANDBluntBase::ANDBluntBase()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
 void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
-		
+	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
 }
 
-// Called every frame
 void ANDBluntBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -37,10 +32,18 @@ void ANDBluntBase::Tick(float DeltaTime)
 void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Target = Cast<ANDZombieBase>(OtherActor);
+	if (OtherActor == OwnerCharacter)
+	{
+		return;
+	}
 	
-	if(Target)
-		Target->TakeDamage(10);
+	if(ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
+	{
+		if (bFromSweep)
+		{
+			Zombie->TakeDamage(10.0f, OwnerCharacter, SweepResult.BoneName);
+		}
+	}
 
 	//UGameplayStatics::ApplyDamage
 	//(

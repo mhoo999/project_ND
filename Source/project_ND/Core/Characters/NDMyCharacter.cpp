@@ -84,7 +84,7 @@ void ANDMyCharacter::SpawnWeapons()
 	}
 }
 
-void ANDMyCharacter::TakeDamage(float DamageAmount)
+void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FName BornName)
 {
 	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
 

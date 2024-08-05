@@ -60,7 +60,7 @@ protected:
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	virtual void TakeDamage(float DamageAmount) override;
+	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FName BornName) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
 	
