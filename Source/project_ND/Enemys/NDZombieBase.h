@@ -102,4 +102,10 @@ public:
 	void SetTrueAttackTrace();
 	void SetFalseAttackTrace();
 
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DeathAnim", meta=(AllowPrivateAccess))
+	UAnimationAsset* DeathAnimation;
+
+public:
+	void PlayDeathAnim();
 };

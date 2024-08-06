@@ -258,26 +258,29 @@ void ANDAIController::ToggleBeChasePlayer()
 
 void ANDAIController::ZombieDie_Implementation()
 {
-	if (AIPerceptionComponent)
-	{
-		GetAIPerceptionComponent()->Deactivate();
-	}
-
-	if (BrainComponent)
-	{
-		BrainComponent->StopLogic(TEXT("Stop Tree"));
-	}
-
-	if (Zombie)
-	{
-		Zombie->GetMesh()->SetSimulatePhysics(true);
-		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-
-		// BP
-		// UGameplayStatics::SetGamePaused(GetWorld(), true);
-		// WBP_ChooseUpgradeSelector show
-		// upgradeSelector OptionSort() 실행
-	}
+	// UE_LOG(LogTemp, Warning, TEXT("NDAIController) ZombieDie"));
+	//
+	// if (AIPerceptionComponent)
+	// {
+	// 	GetAIPerceptionComponent()->Deactivate();
+	// }
+	//
+	// if (BrainComponent)
+	// {
+	// 	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	// }
+	//
+	// if (Zombie)
+	// {
+	// 	Zombie->GetMesh()->SetSimulatePhysics(true);
+	// 	Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	// 	Zombie->SetLifeSpan(3.0f);
+	// 	
+	// 	// BP
+	// 	// UGameplayStatics::SetGamePaused(GetWorld(), true);
+	// 	// WBP_ChooseUpgradeSelector show
+	// 	// upgradeSelector OptionSort() 실행
+	// }
 }
 
 void ANDAIController::GetDamaged(FVector HitLocation)
@@ -287,6 +290,7 @@ void ANDAIController::GetDamaged(FVector HitLocation)
 		BrainComponent->StopLogic(TEXT("Stop Tree"));
 		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(Zombie->GetMesh()->GetAnimInstance());
 		ZombieAnim->PlayDamagedAnim();
+		
 		SetAIState("Patrol");
 		GetBlackboardComponent()->SetValueAsVector("Destination", HitLocation);
 	}
