@@ -6,43 +6,70 @@
 #include "Components/Image.h"
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "project_ND/Core/Components/NDStatComponent.h"
 
 void UNDUpgradeSelector::OptionSorting()
 {
-	if (UpgradeOptionTable)
-	{
-		static const FString ContextString(TEXT("OptionSorting"));
-		TArray<FUpgradeOptionTable*> Options;
-		UpgradeOptionTable->GetAllRows<FUpgradeOptionTable>(ContextString, Options);
+    if (UpgradeOptionTable)
+    {
+        static const FString ContextString(TEXT("OptionSorting"));
+        TArray<FUpgradeOptionTable*> OptionRows;
+        UpgradeOptionTable->GetAllRows<FUpgradeOptionTable>(ContextString, OptionRows);
 
-		TSet<int32> SelectedIndices;
-		while (SelectedIndices.Num() < 3 && SelectedIndices.Num() < Options.Num())
-		{
-			int32 RandomIndex = FMath::RandRange(0, Options.Num() - 1);
-			SelectedIndices.Add(RandomIndex);
-		}
+        TSet<int32> SelectedIndices;
+        while (SelectedIndices.Num() < 3 && SelectedIndices.Num() < OptionRows.Num())
+        {
+            int32 RandomIndex = FMath::RandRange(0, OptionRows.Num() - 1);
+            SelectedIndices.Add(RandomIndex);
+        }
 
-		TArray<UImage*> OptionImages = { Option01, Option02, Option03 };
-		int32 Index = 0;
+        TArray<FUpgradeOptionTable*> Options = { &Option01, &Option02, &Option03 };
+        TArray<UImage*> OptionImages = { Option01Image, Option02Image, Option03Image };
+        int32 Index = 0;
 
-		for (auto SelectedIndex : SelectedIndices)
-		{
-			if (Options.IsValidIndex(SelectedIndex) && OptionImages.IsValidIndex(Index))
-			{
-				UTexture2D* SelectedTexture = Options[SelectedIndex]->Image;
-				
-				if (SelectedTexture && OptionImages[Index])
-				{
-					OptionImages[Index]->SetBrushFromTexture(SelectedTexture);
-				}
-				
-				Index++;
-			}
-		}
-	}
+        for (auto SelectedIndex : SelectedIndices)
+        {
+            if (OptionRows.IsValidIndex(SelectedIndex) && OptionImages.IsValidIndex(Index))
+            {
+                if (OptionRows[SelectedIndex]->Image)
+                {
+                    OptionImages[Index]->SetBrushFromTexture(OptionRows[SelectedIndex]->Image);
+                }
+                
+                *Options[Index] = *OptionRows[SelectedIndex];
+            
+                Index++;
+            }
+        }
+    }
 }
 
-void UNDUpgradeSelector::ChooseUpgrade_Implementation()
+void UNDUpgradeSelector::ChooseUpgrade(FUpgradeOptionTable Option)
 {
-	
+    if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+    {
+        if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(PlayerController->GetPawn()))
+        {
+            if (UNDStatComponent* StatComponent = Player->GetComponentByClass<UNDStatComponent>())
+            {
+                StatComponent->UpgradeStat(Option);
+            }
+        }
+    }
+}
+
+FUpgradeOptionTable UNDUpgradeSelector::GetOption01()
+{
+    return Option01;
+}
+
+FUpgradeOptionTable UNDUpgradeSelector::GetOption02()
+{
+    return Option02;
+}
+
+FUpgradeOptionTable UNDUpgradeSelector::GetOption03()
+{
+    return Option03;
 }

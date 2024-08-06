@@ -56,4 +56,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* ThrowAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* FlashLightOnAction;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* FlashLightOffAction;
 };

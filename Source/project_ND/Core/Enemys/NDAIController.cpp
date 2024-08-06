@@ -4,6 +4,7 @@
 #include "NDAIController.h"
 
 
+#include "NDZombieAnim.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -276,5 +277,17 @@ void ANDAIController::ZombieDie_Implementation()
 		// UGameplayStatics::SetGamePaused(GetWorld(), true);
 		// WBP_ChooseUpgradeSelector show
 		// upgradeSelector OptionSort() 실행
+	}
+}
+
+void ANDAIController::GetDamaged(FVector HitLocation)
+{
+	if (!Zombie->bSuperArmor)
+	{
+		BrainComponent->StopLogic(TEXT("Stop Tree"));
+		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(Zombie->GetMesh()->GetAnimInstance());
+		ZombieAnim->PlayDamagedAnim();
+		SetAIState("Patrol");
+		GetBlackboardComponent()->SetValueAsVector("Destination", HitLocation);
 	}
 }

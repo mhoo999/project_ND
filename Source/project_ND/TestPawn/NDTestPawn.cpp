@@ -189,7 +189,7 @@ void ANDTestPawn::OnCollisionComponentBeginOverlap(UPrimitiveComponent* Overlapp
 	if (ANDZombieBase* HitZombie = Cast<ANDZombieBase>(OtherActor))
 	{
 		HitZombie->SetHitLocationByBoneName(SweepResult.BoneName);
-		HitZombie->TakeDamage(10.0f);
+		// HitZombie->TakeDamage(10.0f, Owner, );
 		
 		UE_LOG(LogTemp, Warning, TEXT("Hit Location : %s"), *SweepResult.BoneName.ToString());
 	}

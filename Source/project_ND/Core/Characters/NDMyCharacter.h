@@ -16,7 +16,7 @@ class UNDStatComponent;
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE
+	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE, FLASHLIGHTON
 };
 
 UCLASS()
@@ -58,8 +58,9 @@ public:
 private:
 	void SpawnWeapons();
 
+public:
 	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
-	virtual void TakeDamage(float DamageAmount) override;
+	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
 
