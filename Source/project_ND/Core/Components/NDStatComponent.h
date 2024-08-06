@@ -7,6 +7,8 @@
 #include "NDStatComponent.generated.h"
 
 
+struct FUpgradeOptionTable;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECT_ND_API UNDStatComponent : public UActorComponent
 {
@@ -83,4 +85,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float MaxHeartbeat;
 
+	void UpgradeStat(FUpgradeOptionTable& Option);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Upgrade Options")
+	TArray<FUpgradeOptionTable> UpgradeOptionList;
 };
