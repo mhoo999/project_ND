@@ -96,14 +96,19 @@ void ANDZombieBase::SetHitLocationByBoneName(const FName& BoneName)
 	}
 }
 
-void ANDZombieBase::TakeDamage(const float DamageAmount)
+void ANDZombieBase::TakeDamage(const float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
+	ANDAIController* AIController = Cast<ANDAIController>(GetController());
+	
 	HP -= DamageAmount;
-
+	
 	if (HP <= 0)
 	{
-		ANDAIController* AIController = Cast<ANDAIController>(GetController());
 		AIController->SetAIState("Dead");
+	}
+	else
+	{
+		AIController->GetDamaged(HitResult.Location);
 	}
 }
 
@@ -161,8 +166,9 @@ void ANDZombieBase::PerformHandSphereTraces()
 		ANDMyCharacter* Player = Cast<ANDMyCharacter>(LeftHitResult.GetActor());
 		if (Player)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Left hand hit player"));
-			UNDStatComponent* StatComponent = Player->GetComponentByClass<UNDStatComponent>();
+			// UE_LOG(LogTemp, Warning, TEXT("Left hand hit player"));
+			Player->TakeDamage(Damage, this, LeftHitResult);
+			UE_LOG(LogTemp, Warning, TEXT("NDZombieBase) MyDamage : %f, player HP : %f"), Damage, Player->GetStatComponent()->CurHP);
 		}
 	}
 
@@ -177,11 +183,9 @@ void ANDZombieBase::PerformHandSphereTraces()
 		ANDMyCharacter* Player = Cast<ANDMyCharacter>(RightHitResult.GetActor());
 		if (Player)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Right hand hit player"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Right hand hit me"));
+			// UE_LOG(LogTemp, Warning, TEXT("Right hand hit player"));
+			Player->TakeDamage(Damage, this, RightHitResult);
+			UE_LOG(LogTemp, Warning, TEXT("NDZombieBase) MyDamage : %f, player HP : %f"), Damage, Player->GetStatComponent()->CurHP);
 		}
 	}
 }

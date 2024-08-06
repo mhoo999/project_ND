@@ -58,8 +58,9 @@ public:
 private:
 	void SpawnWeapons();
 
+public:
 	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
-	virtual void TakeDamage(float DamageAmount) override;
+	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
 

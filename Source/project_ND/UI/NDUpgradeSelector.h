@@ -22,6 +22,9 @@ struct FUpgradeOptionTable : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
 	UTexture2D* Image;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
+	TSoftObjectPtr<UTexture2D> IconImage;	
 };
 
 class UImage;
@@ -39,20 +42,36 @@ private:
 	UDataTable* UpgradeOptionTable;
 
 	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
-	UImage* Option01;
+	UImage* Option01Image;
 
 	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
-	UImage* Option02;
+	UImage* Option02Image;
 
 	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
-	UImage* Option03;
+	UImage* Option03Image;
 
+	UPROPERTY(meta=(AllowPrivateAccess))
+	FUpgradeOptionTable Option01;
+
+	UPROPERTY(meta=(AllowPrivateAccess))
+	FUpgradeOptionTable Option02;
+
+	UPROPERTY(meta=(AllowPrivateAccess))
+	FUpgradeOptionTable Option03;
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void OptionSorting();
 
-	UFUNCTION(BlueprintNativeEvent)
-	void ChooseUpgrade();
-	virtual void ChooseUpgrade_Implementation();
+	UFUNCTION(BlueprintCallable)
+	void ChooseUpgrade(FUpgradeOptionTable Option);
+
+	UFUNCTION(BlueprintCallable)
+	FUpgradeOptionTable GetOption01();
+
+	UFUNCTION(BlueprintCallable)
+	FUpgradeOptionTable GetOption02();
+
+	UFUNCTION(BlueprintCallable)
+	FUpgradeOptionTable GetOption03();
 };

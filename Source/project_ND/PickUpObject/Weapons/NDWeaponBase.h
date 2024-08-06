@@ -24,19 +24,22 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings", meta=(AllowPrivateAccess))
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
 	FString WeaponType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
 	float WeaponDamage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
 	float WeaponRange;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
 	int32 AmmoCount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
+	UShapeComponent* BodyCollider;
+	
 public:
 	bool AttachToHolster(USceneComponent* InParent);
 	bool AttachToHand   (USceneComponent* InParent);
@@ -70,5 +73,4 @@ protected:
 	
 	class ANDZombieBase* Target;
 
-	class UShapeComponent* BodyCollider;
 };
