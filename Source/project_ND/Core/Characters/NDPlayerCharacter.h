@@ -47,6 +47,7 @@ protected:
 	void SprintEnd  ();
 
 	void Throw();
+	void FlashLightOn();
 
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void OnBluntWeaponKey(const FInputActionValue& Value);

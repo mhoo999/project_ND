@@ -95,6 +95,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throw);
+		
+		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
+
 
 		//UE_LOG(,)
 	}
@@ -274,6 +277,10 @@ void APlayerCharacter::OnAttackEnd()
 }
 
 void APlayerCharacter::Throw()
+{
+}
+
+void APlayerCharacter::FlashLightOn()
 {
 }
 
