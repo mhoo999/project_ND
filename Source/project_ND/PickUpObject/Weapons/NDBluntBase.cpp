@@ -39,10 +39,7 @@ void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCom
 	
 	if(ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
 	{
-		if (bFromSweep)
-		{
-			Zombie->TakeDamage(10.0f, OwnerCharacter, SweepResult.BoneName);
-		}
+		Zombie->TakeDamage(10.0f, OwnerCharacter, SweepResult);
 	}
 
 	//UGameplayStatics::ApplyDamage

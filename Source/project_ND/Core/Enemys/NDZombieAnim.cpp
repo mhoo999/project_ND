@@ -3,6 +3,8 @@
 
 #include "NDZombieAnim.h"
 
+#include "NDAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 
 void UNDZombieAnim::NativeBeginPlay()
@@ -49,6 +51,25 @@ void UNDZombieAnim::PlayZombieAttack()
 float UNDZombieAnim::GetZombieAttackPlayTime() const
 {
 	return Montage_GetPlayRate(AttackAnim);
+}
+
+void UNDZombieAnim::AnimNotify_ToggleSuperArmor()
+{
+	Zombie->bSuperArmor = !Zombie->bSuperArmor;
+}
+
+void UNDZombieAnim::AnimNotify_ReActiveZombie()
+{
+	ANDAIController* AIController = Cast<ANDAIController>(Zombie->GetOwner());
+	AIController->RunCurrentBehaviorTree();
+}
+
+void UNDZombieAnim::PlayDamagedAnim()
+{
+	if (DamagedAnim)
+	{
+		Montage_Play(DamagedAnim);
+	}
 }
 
 void UNDZombieAnim::AnimNotify_StartAtk()

@@ -31,6 +31,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Anims")
 	UAnimMontage* AttackAnim;
 
+	UPROPERTY(EditDefaultsOnly, Category="Anims")
+	UAnimMontage* DamagedAnim;
+
+	void PlayDamagedAnim();
+	
 	UFUNCTION()
 	void AnimNotify_StartAtk();
 
@@ -48,4 +53,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animation", meta=(AllowPrivateAccess))
 	bool bIsDamaged;
+	
+	UFUNCTION()
+	void AnimNotify_ToggleSuperArmor();
+
+	UFUNCTION()
+	void AnimNotify_ReActiveZombie();
 };

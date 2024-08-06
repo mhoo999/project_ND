@@ -96,18 +96,19 @@ void ANDZombieBase::SetHitLocationByBoneName(const FName& BoneName)
 	}
 }
 
-void ANDZombieBase::TakeDamage(const float DamageAmount, AActor* Attacker, FName BornName)
+void ANDZombieBase::TakeDamage(const float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
+	ANDAIController* AIController = Cast<ANDAIController>(GetController());
+	
 	HP -= DamageAmount;
-
-	SetHitLocationByBoneName(BornName);
-
-	UE_LOG(LogTemp, Warning, TEXT("NDZombieBase) Hit Location : %s"), *BornName.ToString());
 	
 	if (HP <= 0)
 	{
-		ANDAIController* AIController = Cast<ANDAIController>(GetController());
 		AIController->SetAIState("Dead");
+	}
+	else
+	{
+		AIController->GetDamaged(HitResult.Location);
 	}
 }
 

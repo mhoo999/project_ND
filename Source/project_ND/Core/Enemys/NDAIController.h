@@ -40,6 +40,8 @@ public:
 
 	static EAIState StringToEAIState(const FString& StateString);
 	
+	void RunCurrentBehaviorTree();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
 	UBehaviorTree* IdleBehaviorTree;
@@ -58,8 +60,6 @@ private:
 
 	EAIState CurrentState;
 	
-	void RunCurrentBehaviorTree();
-
 	void PrintState();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI", meta=(AllowPrivateAccess))
@@ -97,4 +97,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void ZombieDie();
 	virtual void ZombieDie_Implementation();
+
+	void GetDamaged(FVector HitLocation);
 };

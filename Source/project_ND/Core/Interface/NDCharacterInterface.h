@@ -19,7 +19,7 @@ class PROJECT_ND_API INDCharacterInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FName BornName)=0;
+	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)=0;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount)=0;
 };
