@@ -28,8 +28,8 @@ void ANDWeaponBase::Tick(float DeltaTime)
 
 void ANDWeaponBase::Attack()
 {
-	//if(OwnerCharacter)
-	//	OwnerCharacter->PlayAnimMontage(AttackMontage);
+	if(OwnerCharacter)
+		OwnerCharacter->PlayAnimMontage(AttackMontage);
 }
 
 
