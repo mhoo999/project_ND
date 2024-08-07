@@ -239,7 +239,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
-
+				
 				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 				{
 					SetAIState("Patrol");
