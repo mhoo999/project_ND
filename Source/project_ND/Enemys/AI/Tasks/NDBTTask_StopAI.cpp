@@ -4,6 +4,7 @@
 #include "NDBTTask_StopAI.h"
 
 #include "AIController.h"
+#include "project_ND/Enemys/NDZombieBase.h"
 
 UNDBTTask_StopAI::UNDBTTask_StopAI()
 {
@@ -17,7 +18,7 @@ EBTNodeResult::Type UNDBTTask_StopAI::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	{
 		return Super::ExecuteTask(OwnerComp, NodeMemory);
 	}
-
+	
 	const FVector CurrentLoc = Pawn->GetActorLocation();
 	Pawn->SetActorLocation(CurrentLoc);
 	
