@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "project_ND/Core/Enemys/NDAIController.h"
+#include "project_ND/Enemys/NDZombieBase.h"
 
 UNDBTTask_ZombieDie::UNDBTTask_ZombieDie()
 {
@@ -20,8 +21,9 @@ EBTNodeResult::Type UNDBTTask_ZombieDie::ExecuteTask(UBehaviorTreeComponent& Own
 	{
 		return Super::ExecuteTask(OwnerComp, NodeMemory);
 	}
-
-	AIController->ZombieDie();
 	
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	AIController->ZombieDie();
+
+	return EBTNodeResult::Failed;
+	// return Super::ExecuteTask(OwnerComp, NodeMemory);
 }
