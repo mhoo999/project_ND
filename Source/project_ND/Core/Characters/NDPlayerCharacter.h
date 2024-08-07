@@ -84,5 +84,5 @@ protected:
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
 
-	class ANDWeaponBase* weapon;
+	//class ANDWeaponBase* weapon;
 };

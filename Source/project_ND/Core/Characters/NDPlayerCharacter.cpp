@@ -261,7 +261,7 @@ void APlayerCharacter::OnAttack()
 	case EWeaponType::UNARMED:
 		break;
 	default:
-		weapon->Attack();
+		Cast<ANDWeaponBase>(GetCurrentWeapon())->Attack();
 		break;
 	}
 }
@@ -270,16 +270,16 @@ void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	weapon->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	weapon->GetBodyCollider()->bHiddenInGame = false;
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	weapon->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	weapon->GetBodyCollider()->bHiddenInGame = true;
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;
 }
 
 
