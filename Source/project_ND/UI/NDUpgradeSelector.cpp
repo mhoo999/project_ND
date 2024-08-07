@@ -6,6 +6,8 @@
 #include "Components/Image.h"
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "project_ND/Core/Components/NDStatComponent.h"
 
 void UNDUpgradeSelector::OptionSorting()
 {
@@ -30,7 +32,11 @@ void UNDUpgradeSelector::OptionSorting()
         {
             if (OptionRows.IsValidIndex(SelectedIndex) && OptionImages.IsValidIndex(Index))
             {
-                OptionImages[Index]->SetBrushFromTexture(OptionRows[SelectedIndex]->Image);
+                if (OptionRows[SelectedIndex]->Image)
+                {
+                    OptionImages[Index]->SetBrushFromTexture(OptionRows[SelectedIndex]->Image);
+                }
+                
                 *Options[Index] = *OptionRows[SelectedIndex];
             
                 Index++;
@@ -41,7 +47,16 @@ void UNDUpgradeSelector::OptionSorting()
 
 void UNDUpgradeSelector::ChooseUpgrade(FUpgradeOptionTable Option)
 {
-    
+    if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+    {
+        if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(PlayerController->GetPawn()))
+        {
+            if (UNDStatComponent* StatComponent = Player->GetComponentByClass<UNDStatComponent>())
+            {
+                StatComponent->UpgradeStat(Option);
+            }
+        }
+    }
 }
 
 FUpgradeOptionTable UNDUpgradeSelector::GetOption01()
