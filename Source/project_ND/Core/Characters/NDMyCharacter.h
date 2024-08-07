@@ -6,12 +6,15 @@
 #include "GameFramework/Character.h"
 #include "project_ND/Core/Interface/NDCharacterInterface.h"
 #include "project_ND/PickUpObject/Weapons/NDWeaponBase.h"
+#include "project_ND/PickUpObject/NDPickUpObject.h"
 #include "NDMyCharacter.generated.h"
+
 //#include "project_ND/Core/Interface/NDCharacterInterface.h"
 
 class ANDWeaponBase;
 class ANDWeapon;
 class UNDStatComponent;
+class ANDPickUpObject;
 
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
@@ -42,7 +45,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EWeaponType GetCurWeaponType() { return CurWeaponType; }
 
-	ANDWeaponBase* GetCurrentWeapon()
+	//ANDWeaponBase* GetCurrentWeapon()
+	ANDPickUpObject* GetCurrentWeapon()
 	{
 		if (Weapons.Contains(CurWeaponType))
 			return Weapons[CurWeaponType];
@@ -66,11 +70,18 @@ public:
 
 protected:
 	//Weapon
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	//TMap<EWeaponType, ANDWeaponBase*> Weapons;
+	//
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	//TMap<EWeaponType, TSubclassOf<ANDWeaponBase>> WeaponClasses;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, ANDWeaponBase*> Weapons;
+	TMap<EWeaponType, ANDPickUpObject*> Weapons;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<EWeaponType, TSubclassOf<ANDPickUpObject>> WeaponClasses;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, TSubclassOf<ANDWeaponBase>> WeaponClasses;
 
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
 	EWeaponType NextWeaponType = EWeaponType::UNARMED;
