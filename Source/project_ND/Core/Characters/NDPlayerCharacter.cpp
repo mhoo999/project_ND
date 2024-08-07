@@ -167,12 +167,24 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 	if (bIsCrouched)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 350.0f;
-	
+
+		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
+
+		SpringArm->TargetArmLength = 50.0f;
+
+		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
+		
 	}
 	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+
+		SpringArm->TargetArmLength = 50.0f;
+
 	}
+	
+	SpringArm->TargetArmLength = 130.0f;
+
 
 }
 
