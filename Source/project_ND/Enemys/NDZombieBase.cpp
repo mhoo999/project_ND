@@ -223,3 +223,11 @@ void ANDZombieBase::SetFalseAttackTrace()
 {
 	bIsAttackTrace = false;
 }
+
+void ANDZombieBase::PlayDeathAnim()
+{
+	if (DeathAnimation)
+	{
+		GetMesh()->PlayAnimation(DeathAnimation, false);
+	}
+}

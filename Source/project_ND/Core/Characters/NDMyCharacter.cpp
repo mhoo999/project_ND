@@ -76,7 +76,7 @@ void ANDMyCharacter::SpawnWeapons()
 	{
 		//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
 
-		ANDWeaponBase* weapon = GetWorld()->SpawnActor<ANDWeaponBase>(pair.Value, Param); // class Reference
+		ANDPickUpObject* weapon = GetWorld()->SpawnActor<ANDPickUpObject>(pair.Value, Param); // class Reference
 
 		weapon->AttachToHolster(GetMesh());
 

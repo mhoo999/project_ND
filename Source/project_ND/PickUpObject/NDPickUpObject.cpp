@@ -2,6 +2,8 @@
 
 
 #include "NDPickUpObject.h"
+#include "Components/ShapeComponent.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
 
 
 ANDPickUpObject::ANDPickUpObject()
@@ -50,3 +52,22 @@ void ANDPickUpObject::InitializeItem(const FItemBaseData& ItemData)
 	bIsEmpty = ItemData.bNotUse;
 }
 
+bool ANDPickUpObject::AttachToHolster(USceneComponent* InParent)
+{
+	return AttachToComponent
+	(
+		InParent,
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+		HolsterSocketName
+	);
+}
+
+bool ANDPickUpObject::AttachToHand(USceneComponent* InParent)
+{
+	return AttachToComponent
+	(
+		InParent,
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+		EquipSocketName
+	);
+}
