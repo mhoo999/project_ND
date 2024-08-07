@@ -48,8 +48,8 @@ public:
 	//ANDWeaponBase* GetCurrentWeapon()
 	ANDPickUpObject* GetCurrentWeapon()
 	{
-		if (Weapons.Contains(CurWeaponType))
-			return Weapons[CurWeaponType];
+		if (PickUpObjects.Contains(CurWeaponType))
+			return PickUpObjects[CurWeaponType];
 
 		return nullptr;
 	}
@@ -77,13 +77,16 @@ protected:
 	//TMap<EWeaponType, TSubclassOf<ANDWeaponBase>> WeaponClasses;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, ANDPickUpObject*> Weapons;
+	TMap<EWeaponType, ANDPickUpObject*> PickUpObjects;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, TSubclassOf<ANDPickUpObject>> WeaponClasses;
+	TMap<EWeaponType, TSubclassOf<ANDPickUpObject>> PickUpObjectClasses;
 
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EWeaponType NextWeaponType = EWeaponType::UNARMED;
 
 

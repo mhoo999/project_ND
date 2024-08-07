@@ -42,15 +42,13 @@ protected:
 	
 public:
 
-	void Attack();
-
 	UShapeComponent* GetBodyCollider() { return BodyCollider; }
 
+	void Attack();
 
 protected:
 
-	class ANDMyCharacter* OwnerCharacter;
-	
 	class ANDZombieBase* Target;
 
+	class ANDMyCharacter* OwnerCharacter;
 };
