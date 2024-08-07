@@ -37,17 +37,20 @@ class PROJECT_ND_API UNDUpgradeSelector : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	virtual void NativeConstruct() override;
+	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	UDataTable* UpgradeOptionTable;
 
-	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
 	UImage* Option01Image;
 
-	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
 	UImage* Option02Image;
 
-	UPROPERTY(meta=(AllowPrivateAccess, BindWidget))
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
 	UImage* Option03Image;
 
 	UPROPERTY(meta=(AllowPrivateAccess))
@@ -74,5 +77,24 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChooseUpgrade(FUpgradeOptionTable Option);
+
+private:
+	UFUNCTION()
+	void OnOption01ButtonHovered();
+
+	UFUNCTION()
+	void OnOption01UnButtonHovered();
+
+	UFUNCTION()
+	void OnOption02ButtonHovered();
+
+	UFUNCTION()
+	void OnOption02UnButtonHovered();
+
+	UFUNCTION()
+	void OnOption03ButtonHovered();
+
+	UFUNCTION()
+	void OnOption03UnButtonHovered();
 	
 };

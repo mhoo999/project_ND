@@ -59,6 +59,36 @@ void UNDUpgradeSelector::ChooseUpgrade(FUpgradeOptionTable Option)
     }
 }
 
+void UNDUpgradeSelector::OnOption01ButtonHovered()
+{
+}
+
+void UNDUpgradeSelector::OnOption01UnButtonHovered()
+{
+}
+
+void UNDUpgradeSelector::OnOption02ButtonHovered()
+{
+}
+
+void UNDUpgradeSelector::OnOption02UnButtonHovered()
+{
+}
+
+void UNDUpgradeSelector::OnOption03ButtonHovered()
+{
+}
+
+void UNDUpgradeSelector::OnOption03UnButtonHovered()
+{
+}
+
+void UNDUpgradeSelector::NativeConstruct()
+{
+    Super::NativeConstruct();
+
+}
+
 FUpgradeOptionTable UNDUpgradeSelector::GetOption01()
 {
     return Option01;
