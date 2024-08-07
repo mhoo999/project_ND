@@ -224,7 +224,7 @@ void APlayerCharacter::StrafeOff()
 
 void APlayerCharacter::OnDrawEnd()
 {
-	Weapons[NextWeaponType]->AttachToHand(GetMesh());
+	PickUpObjects[NextWeaponType]->AttachToHand(GetMesh());
 
 	NextWeaponType = EWeaponType::UNARMED;
 
