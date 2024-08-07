@@ -8,7 +8,6 @@
 #include "NDPlayerCharacter.generated.h"
 
 
-
 struct FInputActionValue;
 
 
@@ -46,11 +45,11 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
-	void Throw();
 	void FlashLightOn();
 
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void OnBluntWeaponKey(const FInputActionValue& Value);
+	void Throwable(const FInputActionValue& Value);
 
 	void StrafeOn();
 	void StrafeOff();
@@ -84,4 +83,6 @@ protected:
 
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
+
+	class ANDWeaponBase* weapon;
 };

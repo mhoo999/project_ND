@@ -26,26 +26,6 @@ void ANDWeaponBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-bool ANDWeaponBase::AttachToHolster(USceneComponent* InParent)
-{
-	return AttachToComponent
-	(
-		InParent,
-		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
-		HolsterSocketName
-	);
-}
-
-bool ANDWeaponBase::AttachToHand(USceneComponent* InParent)
-{
-	return AttachToComponent
-	(
-		InParent,
-		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
-		EquipSocketName
-	);
-}
-
 void ANDWeaponBase::Attack()
 {
 	OwnerCharacter->PlayAnimMontage(AttackMontage);

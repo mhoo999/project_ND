@@ -14,6 +14,7 @@
 #include "project_ND/Enemys/NDZombieBase.h"
 
 
+
 //class ANDWeapon;
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -94,7 +95,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throw);
+		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
 		
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
 
@@ -202,6 +203,11 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 	ChangeWeapon(EWeaponType::BLUNTWEAPON);
 }
 
+void APlayerCharacter::Throwable(const FInputActionValue& Value)
+{
+	ChangeWeapon(EWeaponType::THORWABLE);
+}
+
 void APlayerCharacter::StrafeOn()
 {
 	//bUseControllerRotationYaw = true;
@@ -255,7 +261,7 @@ void APlayerCharacter::OnAttack()
 	case EWeaponType::UNARMED:
 		break;
 	default:
-		GetCurrentWeapon()->Attack();
+		weapon->Attack();
 		break;
 	}
 }
@@ -264,21 +270,19 @@ void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	GetCurrentWeapon()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetCurrentWeapon()->GetBodyCollider()->bHiddenInGame = false;
+	weapon->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	weapon->GetBodyCollider()->bHiddenInGame = false;
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	GetCurrentWeapon()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetCurrentWeapon()->GetBodyCollider()->bHiddenInGame = true;
+	weapon->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	weapon->GetBodyCollider()->bHiddenInGame = true;
 }
 
-void APlayerCharacter::Throw()
-{
-}
+
 
 void APlayerCharacter::FlashLightOn()
 {
