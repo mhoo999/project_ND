@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "NDUpgradeSelector.generated.h"
 
+class UButton;
+
 USTRUCT(BlueprintType)
 struct FUpgradeOptionTable : public FTableRowBase
 {
@@ -45,6 +47,15 @@ private:
 	UDataTable* UpgradeOptionTable;
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
+	UButton* Btn_Op01;
+
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
+	UButton* Btn_Op02;
+
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
+	UButton* Btn_Op03;
+	
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
 	UImage* Option01Image;
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess, BindWidget))
@@ -83,18 +94,12 @@ private:
 	void OnOption01ButtonHovered();
 
 	UFUNCTION()
-	void OnOption01UnButtonHovered();
-
-	UFUNCTION()
 	void OnOption02ButtonHovered();
-
-	UFUNCTION()
-	void OnOption02UnButtonHovered();
 
 	UFUNCTION()
 	void OnOption03ButtonHovered();
 
 	UFUNCTION()
-	void OnOption03UnButtonHovered();
+	void OnOptionUnButtonHovered();
 	
 };
