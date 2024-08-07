@@ -59,13 +59,6 @@ private:
 	UPROPERTY(meta=(AllowPrivateAccess))
 	FUpgradeOptionTable Option03;
 
-public:
-	UFUNCTION(BlueprintCallable)
-	void OptionSorting();
-
-	UFUNCTION(BlueprintCallable)
-	void ChooseUpgrade(FUpgradeOptionTable Option);
-
 	UFUNCTION(BlueprintCallable)
 	FUpgradeOptionTable GetOption01();
 
@@ -74,4 +67,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FUpgradeOptionTable GetOption03();
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void OptionSorting();
+
+	UFUNCTION(BlueprintCallable)
+	void ChooseUpgrade(FUpgradeOptionTable Option);
+	
 };
