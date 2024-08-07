@@ -5,7 +5,6 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Chaos/Utilities.h"
 
 UNDBTService_UpdateDistanceFromTarget::UNDBTService_UpdateDistanceFromTarget()
 {
@@ -18,14 +17,32 @@ void UNDBTService_UpdateDistanceFromTarget::TickNode(UBehaviorTreeComponent& Own
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
 	AAIController* AIController = OwnerComp.GetAIOwner();
-	APawn* Pawn = AIController->GetPawn();
-	UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
-	AActor* Target = Cast<AActor>(BlackboardComponent->GetValueAsObject("Target"));
-	
-	float TargetDistance = FVector::Dist(Pawn->GetActorLocation(), Target->GetActorLocation());
-	
-	if (BlackboardComponent)
+	if (!AIController)
 	{
-		BlackboardComponent->SetValueAsFloat("TargetDistance", TargetDistance);
+		return;
 	}
+
+	const APawn* Pawn = AIController->GetPawn();
+	if (!Pawn)
+	{
+		return;
+	}
+	
+	UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
+	if (!BlackboardComponent)
+	{
+		return;
+	}
+	
+	const FName TargetKey = "Target";
+	const AActor* Target = Cast<AActor>(BlackboardComponent->GetValueAsObject(TargetKey));
+	if (!Target)
+	{
+		return;
+	}
+
+	const float TargetDistance = FVector::Dist(Pawn->GetActorLocation(), Target->GetActorLocation());
+	
+	const FName TargetDistanceKey = "TargetDistance";
+	BlackboardComponent->SetValueAsFloat(TargetDistanceKey, TargetDistance);
 }

@@ -16,13 +16,10 @@ void UNDBTService_TargetLocationToDestination::TickNode(UBehaviorTreeComponent& 
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	UBlackboardComponent* BlackboardComp = AIController->GetBlackboardComponent();
-
-	if (BlackboardComp)
+	if (UBlackboardComponent* BlackboardComp = OwnerComp.GetAIOwner()->GetBlackboardComponent())
 	{
-		AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject("Target"));
-		FVector TargetLocation = Target->GetActorLocation();
+		const AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject("Target"));
+		const FVector TargetLocation = Target->GetActorLocation();
 		BlackboardComp->SetValueAsVector("Destination", TargetLocation);
 	}
 }

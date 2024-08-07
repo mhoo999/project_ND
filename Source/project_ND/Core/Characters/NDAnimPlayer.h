@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "NDPlayerCharacter.h"
 #include "NDAnimPlayer.generated.h"
 
 /**
@@ -37,5 +38,11 @@ protected:
 	bool bIsCrouch = false; 
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool bIsThrowring = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class APlayerCharacter* Player = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EWeaponType CurWeapon;
 };

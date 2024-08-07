@@ -14,6 +14,10 @@ UNDBTTask_CleanBlackBoard::UNDBTTask_CleanBlackBoard()
 EBTNodeResult::Type UNDBTTask_CleanBlackBoard::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	UBlackboardComponent* BlackboardComponent = OwnerComp.GetAIOwner()->GetBlackboardComponent();
+	if (!BlackboardComponent)
+	{
+		return Super::ExecuteTask(OwnerComp, NodeMemory);
+	}
 	
 	for (const FName& ValueName : NodeToDelete)
 	{

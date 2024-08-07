@@ -40,6 +40,8 @@ public:
 
 	static EAIState StringToEAIState(const FString& StateString);
 	
+	void RunCurrentBehaviorTree();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
 	UBehaviorTree* IdleBehaviorTree;
@@ -58,8 +60,6 @@ private:
 
 	EAIState CurrentState;
 	
-	void RunCurrentBehaviorTree();
-
 	void PrintState();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI", meta=(AllowPrivateAccess))
@@ -71,7 +71,9 @@ private:
 	bool bIsExcitement;
 	FTimerHandle RelaxTimerHandle;
 	void GetExcitement() const;
-	void GetRelax() const;
+	void GetRelax();
+
+	bool bChasePlayer;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
@@ -86,4 +88,15 @@ protected:
 	UFUNCTION()
 	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
 
+	UFUNCTION()
+	void OnTargetForgotten();
+	
+public:
+	void ToggleBeChasePlayer();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ZombieDie();
+	virtual void ZombieDie_Implementation();
+
+	void GetDamaged(FVector HitLocation);
 };

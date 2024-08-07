@@ -4,9 +4,11 @@
 #include "NDAIController.h"
 
 
+#include "NDZombieAnim.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -42,15 +44,6 @@ void ANDAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	PrintState();
-
-	if (Zombie)
-	{
-		if (Zombie->GetHP() == 0.0f)
-		{
-			AIPerceptionComponent->Deactivate();
-			SetAIState("Dead");
-		}
-	}
 }
 
 void ANDAIController::OnPossess(APawn* InPawn)
@@ -62,30 +55,29 @@ void ANDAIController::OnPossess(APawn* InPawn)
 
 void ANDAIController::SetAIState(FString NewState)
 {
-	BrainComponent->StopLogic(TEXT("Stop Tree"));
-	EAIState EnumState = StringToEAIState(NewState);
-	
-	if (NewState == "Patrol" || NewState == "Chase")
+	if (CurrentState == EAIState::Dead)
 	{
-		CurrentState = EnumState;
-		RunCurrentBehaviorTree();
 		return;
 	}
 	
-	if (CurrentState != EnumState)
+	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	EAIState EnumState = StringToEAIState(NewState);
+	
+	if (bChasePlayer && NewState == "Patrol")
 	{
-		if (bIsExcitement)
+		return;
+	}
+	
+	CurrentState = EnumState;
+	RunCurrentBehaviorTree();
+	
+	if (CurrentState == EAIState::Idle)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
+		GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
 		{
-			bIsExcitement = false;
-			GetWorld()->GetTimerManager().ClearTimer(RelaxTimerHandle);
-			GetWorld()->GetTimerManager().SetTimer(RelaxTimerHandle, FTimerDelegate::CreateLambda([&]
-			{
-				GetRelax();
-			}), 5.0f, false);
-		}
-		
-		CurrentState = EnumState;
-		RunCurrentBehaviorTree();
+			GetRelax();
+		}), 5.0f, false);
 	}
 }
 
@@ -127,7 +119,8 @@ void ANDAIController::PrintState()
 {
 	// Zombie Info
 	FString StateString = UEnum::GetValueAsString(CurrentState);
-	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1);
+	FString isExcitement = bIsExcitement ? "Excitement" : "Relax";
+	FString CleanStateString = StateString.Mid(StateString.Find(TEXT("."), ESearchCase::IgnoreCase, ESearchDir::FromEnd) + 1) + "(" + isExcitement + ")";
 	float ZombieHP = Zombie->GetHP();
 	
 	// BlackBoard Values
@@ -188,7 +181,7 @@ void ANDAIController::InitializeAIPerception() const
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-
+	
 	HearingConfig->HearingRange = 1500.0f;
 	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
@@ -201,18 +194,25 @@ void ANDAIController::InitializeAIPerception() const
 
 void ANDAIController::GetExcitement() const
 {
-	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 4.0f;
+	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 3.0f;
 }
 
-void ANDAIController::GetRelax() const
+void ANDAIController::GetRelax()
 {
 	Zombie->GetCharacterMovement()->MaxWalkSpeed = Zombie->GetMovementSpeed();
+	bIsExcitement = false;
 }
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
 	for (AActor* Actor : UpdatedActors)
 	{
+		if (!bIsExcitement)
+		{
+			bIsExcitement = true;
+			GetExcitement();
+		}
+		
 		FActorPerceptionBlueprintInfo Info;
 		AIPerceptionComponent->GetActorsPerception(Actor, Info);
 		
@@ -226,6 +226,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					SetAIState("Chase");
 					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+					bChasePlayer = true;
 					return;
 				}
 			}
@@ -241,12 +242,52 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 					return;
 				}
 			}
-			
-			if (!bIsExcitement)
-			{
-				bIsExcitement = true;
-				GetExcitement();
-			}
 		}
+	}
+}
+
+void ANDAIController::OnTargetForgotten()
+{
+	
+}
+
+void ANDAIController::ToggleBeChasePlayer()
+{
+	bChasePlayer = !bChasePlayer;
+}
+
+void ANDAIController::ZombieDie_Implementation()
+{
+	if (AIPerceptionComponent)
+	{
+		GetAIPerceptionComponent()->Deactivate();
+	}
+
+	if (BrainComponent)
+	{
+		BrainComponent->StopLogic(TEXT("Stop Tree"));
+	}
+
+	if (Zombie)
+	{
+		Zombie->GetMesh()->SetSimulatePhysics(true);
+		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+
+		// BP
+		// UGameplayStatics::SetGamePaused(GetWorld(), true);
+		// WBP_ChooseUpgradeSelector show
+		// upgradeSelector OptionSort() 실행
+	}
+}
+
+void ANDAIController::GetDamaged(FVector HitLocation)
+{
+	if (!Zombie->bSuperArmor)
+	{
+		BrainComponent->StopLogic(TEXT("Stop Tree"));
+		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(Zombie->GetMesh()->GetAnimInstance());
+		ZombieAnim->PlayDamagedAnim();
+		SetAIState("Patrol");
+		GetBlackboardComponent()->SetValueAsVector("Destination", HitLocation);
 	}
 }
