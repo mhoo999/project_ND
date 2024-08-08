@@ -13,7 +13,8 @@ enum class EItemType : uint8
 	Food			UMETA(DisplayName = "Food"),
 	Throwable		UMETA(DisplayName = "Throwable Item"),
 	Blunt			UMETA(DisplayName = "Blunt"),
-	Revolver		UMETA(DisplayName = "Revolver")
+	Revolver		UMETA(DisplayName = "Revolver"),
+	Key				UMETA(DisplayName = "Key")
 };
 
 USTRUCT(BlueprintType)

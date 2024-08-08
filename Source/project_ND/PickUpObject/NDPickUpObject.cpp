@@ -26,7 +26,6 @@ void ANDPickUpObject::Tick(float DeltaTime)
 
 void ANDPickUpObject::OnPickedUp()
 {
-	
 }
 
 void ANDPickUpObject::SetItemMesh(UStaticMesh* Mesh) const

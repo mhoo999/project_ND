@@ -72,7 +72,7 @@ void ANDMyCharacter::SpawnWeapons()
 
 	Param.Owner = this;
 
-	for (auto& pair : WeaponClasses)
+	for (auto& pair : PickUpObjectClasses)
 	{
 		//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
 
@@ -80,7 +80,7 @@ void ANDMyCharacter::SpawnWeapons()
 
 		weapon->AttachToHolster(GetMesh());
 
-		Weapons.Add(pair.Key, weapon);
+		PickUpObjects.Add(pair.Key, weapon);
 	}
 }
 
