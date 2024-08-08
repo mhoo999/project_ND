@@ -27,4 +27,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	bool bRandSpawn;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
+	bool bStartEating;
 };

@@ -36,8 +36,6 @@ ANDAIController::ANDAIController()
 void ANDAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	RunCurrentBehaviorTree();
 }
 
 void ANDAIController::Tick(float DeltaSeconds)
@@ -52,6 +50,7 @@ void ANDAIController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 
 	Zombie = Cast<ANDZombieBase>(GetPawn());
+	RunCurrentBehaviorTree();
 }
 
 void ANDAIController::SetAIState(FString NewState)
@@ -62,6 +61,7 @@ void ANDAIController::SetAIState(FString NewState)
 	}
 	
 	BrainComponent->StopLogic(TEXT("Stop Tree"));
+	// State 추가하면 StringToEAIState(), RunCurrentBehaviorTree() 함수 확인!
 	EAIState EnumState = StringToEAIState(NewState);
 	
 	if (bChasePlayer && NewState == "Patrol")
@@ -88,6 +88,7 @@ EAIState ANDAIController::StringToEAIState(const FString& StateString)
 	if (StateString == "Chase")		return EAIState::Chase;
 	if (StateString == "Attack")	return EAIState::Attack;
 	if (StateString == "Dead")		return EAIState::Dead;
+	if (StateString == "Eating")	return EAIState::Eating;
 	
 	return EAIState::Idle;
 }
@@ -110,6 +111,9 @@ void ANDAIController::RunCurrentBehaviorTree()
 		break;
 	case EAIState::Dead:
 		RunBehaviorTree(DeadBehaviorTree);
+		break;
+	case EAIState::Eating:
+		RunBehaviorTree(EatingBehaviorTree);
 		break;
 	default:
 		break;
