@@ -63,6 +63,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	int32 ItemID;
@@ -106,6 +107,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UAnimMontage* AttackMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectSettings")
+	UShapeComponent* BodyCollider;
+
 public:
 	virtual void OnPickedUp();
 
@@ -119,4 +123,8 @@ public:
 
 	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
 	UAnimMontage* GetSheathMontage() { return SheathMontage; }
+
+	class ANDMyCharacter* OwnerCharacter;
+
+	UShapeComponent* GetBodyCollider() { return BodyCollider; }
 };

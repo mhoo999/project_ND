@@ -81,6 +81,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USpringArmComponent* SpringArm;
 
+
+
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
 

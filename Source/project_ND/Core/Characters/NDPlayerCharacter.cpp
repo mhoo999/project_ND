@@ -154,7 +154,7 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 
 void APlayerCharacter::OnJump()
 {
-	if (CurWeaponType != EWeaponType::UNARMED || bIsCrouched)
+	if (CurPickUpObjectType != EWeaponType::UNARMED || bIsCrouched)
 		return;
 
 	ACharacter::Jump();
@@ -236,11 +236,11 @@ void APlayerCharacter::StrafeOff()
 
 void APlayerCharacter::OnDrawEnd()
 {
-	PickUpObjects[NextWeaponType]->AttachToHand(GetMesh());
+	PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
 
-	NextWeaponType = EWeaponType::UNARMED;
+	NextPickUpObjectType = EWeaponType::UNARMED;
 
-	if (CurWeaponType == EWeaponType::UNARMED)
+	if (CurPickUpObjectType == EWeaponType::UNARMED)
 		StrafeOff();
 	else
 		StrafeOn();
@@ -248,18 +248,18 @@ void APlayerCharacter::OnDrawEnd()
 
 void APlayerCharacter::OnSheathEnd()
 {
-	GetCurrentWeapon()->AttachToHolster(GetMesh());
+	GetCurrentPickUpObject()->AttachToHolster(GetMesh());
 
-	if (NextWeaponType == EWeaponType::UNARMED)
+	if (NextPickUpObjectType == EWeaponType::UNARMED)
 	{
-		CurWeaponType = EWeaponType::UNARMED;
+		CurPickUpObjectType = EWeaponType::UNARMED;
 		StrafeOff();
 	}
 	else
 	{
-		CurWeaponType = NextWeaponType;
+		CurPickUpObjectType = NextPickUpObjectType;
 
-		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
 	}
 }
 
@@ -268,12 +268,15 @@ void APlayerCharacter::OnAttack()
 	if (StatComponent->bIsAttacking)
 		return;
 
-	switch (CurWeaponType)
+	switch (CurPickUpObjectType)
 	{
 	case EWeaponType::UNARMED:
 		break;
+	case EWeaponType::THORWABLE:
+		GetCurrentPickUpObject()->OnPickedUp();
+		break;
 	default:
-		Cast<ANDWeaponBase>(GetCurrentWeapon())->Attack();
+		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
 		break;
 	}
 }
@@ -282,22 +285,45 @@ void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = false;
+	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
+	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
 }
 
 
 
 void APlayerCharacter::FlashLightOn()
 {
+	//bool FlasLight = true;
+
+
+	//if (FlasLight) 
+	//{
+	//	// code
+	//	
+
+	//	FlasLight = false;
+	//}
+	//else 
+	//{
+	//	// code
+	//	FlasLight = true;
+	//}
+
+
+
+	//PlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName = "Standing_Taunt_Chest_fix_Montage");
 }
 
 
