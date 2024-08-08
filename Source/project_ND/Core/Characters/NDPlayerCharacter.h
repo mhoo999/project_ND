@@ -49,6 +49,9 @@ protected:
 
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void OnBluntWeaponKey(const FInputActionValue& Value);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void BPThrowable();
 	void Throwable(const FInputActionValue& Value);
 
 	void StrafeOn();
@@ -61,6 +64,14 @@ protected:
 	void OnSheathEnd();
 
 	void OnAttack();
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Throwables();
+	void OnAttackPressed();
+	
+	void OnAttackReleased();
+
 
 	UFUNCTION(BlueprintCallable)
 	void OnAttackBegin();
@@ -80,6 +91,13 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class USceneComponent* ProjectilStart;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class USplineComponent* ProjectilPath;
+
 
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
