@@ -17,7 +17,8 @@ enum EAIState : uint8
 	Patrol	UMETA(DisplayName = "Patrol State"),
 	Chase	UMETA(DisplayName = "Chase State"),
 	Attack	UMETA(DisplayName = "Attack State"),
-	Dead	UMETA(DisplayName = "Dead State")
+	Dead	UMETA(DisplayName = "Dead State"),
+	Eating	UMETA(DisplayName = "Eating State")
 };
 
 UCLASS()
@@ -42,7 +43,6 @@ public:
 	
 	void RunCurrentBehaviorTree();
 	
-private:
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
 	UBehaviorTree* IdleBehaviorTree;
 
@@ -58,31 +58,35 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
 	UBehaviorTree* DeadBehaviorTree;
 
+	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
+	UBehaviorTree* EatingBehaviorTree;
+
 	EAIState CurrentState;
 	
 	void PrintState();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI", meta=(AllowPrivateAccess))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	ANDZombieBase* Zombie;
 	
-	void InitializeBehaviorTree();
-	void InitializeAIPerception() const;
-
 	bool bIsExcitement;
 	FTimerHandle RelaxTimerHandle;
 	void GetExcitement() const;
 	void GetRelax();
 
 	bool bChasePlayer;
+	
+private:
+	void InitializeBehaviorTree();
+	void InitializeAIPerception() const;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UPROPERTY(BlueprintReadOnly, Category="AI")
 	UAIPerceptionComponent* AIPerceptionComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UPROPERTY(BlueprintReadOnly, Category="AI")
 	UAISenseConfig_Sight* SightConfig;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
+	UPROPERTY(BlueprintReadOnly, Category="AI")
 	UAISenseConfig_Hearing* HearingConfig;
 
 	UFUNCTION()
@@ -99,4 +103,10 @@ public:
 	virtual void ZombieDie_Implementation();
 
 	void GetDamaged(FVector HitLocation);
+
+private:
+	bool bIsPrintLog;
+
+public:
+	void SetPrintLog();
 };

@@ -4,6 +4,7 @@
 #include "NDZombieSpawner.h"
 
 #include "NDZombieBase.h"
+#include "project_ND/Core/Enemys/NDAIController.h"
 
 
 ANDZombieSpawner::ANDZombieSpawner()
@@ -29,7 +30,22 @@ void ANDZombieSpawner::SpawnZombie()
 	}
 	
 	FVector SpawnLoc = GetActorLocation();
-	GetWorld()->SpawnActor<ANDZombieBase>(SpawnTo, SpawnLoc, FRotator::ZeroRotator);
+	FRotator SpawnRot = GetActorRotation();
+	
+	if (ANDZombieBase* SpawnZombie = GetWorld()->SpawnActor<ANDZombieBase>(SpawnTo, SpawnLoc, SpawnRot))
+	{
+		if (ANDAIController* AIController = Cast<ANDAIController>(SpawnZombie->GetController()))
+		{
+			if (bStartEating)
+			{
+				AIController->SetAIState("Eating");
+			}
 
+			if (bPrintLog)
+			{
+				AIController->SetPrintLog();
+			}
+		}
+	}
 }
 

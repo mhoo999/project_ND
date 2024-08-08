@@ -44,7 +44,7 @@ void UNDEffectComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UNDEffectComponent::PlayItemUsingEffect(const FVector& Location)
+void UNDEffectComponent::PlayRecoveryEffect(const FVector& Location)
 {
 	if (RecoverySound)
 	{
