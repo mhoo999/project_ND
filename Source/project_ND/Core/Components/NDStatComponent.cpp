@@ -77,21 +77,15 @@ void UNDStatComponent::UpgradeStat(FUpgradeOptionTable& Option)
 
 	if (UpgradeTo == "MaxHP")
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) before HP : %f"), MaxHP);
 		SetMaxHP(MaxHP + Option.UpgradeAmount);
-		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) after HP : %f"), MaxHP);
 	}
 	else if (UpgradeTo == "Damage")
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) before Damage : %f"), Damage);
 		SetDamage(Damage + Option.UpgradeAmount);
-		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) after Damage : %f"), Damage);
 	}
 	else if (UpgradeTo == "MaxHungry")
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) before Hungry : %f"), MaxHungry);
 		SetMaxHungry(MaxHungry + Option.UpgradeAmount);
-		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) after Hungry : %f"), MaxHungry);
 	}
 	else
 	{
