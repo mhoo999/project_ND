@@ -4,6 +4,9 @@
 #include "NDPlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneComponent.h"
+#include "Components/SplineComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
@@ -24,10 +27,16 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	PCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
-	//Camera->SetupAttachment(CapsuleComponent);
+
+	ProjectilStart = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectilStart"));
+	ProjectilPath = CreateDefaultSubobject<USplineComponent>(TEXT("ProjectilPath"));
+	
 	SpringArm->SetupAttachment(RootComponent);
 	PCamera->SetupAttachment(SpringArm);
-	PCamera->bUsePawnControlRotation = true; 
+	PCamera->bUsePawnControlRotation = true;
+
+	ProjectilStart->SetupAttachment(RootComponent);
+	ProjectilPath->SetupAttachment(ProjectilStart);
 	//Camera->Setup
 
 	//Target = cast<ANDZombieBase>();
@@ -94,6 +103,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
 		
@@ -154,7 +165,7 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 
 void APlayerCharacter::OnJump()
 {
-	if (CurWeaponType != EWeaponType::UNARMED || bIsCrouched)
+	if (CurPickUpObjectType != EWeaponType::UNARMED || bIsCrouched)
 		return;
 
 	ACharacter::Jump();
@@ -167,12 +178,24 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 	if (bIsCrouched)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 350.0f;
-	
+
+		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
+
+		SpringArm->TargetArmLength = 50.0f;
+
+		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
+		
 	}
 	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+
+		SpringArm->TargetArmLength = 50.0f;
+
 	}
+	
+	SpringArm->TargetArmLength = 130.0f;
+
 
 }
 
@@ -206,6 +229,7 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::THORWABLE);
+	//BPThrowable();
 }
 
 void APlayerCharacter::StrafeOn()
@@ -224,11 +248,11 @@ void APlayerCharacter::StrafeOff()
 
 void APlayerCharacter::OnDrawEnd()
 {
-	PickUpObjects[NextWeaponType]->AttachToHand(GetMesh());
+	PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
 
-	NextWeaponType = EWeaponType::UNARMED;
+	NextPickUpObjectType = EWeaponType::UNARMED;
 
-	if (CurWeaponType == EWeaponType::UNARMED)
+	if (CurPickUpObjectType == EWeaponType::UNARMED)
 		StrafeOff();
 	else
 		StrafeOn();
@@ -236,18 +260,18 @@ void APlayerCharacter::OnDrawEnd()
 
 void APlayerCharacter::OnSheathEnd()
 {
-	GetCurrentWeapon()->AttachToHolster(GetMesh());
+	GetCurrentPickUpObject()->AttachToHolster(GetMesh());
 
-	if (NextWeaponType == EWeaponType::UNARMED)
+	if (NextPickUpObjectType == EWeaponType::UNARMED)
 	{
-		CurWeaponType = EWeaponType::UNARMED;
+		CurPickUpObjectType = EWeaponType::UNARMED;
 		StrafeOff();
 	}
 	else
 	{
-		CurWeaponType = NextWeaponType;
+		CurPickUpObjectType = NextPickUpObjectType;
 
-		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
 	}
 }
 
@@ -256,36 +280,108 @@ void APlayerCharacter::OnAttack()
 	if (StatComponent->bIsAttacking)
 		return;
 
-	switch (CurWeaponType)
+	switch (CurPickUpObjectType)
 	{
 	case EWeaponType::UNARMED:
 		break;
+	case EWeaponType::THORWABLE:
+		//GetCurrentPickUpObject()->OnPickedUp();
+		break;
 	default:
-		Cast<ANDWeaponBase>(GetCurrentWeapon())->Attack();
+		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
 		break;
 	}
+}
+
+void APlayerCharacter::OnAttackPressed()
+{
+	if (StatComponent->bIsAttacking)
+		return;
+
+	switch (CurPickUpObjectType)
+	{
+	case EWeaponType::UNARMED:
+		break;
+	case EWeaponType::THORWABLE:
+		//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
+		//Throwables();
+		break;
+	default:
+		break;
+	}
+
+	/*if (StatComponent->bIsAttacking)
+		return;
+	
+	if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	{
+		StatComponent->bIsAttacking = true;
+	}*/
+	//else (CurPickUpObjectType == EWeaponType::BLUNTWEAPON)
+	//	OnAttack();
+	
+		
+		
+
+	/*GetWorldTimerManager().SetTimer(AttackHoldTimerHandle, this, &AYourCharacter::PerformAimedAttack, HoldThreshold, false); */
+
+}
+
+void APlayerCharacter::OnAttackReleased()
+{
+	/*GetWorldTimerManager().ClearTimer(AttackHoldTimerHandle);
+
+	if (bIsAttacking)
+	{
+		PerformSingleAttack();
+	}
+
+	bIsAttacking = false;*/
 }
 
 void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = false;
+	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
+	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
 }
 
 
 
 void APlayerCharacter::FlashLightOn()
 {
+	//bool FlasLight = true;
+
+
+	//if (FlasLight) 
+	//{
+	//	// code
+	//	
+
+	//	FlasLight = false;
+	//}
+	//else 
+	//{
+	//	// code
+	//	FlasLight = true;
+	//}
+
+
+
+	//PlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName = "Standing_Taunt_Chest_fix_Montage");
 }
 
 

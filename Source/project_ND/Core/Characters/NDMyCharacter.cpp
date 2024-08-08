@@ -39,28 +39,28 @@ void ANDMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ANDMyCharacter::ChangeWeapon(EWeaponType InWeaponType)
 {
-	if (GetCurrentWeapon() != nullptr)
+	if (GetCurrentPickUpObject() != nullptr)
 	{
-		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetDrawMontage()))
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentPickUpObject()->GetDrawMontage()))
 			return;
 
-		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetSheathMontage()))
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentPickUpObject()->GetSheathMontage()))
 			return;
 	}
 
-	switch (CurWeaponType)
+	switch (CurPickUpObjectType)
 	{
 	case EWeaponType::UNARMED:
-		CurWeaponType  = InWeaponType;
-		NextWeaponType = InWeaponType;
+		CurPickUpObjectType  = InWeaponType;
+		NextPickUpObjectType = InWeaponType;
 
-		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
 		break;
 	default:
-		PlayAnimMontage(GetCurrentWeapon()->GetSheathMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
 
-		if (CurWeaponType != InWeaponType)
-			NextWeaponType = InWeaponType;
+		if (CurPickUpObjectType != InWeaponType)
+			NextPickUpObjectType = InWeaponType;
 
 		break;
 	}
