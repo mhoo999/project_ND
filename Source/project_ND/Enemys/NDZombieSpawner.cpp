@@ -30,13 +30,21 @@ void ANDZombieSpawner::SpawnZombie()
 	}
 	
 	FVector SpawnLoc = GetActorLocation();
-	ANDZombieBase* SpawnZombie = GetWorld()->SpawnActor<ANDZombieBase>(SpawnTo, SpawnLoc, FRotator::ZeroRotator);
-
-	if (bStartEating && SpawnZombie)
+	FRotator SpawnRot = GetActorRotation();
+	
+	if (ANDZombieBase* SpawnZombie = GetWorld()->SpawnActor<ANDZombieBase>(SpawnTo, SpawnLoc, SpawnRot))
 	{
 		if (ANDAIController* AIController = Cast<ANDAIController>(SpawnZombie->GetController()))
 		{
-			AIController->SetAIState("Eating");
+			if (bStartEating)
+			{
+				AIController->SetAIState("Eating");
+			}
+
+			if (bPrintLog)
+			{
+				AIController->SetPrintLog();
+			}
 		}
 	}
 }

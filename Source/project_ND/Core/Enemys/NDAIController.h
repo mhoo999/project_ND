@@ -103,4 +103,10 @@ public:
 	virtual void ZombieDie_Implementation();
 
 	void GetDamaged(FVector HitLocation);
+
+private:
+	bool bIsPrintLog;
+
+public:
+	void SetPrintLog();
 };

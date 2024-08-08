@@ -41,8 +41,11 @@ void ANDAIController::BeginPlay()
 void ANDAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
-	PrintState();
+
+	if (bIsPrintLog)
+	{
+		PrintState();
+	}
 }
 
 void ANDAIController::OnPossess(APawn* InPawn)
@@ -230,7 +233,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 		{
 			if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
+				// UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
 				
 				if (Stimulus.WasSuccessfullySensed())
 				{
@@ -242,7 +245,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			}
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
+				// UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
 				
 				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 				{
@@ -304,4 +307,9 @@ void ANDAIController::GetDamaged(FVector HitLocation)
 		SetAIState("Patrol");
 		GetBlackboardComponent()->SetValueAsVector("Destination", HitLocation);
 	}
+}
+
+void ANDAIController::SetPrintLog()
+{
+	bIsPrintLog = true;
 }
