@@ -4,6 +4,9 @@
 #include "NDPlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneComponent.h"
+#include "Components/SplineComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
@@ -24,10 +27,16 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	PCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
-	//Camera->SetupAttachment(CapsuleComponent);
+
+	ProjectilStart = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectilStart"));
+	ProjectilPath = CreateDefaultSubobject<USplineComponent>(TEXT("ProjectilPath"));
+	
 	SpringArm->SetupAttachment(RootComponent);
 	PCamera->SetupAttachment(SpringArm);
-	PCamera->bUsePawnControlRotation = true; 
+	PCamera->bUsePawnControlRotation = true;
+
+	ProjectilStart->SetupAttachment(RootComponent);
+	ProjectilPath->SetupAttachment(ProjectilStart);
 	//Camera->Setup
 
 	//Target = cast<ANDZombieBase>();
@@ -220,6 +229,7 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::THORWABLE);
+	//BPThrowable();
 }
 
 void APlayerCharacter::StrafeOn()
@@ -275,7 +285,7 @@ void APlayerCharacter::OnAttack()
 	case EWeaponType::UNARMED:
 		break;
 	case EWeaponType::THORWABLE:
-		GetCurrentPickUpObject()->OnPickedUp();
+		//GetCurrentPickUpObject()->OnPickedUp();
 		break;
 	default:
 		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
@@ -287,11 +297,26 @@ void APlayerCharacter::OnAttackPressed()
 {
 	if (StatComponent->bIsAttacking)
 		return;
+
+	switch (CurPickUpObjectType)
+	{
+	case EWeaponType::UNARMED:
+		break;
+	case EWeaponType::THORWABLE:
+		//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
+		//Throwables();
+		break;
+	default:
+		break;
+	}
+
+	/*if (StatComponent->bIsAttacking)
+		return;
 	
 	if (CurPickUpObjectType == EWeaponType::THORWABLE)
 	{
 		StatComponent->bIsAttacking = true;
-	}
+	}*/
 	//else (CurPickUpObjectType == EWeaponType::BLUNTWEAPON)
 	//	OnAttack();
 	
