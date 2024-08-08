@@ -94,6 +94,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
 		
@@ -279,6 +281,37 @@ void APlayerCharacter::OnAttack()
 		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
 		break;
 	}
+}
+
+void APlayerCharacter::OnAttackPressed()
+{
+	if (StatComponent->bIsAttacking)
+		return;
+	
+	if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	{
+		StatComponent->bIsAttacking = true;
+	}
+	//else (CurPickUpObjectType == EWeaponType::BLUNTWEAPON)
+	//	OnAttack();
+	
+		
+		
+
+	/*GetWorldTimerManager().SetTimer(AttackHoldTimerHandle, this, &AYourCharacter::PerformAimedAttack, HoldThreshold, false); */
+
+}
+
+void APlayerCharacter::OnAttackReleased()
+{
+	/*GetWorldTimerManager().ClearTimer(AttackHoldTimerHandle);
+
+	if (bIsAttacking)
+	{
+		PerformSingleAttack();
+	}
+
+	bIsAttacking = false;*/
 }
 
 void APlayerCharacter::OnAttackBegin()

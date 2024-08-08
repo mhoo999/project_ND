@@ -62,6 +62,11 @@ protected:
 
 	void OnAttack();
 
+	void OnAttackPressed();
+	
+	void OnAttackReleased();
+
+
 	UFUNCTION(BlueprintCallable)
 	void OnAttackBegin();
 	
