@@ -7,6 +7,7 @@
 #include "NDStatComponent.generated.h"
 
 
+class UNDEffectComponent;
 struct FUpgradeOptionTable;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -89,4 +90,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Upgrade Options")
 	TArray<FUpgradeOptionTable> UpgradeOptionList;
+
+	void TakeDamage(float Damage);
+
+	UNDEffectComponent* EffectComponent;
 };

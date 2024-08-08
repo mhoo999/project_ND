@@ -3,6 +3,6 @@
 
 #include "NDHitMask.h"
 
-void UNDHitMask::ShowHitMask()
+void UNDHitMask::ShowHitMask_Implementation()
 {
 }

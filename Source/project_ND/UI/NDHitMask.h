@@ -15,6 +15,6 @@ class PROJECT_ND_API UNDHitMask : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent)
 	void ShowHitMask();
 };
