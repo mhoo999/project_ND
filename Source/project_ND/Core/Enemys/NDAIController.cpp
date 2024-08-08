@@ -12,6 +12,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -182,7 +183,7 @@ void ANDAIController::InitializeAIPerception() const
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 	
-	HearingConfig->HearingRange = 1500.0f;
+	HearingConfig->HearingRange = 1000.0f;
 	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
@@ -207,6 +208,11 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
 	for (AActor* Actor : UpdatedActors)
 	{
+		if (Actor == Cast<ANDZombieBase>(Actor))
+		{
+			return;
+		}
+		
 		if (!bIsExcitement)
 		{
 			bIsExcitement = true;
@@ -233,7 +239,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
-
+				
 				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 				{
 					SetAIState("Patrol");

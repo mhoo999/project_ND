@@ -3,6 +3,9 @@
 
 #include "NDUpgradeSelector.h"
 
+#include "Components/Button.h"
+#include "Components/ButtonSlot.h"
+#include "Components/CanvasPanelSlot.h"
 #include "Components/Image.h"
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
@@ -56,6 +59,110 @@ void UNDUpgradeSelector::ChooseUpgrade(FUpgradeOptionTable Option)
                 StatComponent->UpgradeStat(Option);
             }
         }
+    }
+}
+
+void UNDUpgradeSelector::OnOption01ButtonHovered()
+{
+    if (Option01Image)
+    {
+        Option01Image->SetRenderScale(FVector2d(1.2));
+    }
+    
+    if (Option02Image)
+    {
+        Option02Image->SetRenderScale(FVector2d(0.9));
+        Option02Image->SetRenderOpacity(0.8);
+    }
+    
+    if (Option03Image)
+    {
+        Option03Image->SetRenderScale(FVector2d(0.9));
+        Option03Image->SetRenderOpacity(0.8);
+    }
+}
+
+void UNDUpgradeSelector::OnOption02ButtonHovered()
+{
+    if (Option01Image)
+    {
+        Option01Image->SetRenderScale(FVector2d(0.9));
+        Option01Image->SetRenderOpacity(0.8);
+    }
+    
+    if (Option02Image)
+    {
+        Option02Image->SetRenderScale(FVector2d(1.2));
+    }
+    
+    if (Option03Image)
+    {
+        Option03Image->SetRenderScale(FVector2d(0.9));
+        Option03Image->SetRenderOpacity(0.8);
+    }
+}
+
+void UNDUpgradeSelector::OnOption03ButtonHovered()
+{
+    if (Option01Image)
+    {
+        Option01Image->SetRenderScale(FVector2d(0.9));
+        Option01Image->SetRenderOpacity(0.8);
+    }
+    
+    if (Option02Image)
+    {
+        Option02Image->SetRenderScale(FVector2d(0.9));
+        Option02Image->SetRenderOpacity(0.8);
+    }
+    
+    if (Option03Image)
+    {
+        Option03Image->SetRenderScale(FVector2d(1.2));
+    }
+}
+
+void UNDUpgradeSelector::OnOptionUnButtonHovered()
+{
+    if (Option01Image)
+    {
+        Option01Image->SetRenderScale(FVector2d(1.0));
+        Option01Image->SetRenderOpacity(1.0);
+    }
+    
+    if (Option02Image)
+    {
+        Option02Image->SetRenderScale(FVector2d(1.0));
+        Option02Image->SetRenderOpacity(1.0);
+    }
+    
+    if (Option03Image)
+    {
+        Option03Image->SetRenderScale(FVector2d(1.0));
+        Option03Image->SetRenderOpacity(1.0);
+    }
+}
+
+void UNDUpgradeSelector::NativeConstruct()
+{
+    Super::NativeConstruct();
+
+    if (Btn_Op01)
+    {
+        Btn_Op01->OnHovered.AddDynamic(this, &UNDUpgradeSelector::OnOption01ButtonHovered);
+        Btn_Op01->OnUnhovered.AddDynamic(this, &UNDUpgradeSelector::OnOptionUnButtonHovered);
+    }
+
+    if (Btn_Op02)
+    {
+        Btn_Op02->OnHovered.AddDynamic(this, &UNDUpgradeSelector::OnOption02ButtonHovered);
+        Btn_Op02->OnUnhovered.AddDynamic(this, &UNDUpgradeSelector::OnOptionUnButtonHovered);
+    }
+    
+    if (Btn_Op03)
+    {
+        Btn_Op03->OnHovered.AddDynamic(this, &UNDUpgradeSelector::OnOption03ButtonHovered);
+        Btn_Op03->OnUnhovered.AddDynamic(this, &UNDUpgradeSelector::OnOptionUnButtonHovered);
     }
 }
 

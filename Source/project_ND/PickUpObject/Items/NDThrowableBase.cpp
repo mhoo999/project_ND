@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Perception/AISense_Hearing.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
 
 
 ANDThrowableBase::ANDThrowableBase()
@@ -30,7 +31,7 @@ void ANDThrowableBase::BeginPlay()
 void ANDThrowableBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (bCanNoise)
+	if (bCanNoise && OtherActor != Cast<ANDMyCharacter>(OtherActor))
 	{
 		FVector NoiseLocation = this->GetActorLocation();
 		// Make noise code
