@@ -11,6 +11,7 @@
 
 //#include "project_ND/Core/Interface/NDCharacterInterface.h"
 
+class UNDEffectComponent;
 class ANDWeaponBase;
 class ANDWeapon;
 class UNDStatComponent;
@@ -100,4 +101,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
+
+private:
+	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
+	UNDEffectComponent* EffectComponent;
 };
