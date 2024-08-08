@@ -229,7 +229,9 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::THORWABLE);
-	//BPThrowable();
+	
+	if(CurPickUpObjectType == EWeaponType::THORWABLE)
+		BPThrowable();
 }
 
 void APlayerCharacter::StrafeOn()
@@ -295,20 +297,20 @@ void APlayerCharacter::OnAttack()
 
 void APlayerCharacter::OnAttackPressed()
 {
-	if (StatComponent->bIsAttacking)
-		return;
+	//if (StatComponent->bIsAttacking)
+	//	return;
 
-	switch (CurPickUpObjectType)
-	{
-	case EWeaponType::UNARMED:
-		break;
-	case EWeaponType::THORWABLE:
-		//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
-		//Throwables();
-		break;
-	default:
-		break;
-	}
+	//switch (CurPickUpObjectType)
+	//{
+	//case EWeaponType::UNARMED:
+	//	break;
+	//case EWeaponType::THORWABLE:
+	//	//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
+	//	//Throwables();
+	//	break;
+	//default:
+	//	break;
+	//}
 
 	/*if (StatComponent->bIsAttacking)
 		return;
