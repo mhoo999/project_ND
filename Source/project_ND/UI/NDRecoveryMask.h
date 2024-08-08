@@ -15,6 +15,6 @@ class PROJECT_ND_API UNDRecoveryMask : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent)
 	void ShowRecoveryMask();
 };
