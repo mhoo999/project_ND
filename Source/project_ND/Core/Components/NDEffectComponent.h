@@ -31,16 +31,16 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
 	TSubclassOf<UNDRecoveryMask> RecoveryWidgetClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	UNDRecoveryMask* RecoveryWidget;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hit", meta=(AllowPrivateAccess))
 	USoundBase* HitSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hit", meta=(AllowPrivateAccess))
 	TSubclassOf<UNDHitMask> HitWidgetClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	UNDHitMask* HitWidget;
 	
 public:

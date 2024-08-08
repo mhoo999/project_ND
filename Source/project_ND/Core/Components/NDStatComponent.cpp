@@ -3,6 +3,7 @@
 
 #include "NDStatComponent.h"
 
+#include "NDEffectComponent.h"
 #include "project_ND/UI/NDUpgradeSelector.h"
 
 // Sets default values for this component's properties
@@ -21,8 +22,8 @@ void UNDStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	APawn* Player = Cast<APawn>(GetOwner());
+	EffectComponent = Player->GetComponentByClass<UNDEffectComponent>();
 }
 
 
@@ -91,4 +92,12 @@ void UNDStatComponent::UpgradeStat(FUpgradeOptionTable& Option)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NDStatComponent > UpgradeStat ) Upgrade nothing..."));
 	}
+}
+
+void UNDStatComponent::TakeDamage(float DamagedAmount)
+{
+	SetCurHP(CurHP - DamagedAmount);
+
+	APawn* Player = Cast<APawn>(GetOwner());
+	EffectComponent->PlayHitEffect(Player->GetActorLocation());
 }
