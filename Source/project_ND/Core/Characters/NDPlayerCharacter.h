@@ -80,7 +80,8 @@ protected:
 	void OnAttackEnd();
 	//void Crouched(const FInputActionValue& Value);
 
-
+	UFUNCTION()
+	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
