@@ -4,20 +4,14 @@
 #include "NDStatComponent.h"
 
 #include "NDEffectComponent.h"
+#include "project_ND/PickUpObject/NDPickUpObject.h"
 #include "project_ND/UI/NDUpgradeSelector.h"
 
-// Sets default values for this component's properties
 UNDStatComponent::UNDStatComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
-
-// Called when the game starts
 void UNDStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -26,13 +20,11 @@ void UNDStatComponent::BeginPlay()
 	EffectComponent = Player->GetComponentByClass<UNDEffectComponent>();
 }
 
-
-// Called every frame
 void UNDStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	ContinuousDecreaseHungry(DeltaTime);
 }
 
 float UNDStatComponent::GetCurHP()
@@ -70,7 +62,7 @@ float UNDStatComponent::GetMaxHeartbeat()
 	return 0.0f;
 }
 
-void UNDStatComponent::UpgradeStat(FUpgradeOptionTable& Option)
+void UNDStatComponent::UpgradeStat(FUpgradeOptionTable Option)
 {
 	UpgradeOptionList.Add(Option);
 	TArray<FName> StatList = { "MaxHP", "Damage", "MaxHungry" };
@@ -100,4 +92,69 @@ void UNDStatComponent::TakeDamage(float DamagedAmount)
 
 	APawn* Player = Cast<APawn>(GetOwner());
 	EffectComponent->PlayHitEffect(Player->GetActorLocation());
+}
+
+void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
+{
+	if (ItemInfo.Type == EItemType::HealthPotion)
+	{
+		SetCurHP(CurHP + ItemInfo.RecoveryAmount);
+	}
+	else if (ItemInfo.Type == EItemType::Food)
+	{
+		IncreaseHungry(ItemInfo.RecoveryAmount);
+	}
+	else
+	{
+		return;
+	}
+
+	APawn* Player = Cast<APawn>(GetOwner());
+	EffectComponent->PlayRecoveryEffect(Player->GetActorLocation());
+}
+
+void UNDStatComponent::IncreaseHungry(float Amount)
+{
+	CurHungry += Amount;
+
+	if (CurHungry >= MaxHungry)
+	{
+		CurHungry = MaxHungry;
+	}
+}
+
+void UNDStatComponent::DecreaseHungry(float Amount)
+{
+	CurHungry -= Amount;
+
+	if (CurHungry <= 0)
+	{
+		CurHP -= Amount;
+	}
+}
+
+void UNDStatComponent::ContinuousDecreaseHungry(float DeltaSeconds)
+{
+	float TotalDeltaSeconds = 0.0f;
+
+	TotalDeltaSeconds += DeltaSeconds;
+
+	if (TotalDeltaSeconds >= DeceaseTime)
+	{
+		if (bIsWalking)
+		{
+			DecreaseHungry(HungryNormalDecreasePoint);
+		}
+		else
+		{
+			DecreaseHungry(HungryRunningDecreasePoint);
+		}
+
+		TotalDeltaSeconds = 0.0f;
+	}
+}
+
+void UNDStatComponent::TemporaryDecreaseHungry()
+{
+	DecreaseHungry(HungryActionDecreasePoint);
 }

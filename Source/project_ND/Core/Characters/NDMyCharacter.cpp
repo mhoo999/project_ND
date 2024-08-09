@@ -3,6 +3,7 @@
 
 #include "NDMyCharacter.h"
 
+#include "project_ND/Core/Components/NDEffectComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 
 // Sets default values
@@ -12,7 +13,7 @@ ANDMyCharacter::ANDMyCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StatComponent = CreateDefaultSubobject<UNDStatComponent>("StatComponent");
-
+	EffectComponent = CreateDefaultSubobject<UNDEffectComponent>(TEXT("Effect Component"));
 }
 
 // Called when the game starts or when spawned
@@ -86,7 +87,7 @@ void ANDMyCharacter::SpawnWeapons()
 
 void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
-	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+	StatComponent->TakeDamage(DamageAmount);
 
 	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
 

@@ -7,6 +7,7 @@
 #include "NDStatComponent.generated.h"
 
 
+struct FItemBaseData;
 class UNDEffectComponent;
 struct FUpgradeOptionTable;
 
@@ -86,12 +87,43 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float MaxHeartbeat;
 
-	void UpgradeStat(FUpgradeOptionTable& Option);
+	void UpgradeStat(FUpgradeOptionTable Option);
 
 	UPROPERTY(BlueprintReadOnly, Category = "Upgrade Options")
 	TArray<FUpgradeOptionTable> UpgradeOptionList;
 
+private:
+	UPROPERTY()
+	UNDEffectComponent* EffectComponent;
+
+public:
 	void TakeDamage(float Damage);
 
-	UNDEffectComponent* EffectComponent;
+	UFUNCTION(BlueprintCallable)
+	void UseItem(FItemBaseData ItemInfo);
+
+	void IncreaseHungry(float Amount);
+	
+	void DecreaseHungry(float Amount);
+
+private:
+	// 기본 배고픔 감소 수치
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hungry", meta=(AllowPrivateAccess))
+	float HungryNormalDecreasePoint;
+
+	// 달릴 때 배고픔 감수 수치
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hungry", meta=(AllowPrivateAccess))
+	float HungryRunningDecreasePoint;
+
+	// 감소되는 시간
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hungry", meta=(AllowPrivateAccess))
+	float DeceaseTime;
+
+	// 큰 동작시 배고픔 감수 수치 (공격, 점프)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hungry", meta=(AllowPrivateAccess))
+	float HungryActionDecreasePoint;
+
+	void ContinuousDecreaseHungry(float DeltaSeconds);
+
+	void TemporaryDecreaseHungry();
 };

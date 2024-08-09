@@ -44,7 +44,7 @@ private:
 	UNDHitMask* HitWidget;
 	
 public:
-	void PlayItemUsingEffect(const FVector& Location);
+	void PlayRecoveryEffect(const FVector& Location);
 
 	void PlayHitEffect(const FVector& Location);
 	
