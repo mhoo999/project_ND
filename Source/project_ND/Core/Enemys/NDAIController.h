@@ -109,4 +109,10 @@ private:
 
 public:
 	void SetPrintLog();
+
+private:
+	void StopEating();
+	void BeginEating();
+
+	bool bIsEating;
 };
