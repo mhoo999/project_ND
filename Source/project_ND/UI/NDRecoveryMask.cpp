@@ -3,6 +3,6 @@
 
 #include "NDRecoveryMask.h"
 
-void UNDRecoveryMask::ShowRecoveryMask()
+void UNDRecoveryMask::ShowRecoveryMask_Implementation()
 {
 }
