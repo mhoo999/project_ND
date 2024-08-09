@@ -98,6 +98,8 @@ EAIState ANDAIController::StringToEAIState(const FString& StateString)
 
 void ANDAIController::RunCurrentBehaviorTree()
 {
+	StopEating();
+	
 	switch (CurrentState)
 	{
 	case EAIState::Idle:
@@ -116,6 +118,7 @@ void ANDAIController::RunCurrentBehaviorTree()
 		RunBehaviorTree(DeadBehaviorTree);
 		break;
 	case EAIState::Eating:
+		BeginEating();
 		RunBehaviorTree(EatingBehaviorTree);
 		break;
 	default:
@@ -231,16 +234,19 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 		
 		for (const auto& Stimulus : Info.LastSensedStimuli)
 		{
-			if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
+			if (bIsEating == false)
 			{
-				// UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
-				
-				if (Stimulus.WasSuccessfullySensed())
+				if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 				{
-					SetAIState("Chase");
-					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-					bChasePlayer = true;
-					return;
+					// UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
+					
+					if (Stimulus.WasSuccessfullySensed())
+					{
+						SetAIState("Chase");
+						GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+						bChasePlayer = true;
+						return;
+					}
 				}
 			}
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
@@ -312,4 +318,14 @@ void ANDAIController::GetDamaged(FVector HitLocation)
 void ANDAIController::SetPrintLog()
 {
 	bIsPrintLog = true;
+}
+
+void ANDAIController::StopEating()
+{
+	bIsEating = false;
+}
+
+void ANDAIController::BeginEating()
+{
+	bIsEating = true;
 }
