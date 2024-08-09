@@ -62,7 +62,7 @@ float UNDStatComponent::GetMaxHeartbeat()
 	return 0.0f;
 }
 
-void UNDStatComponent::UpgradeStat(FUpgradeOptionTable& Option)
+void UNDStatComponent::UpgradeStat(FUpgradeOptionTable Option)
 {
 	UpgradeOptionList.Add(Option);
 	TArray<FName> StatList = { "MaxHP", "Damage", "MaxHungry" };

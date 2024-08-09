@@ -87,7 +87,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float MaxHeartbeat;
 
-	void UpgradeStat(FUpgradeOptionTable& Option);
+	void UpgradeStat(FUpgradeOptionTable Option);
 
 	UPROPERTY(BlueprintReadOnly, Category = "Upgrade Options")
 	TArray<FUpgradeOptionTable> UpgradeOptionList;
