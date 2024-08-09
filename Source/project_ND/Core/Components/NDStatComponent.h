@@ -99,6 +99,7 @@ private:
 public:
 	void TakeDamage(float Damage);
 
+	UFUNCTION(BlueprintCallable)
 	void UseItem(FItemBaseData& ItemInfo);
 
 	void IncreaseHungry(float Amount);
