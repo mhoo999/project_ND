@@ -161,6 +161,7 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 	}
+	
 }
 
 void APlayerCharacter::OnJump()
@@ -230,8 +231,10 @@ void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::THORWABLE);
 	
-	if(CurPickUpObjectType == EWeaponType::THORWABLE)
-		BPThrowable();
+	//if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	//{
+	//	BPThrowable();
+	//}
 }
 
 void APlayerCharacter::StrafeOn()
@@ -287,7 +290,17 @@ void APlayerCharacter::OnAttack()
 	case EWeaponType::UNARMED:
 		break;
 	case EWeaponType::THORWABLE:
-		//GetCurrentPickUpObject()->OnPickedUp();
+		if (CurPickUpObjectType == EWeaponType::THORWABLE)
+		{
+			//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
+
+			BPThrowable();
+			//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
+			////FOnMontageEnded OnMontageEndeDelegate;
+			////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
+			////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
+
+		}	
 		break;
 	default:
 		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
@@ -359,6 +372,11 @@ void APlayerCharacter::OnAttackEnd()
 	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
+}
+
+void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	ChangeWeapon(EWeaponType::UNARMED);
 }
 
 
