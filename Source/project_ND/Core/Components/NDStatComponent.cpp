@@ -94,7 +94,7 @@ void UNDStatComponent::TakeDamage(float DamagedAmount)
 	EffectComponent->PlayHitEffect(Player->GetActorLocation());
 }
 
-void UNDStatComponent::UseItem(FItemBaseData& ItemInfo)
+void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
 {
 	if (ItemInfo.Type == EItemType::HealthPotion)
 	{
