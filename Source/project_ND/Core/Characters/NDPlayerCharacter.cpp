@@ -37,17 +37,14 @@ APlayerCharacter::APlayerCharacter()
 
 	ProjectilStart->SetupAttachment(RootComponent);
 	ProjectilPath->SetupAttachment(ProjectilStart);
-	//Camera->Setup
 
-	//Target = cast<ANDZombieBase>();
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
-	StatComponent->SetCurHP(100)->SetDamage(40);
+	//StatComponent->SetCurHP(100)->SetDamage(40);
 
-	//Target = Cast<ANDZombieBase>();
-	//Target->TakeDamage(40);
+
 }
 
 // Called when the game starts or when spawned
@@ -153,7 +150,10 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 {
 	StatComponent->bIsWalking = !StatComponent->bIsWalking;
 
-	if (StatComponent->bIsWalking)
+	float Speed = GetVelocity().Size();
+
+	
+	if (Speed > 200.0f || StatComponent->bIsWalking)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	}
@@ -161,6 +161,7 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 	}
+	
 }
 
 void APlayerCharacter::OnJump()
@@ -177,7 +178,7 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 
 	if (bIsCrouched)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 350.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 
@@ -209,11 +210,16 @@ void APlayerCharacter::SprintStart()
 	StatComponent->bIsWalking = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
+	SpringArm->TargetArmLength = 180.0f;
+	
+	
 }
 
 void APlayerCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	SpringArm->TargetArmLength = 130.0f;
+
 }
 
 void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
@@ -229,7 +235,11 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::THORWABLE);
-	//BPThrowable();
+	
+	//if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	//{
+	//	BPThrowable();
+	//}
 }
 
 void APlayerCharacter::StrafeOn()
@@ -285,7 +295,17 @@ void APlayerCharacter::OnAttack()
 	case EWeaponType::UNARMED:
 		break;
 	case EWeaponType::THORWABLE:
-		//GetCurrentPickUpObject()->OnPickedUp();
+		if (CurPickUpObjectType == EWeaponType::THORWABLE)
+		{
+			//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
+
+			BPThrowable();
+			//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
+			////FOnMontageEnded OnMontageEndeDelegate;
+			////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
+			////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
+
+		}	
 		break;
 	default:
 		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
@@ -295,20 +315,20 @@ void APlayerCharacter::OnAttack()
 
 void APlayerCharacter::OnAttackPressed()
 {
-	if (StatComponent->bIsAttacking)
-		return;
+	//if (StatComponent->bIsAttacking)
+	//	return;
 
-	switch (CurPickUpObjectType)
-	{
-	case EWeaponType::UNARMED:
-		break;
-	case EWeaponType::THORWABLE:
-		//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
-		//Throwables();
-		break;
-	default:
-		break;
-	}
+	//switch (CurPickUpObjectType)
+	//{
+	//case EWeaponType::UNARMED:
+	//	break;
+	//case EWeaponType::THORWABLE:
+	//	//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
+	//	//Throwables();
+	//	break;
+	//default:
+	//	break;
+	//}
 
 	/*if (StatComponent->bIsAttacking)
 		return;
@@ -357,6 +377,11 @@ void APlayerCharacter::OnAttackEnd()
 	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
+}
+
+void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	ChangeWeapon(EWeaponType::UNARMED);
 }
 
 
