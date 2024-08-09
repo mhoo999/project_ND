@@ -37,17 +37,14 @@ APlayerCharacter::APlayerCharacter()
 
 	ProjectilStart->SetupAttachment(RootComponent);
 	ProjectilPath->SetupAttachment(ProjectilStart);
-	//Camera->Setup
 
-	//Target = cast<ANDZombieBase>();
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
-	StatComponent->SetCurHP(100)->SetDamage(40);
+	//StatComponent->SetCurHP(100)->SetDamage(40);
 
-	//Target = Cast<ANDZombieBase>();
-	//Target->TakeDamage(40);
+
 }
 
 // Called when the game starts or when spawned
@@ -153,7 +150,10 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 {
 	StatComponent->bIsWalking = !StatComponent->bIsWalking;
 
-	if (StatComponent->bIsWalking)
+	float Speed = GetVelocity().Size();
+
+	
+	if (Speed > 200.0f || StatComponent->bIsWalking)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	}
@@ -178,7 +178,7 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 
 	if (bIsCrouched)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 350.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 
@@ -210,11 +210,16 @@ void APlayerCharacter::SprintStart()
 	StatComponent->bIsWalking = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
+	SpringArm->TargetArmLength = 180.0f;
+	
+	
 }
 
 void APlayerCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	SpringArm->TargetArmLength = 130.0f;
+
 }
 
 void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
