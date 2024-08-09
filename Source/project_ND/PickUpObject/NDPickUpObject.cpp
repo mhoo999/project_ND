@@ -17,6 +17,10 @@ ANDPickUpObject::ANDPickUpObject()
 void ANDPickUpObject::BeginPlay()
 {
 	Super::BeginPlay();
+
+	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
+
+	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
 }
 
 void ANDPickUpObject::Tick(float DeltaTime)
@@ -26,7 +30,8 @@ void ANDPickUpObject::Tick(float DeltaTime)
 
 void ANDPickUpObject::OnPickedUp()
 {
-	
+	if(OwnerCharacter)
+		OwnerCharacter->PlayAnimMontage(AttackMontage);
 }
 
 void ANDPickUpObject::SetItemMesh(UStaticMesh* Mesh) const

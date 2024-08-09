@@ -37,20 +37,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
 	int32 AmmoCount;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
-	UShapeComponent* BodyCollider;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectSettings")
+	//UShapeComponent* BodyCollider;
 	
 public:
 
+	//UShapeComponent* GetBodyCollider() { return BodyCollider; }
+
 	void Attack();
-
-	UShapeComponent* GetBodyCollider() { return BodyCollider; }
-
 
 protected:
 
-	class ANDMyCharacter* OwnerCharacter;
-	
 	class ANDZombieBase* Target;
 
+	class ANDMyCharacter* OwnerCharacter;
 };

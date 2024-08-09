@@ -3,6 +3,7 @@
 
 #include "NDMyCharacter.h"
 
+#include "project_ND/Core/Components/NDEffectComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 
 // Sets default values
@@ -12,7 +13,7 @@ ANDMyCharacter::ANDMyCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StatComponent = CreateDefaultSubobject<UNDStatComponent>("StatComponent");
-
+	EffectComponent = CreateDefaultSubobject<UNDEffectComponent>(TEXT("Effect Component"));
 }
 
 // Called when the game starts or when spawned
@@ -39,28 +40,28 @@ void ANDMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ANDMyCharacter::ChangeWeapon(EWeaponType InWeaponType)
 {
-	if (GetCurrentWeapon() != nullptr)
+	if (GetCurrentPickUpObject() != nullptr)
 	{
-		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetDrawMontage()))
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentPickUpObject()->GetDrawMontage()))
 			return;
 
-		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentWeapon()->GetSheathMontage()))
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(GetCurrentPickUpObject()->GetSheathMontage()))
 			return;
 	}
 
-	switch (CurWeaponType)
+	switch (CurPickUpObjectType)
 	{
 	case EWeaponType::UNARMED:
-		CurWeaponType  = InWeaponType;
-		NextWeaponType = InWeaponType;
+		CurPickUpObjectType  = InWeaponType;
+		NextPickUpObjectType = InWeaponType;
 
-		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
 		break;
 	default:
-		PlayAnimMontage(GetCurrentWeapon()->GetSheathMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
 
-		if (CurWeaponType != InWeaponType)
-			NextWeaponType = InWeaponType;
+		if (CurPickUpObjectType != InWeaponType)
+			NextPickUpObjectType = InWeaponType;
 
 		break;
 	}
@@ -72,7 +73,7 @@ void ANDMyCharacter::SpawnWeapons()
 
 	Param.Owner = this;
 
-	for (auto& pair : WeaponClasses)
+	for (auto& pair : PickUpObjectClasses)
 	{
 		//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
 
@@ -80,13 +81,13 @@ void ANDMyCharacter::SpawnWeapons()
 
 		weapon->AttachToHolster(GetMesh());
 
-		Weapons.Add(pair.Key, weapon);
+		PickUpObjects.Add(pair.Key, weapon);
 	}
 }
 
 void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
-	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+	StatComponent->TakeDamage(DamageAmount);
 
 	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
 

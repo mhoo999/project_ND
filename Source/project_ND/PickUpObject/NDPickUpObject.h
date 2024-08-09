@@ -13,7 +13,8 @@ enum class EItemType : uint8
 	Food			UMETA(DisplayName = "Food"),
 	Throwable		UMETA(DisplayName = "Throwable Item"),
 	Blunt			UMETA(DisplayName = "Blunt"),
-	Revolver		UMETA(DisplayName = "Revolver")
+	Revolver		UMETA(DisplayName = "Revolver"),
+	Key				UMETA(DisplayName = "Key")
 };
 
 USTRUCT(BlueprintType)
@@ -63,6 +64,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	int32 ItemID;
@@ -106,6 +108,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UAnimMontage* AttackMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectSettings")
+	UShapeComponent* BodyCollider;
+
 public:
 	virtual void OnPickedUp();
 
@@ -119,4 +124,8 @@ public:
 
 	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
 	UAnimMontage* GetSheathMontage() { return SheathMontage; }
+
+	class ANDMyCharacter* OwnerCharacter;
+
+	UShapeComponent* GetBodyCollider() { return BodyCollider; }
 };

@@ -11,6 +11,7 @@
 
 //#include "project_ND/Core/Interface/NDCharacterInterface.h"
 
+class UNDEffectComponent;
 class ANDWeaponBase;
 class ANDWeapon;
 class UNDStatComponent;
@@ -43,13 +44,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable)
-	EWeaponType GetCurWeaponType() { return CurWeaponType; }
+	EWeaponType GetCurPickUpObjectType() { return CurPickUpObjectType; }
 
 	//ANDWeaponBase* GetCurrentWeapon()
-	ANDPickUpObject* GetCurrentWeapon()
+	ANDPickUpObject* GetCurrentPickUpObject()
 	{
-		if (Weapons.Contains(CurWeaponType))
-			return Weapons[CurWeaponType];
+		if (PickUpObjects.Contains(CurPickUpObjectType))
+			return PickUpObjects[CurPickUpObjectType];
 
 		return nullptr;
 	}
@@ -77,14 +78,17 @@ protected:
 	//TMap<EWeaponType, TSubclassOf<ANDWeaponBase>> WeaponClasses;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, ANDPickUpObject*> Weapons;
+	TMap<EWeaponType, ANDPickUpObject*> PickUpObjects;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<EWeaponType, TSubclassOf<ANDPickUpObject>> WeaponClasses;
+	TMap<EWeaponType, TSubclassOf<ANDPickUpObject>> PickUpObjectClasses;
 
 
-	EWeaponType  CurWeaponType = EWeaponType::UNARMED;
-	EWeaponType NextWeaponType = EWeaponType::UNARMED;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EWeaponType  CurPickUpObjectType = EWeaponType::UNARMED;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EWeaponType NextPickUpObjectType = EWeaponType::UNARMED;
 
 
 	bool bIsCrouched = false;
@@ -97,4 +101,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
+
+private:
+	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
+	UNDEffectComponent* EffectComponent;
 };

@@ -4,6 +4,9 @@
 #include "NDPlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneComponent.h"
+#include "Components/SplineComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
@@ -24,21 +27,24 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	PCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
-	//Camera->SetupAttachment(CapsuleComponent);
+
+	ProjectilStart = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectilStart"));
+	ProjectilPath = CreateDefaultSubobject<USplineComponent>(TEXT("ProjectilPath"));
+	
 	SpringArm->SetupAttachment(RootComponent);
 	PCamera->SetupAttachment(SpringArm);
-	PCamera->bUsePawnControlRotation = true; 
-	//Camera->Setup
+	PCamera->bUsePawnControlRotation = true;
 
-	//Target = cast<ANDZombieBase>();
+	ProjectilStart->SetupAttachment(RootComponent);
+	ProjectilPath->SetupAttachment(ProjectilStart);
+
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
-	StatComponent->SetCurHP(100)->SetDamage(40);
+	//StatComponent->SetCurHP(100)->SetDamage(40);
 
-	//Target = Cast<ANDZombieBase>();
-	//Target->TakeDamage(40);
+
 }
 
 // Called when the game starts or when spawned
@@ -94,6 +100,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
 		
@@ -142,7 +150,10 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 {
 	StatComponent->bIsWalking = !StatComponent->bIsWalking;
 
-	if (StatComponent->bIsWalking)
+	float Speed = GetVelocity().Size();
+
+	
+	if (Speed > 200.0f || StatComponent->bIsWalking)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	}
@@ -150,11 +161,12 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 	}
+	
 }
 
 void APlayerCharacter::OnJump()
 {
-	if (CurWeaponType != EWeaponType::UNARMED || bIsCrouched)
+	if (CurPickUpObjectType != EWeaponType::UNARMED || bIsCrouched)
 		return;
 
 	ACharacter::Jump();
@@ -166,13 +178,25 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 
 	if (bIsCrouched)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 350.0f;
-	
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+
+		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
+
+		SpringArm->TargetArmLength = 50.0f;
+
+		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
+		
 	}
 	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+
+		SpringArm->TargetArmLength = 50.0f;
+
 	}
+	
+	SpringArm->TargetArmLength = 130.0f;
+
 
 }
 
@@ -186,11 +210,16 @@ void APlayerCharacter::SprintStart()
 	StatComponent->bIsWalking = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
+	SpringArm->TargetArmLength = 180.0f;
+	
+	
 }
 
 void APlayerCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	SpringArm->TargetArmLength = 130.0f;
+
 }
 
 void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
@@ -206,6 +235,11 @@ void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::THORWABLE);
+	
+	//if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	//{
+	//	BPThrowable();
+	//}
 }
 
 void APlayerCharacter::StrafeOn()
@@ -224,11 +258,11 @@ void APlayerCharacter::StrafeOff()
 
 void APlayerCharacter::OnDrawEnd()
 {
-	Weapons[NextWeaponType]->AttachToHand(GetMesh());
+	PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
 
-	NextWeaponType = EWeaponType::UNARMED;
+	NextPickUpObjectType = EWeaponType::UNARMED;
 
-	if (CurWeaponType == EWeaponType::UNARMED)
+	if (CurPickUpObjectType == EWeaponType::UNARMED)
 		StrafeOff();
 	else
 		StrafeOn();
@@ -236,18 +270,18 @@ void APlayerCharacter::OnDrawEnd()
 
 void APlayerCharacter::OnSheathEnd()
 {
-	GetCurrentWeapon()->AttachToHolster(GetMesh());
+	GetCurrentPickUpObject()->AttachToHolster(GetMesh());
 
-	if (NextWeaponType == EWeaponType::UNARMED)
+	if (NextPickUpObjectType == EWeaponType::UNARMED)
 	{
-		CurWeaponType = EWeaponType::UNARMED;
+		CurPickUpObjectType = EWeaponType::UNARMED;
 		StrafeOff();
 	}
 	else
 	{
-		CurWeaponType = NextWeaponType;
+		CurPickUpObjectType = NextPickUpObjectType;
 
-		PlayAnimMontage(GetCurrentWeapon()->GetDrawMontage());
+		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
 	}
 }
 
@@ -256,36 +290,123 @@ void APlayerCharacter::OnAttack()
 	if (StatComponent->bIsAttacking)
 		return;
 
-	switch (CurWeaponType)
+	switch (CurPickUpObjectType)
 	{
 	case EWeaponType::UNARMED:
 		break;
+	case EWeaponType::THORWABLE:
+		if (CurPickUpObjectType == EWeaponType::THORWABLE)
+		{
+			//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
+
+			BPThrowable();
+			//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
+			////FOnMontageEnded OnMontageEndeDelegate;
+			////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
+			////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
+
+		}	
+		break;
 	default:
-		weapon->Attack();
+		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
 		break;
 	}
+}
+
+void APlayerCharacter::OnAttackPressed()
+{
+	//if (StatComponent->bIsAttacking)
+	//	return;
+
+	//switch (CurPickUpObjectType)
+	//{
+	//case EWeaponType::UNARMED:
+	//	break;
+	//case EWeaponType::THORWABLE:
+	//	//Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
+	//	//Throwables();
+	//	break;
+	//default:
+	//	break;
+	//}
+
+	/*if (StatComponent->bIsAttacking)
+		return;
+	
+	if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	{
+		StatComponent->bIsAttacking = true;
+	}*/
+	//else (CurPickUpObjectType == EWeaponType::BLUNTWEAPON)
+	//	OnAttack();
+	
+		
+		
+
+	/*GetWorldTimerManager().SetTimer(AttackHoldTimerHandle, this, &AYourCharacter::PerformAimedAttack, HoldThreshold, false); */
+
+}
+
+void APlayerCharacter::OnAttackReleased()
+{
+	/*GetWorldTimerManager().ClearTimer(AttackHoldTimerHandle);
+
+	if (bIsAttacking)
+	{
+		PerformSingleAttack();
+	}
+
+	bIsAttacking = false;*/
 }
 
 void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	weapon->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	weapon->GetBodyCollider()->bHiddenInGame = false;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = false;
+	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	weapon->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	weapon->GetBodyCollider()->bHiddenInGame = true;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
+	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
+}
+
+void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	ChangeWeapon(EWeaponType::UNARMED);
 }
 
 
 
 void APlayerCharacter::FlashLightOn()
 {
+	//bool FlasLight = true;
+
+
+	//if (FlasLight) 
+	//{
+	//	// code
+	//	
+
+	//	FlasLight = false;
+	//}
+	//else 
+	//{
+	//	// code
+	//	FlasLight = true;
+	//}
+
+
+
+	//PlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName = "Standing_Taunt_Chest_fix_Montage");
 }
 
 
