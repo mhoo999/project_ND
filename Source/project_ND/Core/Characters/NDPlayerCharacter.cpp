@@ -472,7 +472,7 @@ void APlayerCharacter::OnAttackEnd()
 
 void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	ChangeWeapon(EWeaponType::UNARMED);
+	// ChangeWeapon(EWeaponType::UNARMED);
 }
 
 
