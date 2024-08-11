@@ -24,6 +24,12 @@ enum class EWeaponType : uint8
 	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE, FLASHLIGHTON, REVOLVER
 };
 
+UENUM(BlueprintType)
+enum class EEquipment : uint8
+{
+	UNARMED, FIRSTSLOT, SECONDSLOT, THIRDSLOT
+};
+
 UCLASS()
 class PROJECT_ND_API ANDMyCharacter : public ACharacter, public INDCharacterInterface
 {
@@ -59,8 +65,17 @@ public:
 	void ChangeWeapon(EWeaponType InWeaponType);
 	
 	UNDStatComponent* GetStatComponent() { return StatComponent; }
+	
+	UPROPERTY()
+	ANDPickUpObject* CurrentEquipmentItem;
+	EEquipment CurrentEquipmentSlot;
 
+	UPROPERTY()
+	ANDPickUpObject* NextEquipmentItem;
+	EEquipment NextEquipmentSLot;
 
+	bool bIsSwap;
+	
 private:
 	void SpawnWeapons();
 

@@ -126,7 +126,6 @@ public:
 	bool AttachToHolster(USceneComponent* InParent);
 	bool AttachToHand   (USceneComponent* InParent);
 
-
 	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
 	UAnimMontage* GetSheathMontage() { return SheathMontage; }
 

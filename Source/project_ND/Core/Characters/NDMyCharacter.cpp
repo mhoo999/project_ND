@@ -23,6 +23,7 @@ void ANDMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CurrentEquipmentSlot = EEquipment::UNARMED;
 	// SpawnWeapons();
 }
 

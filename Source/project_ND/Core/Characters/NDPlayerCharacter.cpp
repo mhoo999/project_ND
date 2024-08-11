@@ -232,37 +232,83 @@ void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 
 void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetFirstSlot() == nullptr)
+	if (EquipComponent->GetFirstSlot() == nullptr && bIsSwap)
 	{
 		return;
 	}
-	
-	ChangeWeapon(EWeaponType::BLUNTWEAPON);
+
+	bIsSwap = true;
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		if (CurrentEquipmentSlot == EEquipment::UNARMED)
+		{
+			CurrentEquipmentItem = EquipComponent->GetFirstSlot();
+			CurrentEquipmentSlot = EEquipment::FIRSTSLOT;
+			
+			AnimInstance->Montage_Play(CurrentEquipmentItem->GetDrawMontage());
+		}
+		else
+		{
+			NextEquipmentItem = EquipComponent->GetFirstSlot();
+			NextEquipmentSLot = EEquipment::FIRSTSLOT;
+			
+			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
+		}
+	}
 }
 
 void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetSecondSlot() == nullptr)
+	if (EquipComponent->GetSecondSlot() == nullptr && bIsSwap)
 	{
 		return;
 	}
-	
-	ChangeWeapon(EWeaponType::REVOLVER);
+
+	bIsSwap = true;
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		if (CurrentEquipmentSlot == EEquipment::UNARMED)
+		{
+			CurrentEquipmentItem = EquipComponent->GetSecondSlot();
+			CurrentEquipmentSlot = EEquipment::SECONDSLOT;
+			
+			AnimInstance->Montage_Play(CurrentEquipmentItem->GetDrawMontage());
+		}
+		else
+		{
+			NextEquipmentItem = EquipComponent->GetSecondSlot();
+			NextEquipmentSLot = EEquipment::SECONDSLOT;
+			
+			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
+		}
+	}
 }
 
 void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetThirdSlot() == nullptr)
+	if (EquipComponent->GetThirdSlot() == nullptr && bIsSwap)
 	{
 		return;
 	}
-	
-	ChangeWeapon(EWeaponType::THORWABLE);
-	
-	//if (CurPickUpObjectType == EWeaponType::THORWABLE)
-	//{
-	//	BPThrowable();
-	//}
+
+	bIsSwap = true;
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		if (CurrentEquipmentSlot == EEquipment::UNARMED)
+		{
+			CurrentEquipmentItem = EquipComponent->GetThirdSlot();
+			CurrentEquipmentSlot = EEquipment::THIRDSLOT;
+			
+			AnimInstance->Montage_Play(CurrentEquipmentItem->GetDrawMontage());
+		}
+		else
+		{
+			NextEquipmentItem = EquipComponent->GetThirdSlot();
+			NextEquipmentSLot = EEquipment::THIRDSLOT;
+			
+			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
+		}
+	}
 }
 
 void APlayerCharacter::StrafeOn()
@@ -281,30 +327,52 @@ void APlayerCharacter::StrafeOff()
 
 void APlayerCharacter::OnDrawEnd()
 {
-	PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
+	// PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
+	//
+	// NextPickUpObjectType = EWeaponType::UNARMED;
+	//
+	// if (CurPickUpObjectType == EWeaponType::UNARMED)
+	// 	StrafeOff();
+	// else
+	// 	StrafeOn();
 
-	NextPickUpObjectType = EWeaponType::UNARMED;
-
-	if (CurPickUpObjectType == EWeaponType::UNARMED)
-		StrafeOff();
-	else
-		StrafeOn();
+	CurrentEquipmentItem->AttachToHand(GetMesh());
+	bIsSwap = false;
 }
 
 void APlayerCharacter::OnSheathEnd()
 {
-	GetCurrentPickUpObject()->AttachToHolster(GetMesh());
+	// GetCurrentPickUpObject()->AttachToHolster(GetMesh());
+	//
+	// if (NextPickUpObjectType == EWeaponType::UNARMED)
+	// {
+	// 	CurPickUpObjectType = EWeaponType::UNARMED;
+	// 	StrafeOff();
+	// }
+	// else
+	// {
+	// 	CurPickUpObjectType = NextPickUpObjectType;
+	//
+	// 	PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
+	// }
 
-	if (NextPickUpObjectType == EWeaponType::UNARMED)
+	CurrentEquipmentItem->AttachToHolster(GetMesh());
+
+	if (NextEquipmentItem && CurrentEquipmentSlot != NextEquipmentSLot)
 	{
-		CurPickUpObjectType = EWeaponType::UNARMED;
-		StrafeOff();
+		CurrentEquipmentItem = NextEquipmentItem;
+		CurrentEquipmentSlot = NextEquipmentSLot;
+
+		PlayAnimMontage(CurrentEquipmentItem->GetDrawMontage());
+
+		NextEquipmentItem = nullptr;
+		NextEquipmentSLot = EEquipment::UNARMED;
 	}
 	else
 	{
-		CurPickUpObjectType = NextPickUpObjectType;
-
-		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
+		CurrentEquipmentItem = nullptr;
+		CurrentEquipmentSlot = EEquipment::UNARMED;
+		bIsSwap = false;
 	}
 }
 
