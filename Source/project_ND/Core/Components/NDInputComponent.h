@@ -52,10 +52,13 @@ public:
 	class UInputAction* ChangeFirstSlot;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* AttackAction;
+	class UInputAction* ChangeSecondSlot;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* ThrowAction;
+	class UInputAction* ChangeThirdSlot;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* AttackAction;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* FlashLightOnAction;

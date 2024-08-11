@@ -12,6 +12,7 @@
 #include "EnhancedInputComponent.h"
 #include "Components/ShapeComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "project_ND/Core/Components/NDEquipComponent.h"
 #include "project_ND/Core/Components/NDInputComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
@@ -96,16 +97,17 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeFirstSlotItem);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeSecondSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeSecondSlotItem);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Triggered, this, &APlayerCharacter::ChangeThirdSlotItem);
+		
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
 		
-		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
-		
-		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
 
 
 		//UE_LOG(,)
@@ -228,13 +230,33 @@ void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 	ChangeWeapon(EWeaponType::FLASHLIGHT);
 }
 
-void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
+void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 {
+	if (EquipComponent->GetFirstSlot() == nullptr)
+	{
+		return;
+	}
+	
 	ChangeWeapon(EWeaponType::BLUNTWEAPON);
 }
 
-void APlayerCharacter::Throwable(const FInputActionValue& Value)
+void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 {
+	if (EquipComponent->GetSecondSlot() == nullptr)
+	{
+		return;
+	}
+	
+	ChangeWeapon(EWeaponType::REVOLVER);
+}
+
+void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
+{
+	if (EquipComponent->GetThirdSlot() == nullptr)
+	{
+		return;
+	}
+	
 	ChangeWeapon(EWeaponType::THORWABLE);
 	
 	//if (CurPickUpObjectType == EWeaponType::THORWABLE)

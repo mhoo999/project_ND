@@ -21,7 +21,7 @@ class ANDPickUpObject;
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE, FLASHLIGHTON
+	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE, FLASHLIGHTON, REVOLVER
 };
 
 UCLASS()
@@ -103,7 +103,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
 
-private:
+protected:
 	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
 	UNDEffectComponent* EffectComponent;
 

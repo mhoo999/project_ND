@@ -10,9 +10,9 @@ UNDEquipComponent::UNDEquipComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-	FirstSlotSocketName		= TEXT("BlentSocket");
-	SecondSlotSocketName	= TEXT("RevolverSocket");
-	ThirdSlotSocketName		= TEXT("ThrowableSocket");
+	FirstSlotSocketName		= TEXT("BluntWeapon_Holster");
+	SecondSlotSocketName	= TEXT("RevolverWeapon_Holster");
+	ThirdSlotSocketName		= TEXT("Throwable_Holster");
 	LanternSlotSocketName	= TEXT("FlashLight_Holster");
 }
 
@@ -25,6 +25,21 @@ void UNDEquipComponent::BeginPlay()
 	if (BasicLantern)
 	{
 		EquipLanternSlot(BasicLantern);
+	}
+
+	if (BasicFirstSlotItem)
+	{
+		EquipFirstSlot(BasicFirstSlotItem);
+	}
+
+	if (BasicSecondSlotItem)
+	{
+		EquipSecondSlot(BasicSecondSlotItem);
+	}
+
+	if (BasicThirdSlotItem)
+	{
+		EquipThirdSlot(BasicThirdSlotItem);
 	}
 }
 

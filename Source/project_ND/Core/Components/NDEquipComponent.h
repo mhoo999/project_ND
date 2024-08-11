@@ -42,13 +42,13 @@ private:
 	ANDPickUpObject* LanternSlot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Slot", meta=(AllowPrivateAccess))
-	TSubclassOf<ANDPickUpObject> BasicFirstSlot;
+	TSubclassOf<ANDPickUpObject> BasicFirstSlotItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Slot", meta=(AllowPrivateAccess))
-	TSubclassOf<ANDPickUpObject> BasicSecondSlot;
+	TSubclassOf<ANDPickUpObject> BasicSecondSlotItem;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Slot", meta=(AllowPrivateAccess))
-	TSubclassOf<ANDPickUpObject> BasicThirdSlot;
+	TSubclassOf<ANDPickUpObject> BasicThirdSlotItem;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Slot", meta=(AllowPrivateAccess))
 	TSubclassOf<ANDPickUpObject> BasicLantern;
