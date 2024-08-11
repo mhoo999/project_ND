@@ -178,33 +178,31 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 
 	if (bIsCrouched)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 
-		SpringArm->TargetArmLength = 120.0f;
-		SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+		SpringArm->TargetArmLength = 50.0f;
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 		
 	}
 	else
 	{
-		//GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 
-		SpringArm->TargetArmLength = 130.0f;
-		SpringArm->SetRelativeLocation(FVector(0, 30, 75));
+		SpringArm->TargetArmLength = 50.0f;
+
 	}
 	
+	SpringArm->TargetArmLength = 130.0f;
+
 
 }
 
 void APlayerCharacter::CrouchEnd(const FInputActionValue& Value)
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	
-	SpringArm->TargetArmLength = 50.0f;
-	SpringArm->SetRelativeLocation(FVector(0, 30, 30));
 }
 
 void APlayerCharacter::SprintStart()
@@ -213,7 +211,8 @@ void APlayerCharacter::SprintStart()
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 	SpringArm->TargetArmLength = 180.0f;
-	//SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+	
+	
 }
 
 void APlayerCharacter::SprintEnd()
