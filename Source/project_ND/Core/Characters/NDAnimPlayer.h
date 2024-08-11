@@ -44,5 +44,5 @@ protected:
 	class APlayerCharacter* Player = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	EWeaponType CurWeapon;
+	EEquipment CurWeapon;
 };

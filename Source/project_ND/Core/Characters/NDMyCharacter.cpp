@@ -4,6 +4,7 @@
 #include "NDMyCharacter.h"
 
 #include "project_ND/Core/Components/NDEffectComponent.h"
+#include "project_ND/Core/Components/NDEquipComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 
 // Sets default values
@@ -14,6 +15,7 @@ ANDMyCharacter::ANDMyCharacter()
 
 	StatComponent = CreateDefaultSubobject<UNDStatComponent>("StatComponent");
 	EffectComponent = CreateDefaultSubobject<UNDEffectComponent>(TEXT("Effect Component"));
+	EquipComponent = CreateDefaultSubobject<UNDEquipComponent>(TEXT("Equip Component"));
 }
 
 // Called when the game starts or when spawned
@@ -21,7 +23,8 @@ void ANDMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnWeapons();
+	CurrentEquipmentSlot = EEquipment::UNARMED;
+	// SpawnWeapons();
 }
 
 // Called every frame
@@ -67,22 +70,27 @@ void ANDMyCharacter::ChangeWeapon(EWeaponType InWeaponType)
 	}
 }
 
+EEquipment ANDMyCharacter::GetCurrentEquipmentSlot()
+{
+	return CurrentEquipmentSlot;
+}
+
 void ANDMyCharacter::SpawnWeapons()
 {
-	FActorSpawnParameters Param;
-
-	Param.Owner = this;
-
-	for (auto& pair : PickUpObjectClasses)
-	{
-		//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
-
-		ANDPickUpObject* weapon = GetWorld()->SpawnActor<ANDPickUpObject>(pair.Value, Param); // class Reference
-
-		weapon->AttachToHolster(GetMesh());
-
-		PickUpObjects.Add(pair.Key, weapon);
-	}
+	// FActorSpawnParameters Param;
+	//
+	// Param.Owner = this;
+	//
+	// for (auto& pair : PickUpObjectClasses)
+	// {
+	// 	//GetWorld()->SpawnActor<ANDWeapon>(ANDBluntWeapon::StaticClass()); // Object Reference
+	//
+	// 	ANDPickUpObject* weapon = GetWorld()->SpawnActor<ANDPickUpObject>(pair.Value, Param); // class Reference
+	//
+	// 	weapon->AttachToHolster(GetMesh());
+	//
+	// 	PickUpObjects.Add(pair.Key, weapon);
+	// }
 }
 
 void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)

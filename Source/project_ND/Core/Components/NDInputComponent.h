@@ -49,13 +49,16 @@ public:
 	class UInputAction* ChangeWeaponAction;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* EquipBluntWeapon;
+	class UInputAction* ChangeFirstSlot;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* ChangeSecondSlot;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* ChangeThirdSlot;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* AttackAction;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* ThrowAction;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* FlashLightOnAction;
