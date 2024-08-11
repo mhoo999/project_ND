@@ -11,6 +11,7 @@
 
 //#include "project_ND/Core/Interface/NDCharacterInterface.h"
 
+class UNDEquipComponent;
 class UNDEffectComponent;
 class ANDWeaponBase;
 class ANDWeapon;
@@ -105,4 +106,7 @@ protected:
 private:
 	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
 	UNDEffectComponent* EffectComponent;
+
+	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
+	UNDEquipComponent* EquipComponent;
 };

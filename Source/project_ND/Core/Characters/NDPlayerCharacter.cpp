@@ -96,13 +96,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
-		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
-
+		
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
 		
 		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);

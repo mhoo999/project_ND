@@ -49,7 +49,7 @@ public:
 	class UInputAction* ChangeWeaponAction;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UInputAction* EquipBluntWeapon;
+	class UInputAction* ChangeFirstSlot;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* AttackAction;
