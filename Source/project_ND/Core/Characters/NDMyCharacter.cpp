@@ -70,6 +70,11 @@ void ANDMyCharacter::ChangeWeapon(EWeaponType InWeaponType)
 	}
 }
 
+EEquipment ANDMyCharacter::GetCurrentEquipmentSlot()
+{
+	return CurrentEquipmentSlot;
+}
+
 void ANDMyCharacter::SpawnWeapons()
 {
 	// FActorSpawnParameters Param;

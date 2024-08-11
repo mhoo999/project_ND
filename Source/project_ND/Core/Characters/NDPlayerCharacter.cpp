@@ -104,7 +104,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
-		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Started  , this, &APlayerCharacter::OnAttackPressed);
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
 		
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
@@ -379,29 +379,44 @@ void APlayerCharacter::OnSheathEnd()
 void APlayerCharacter::OnAttack()
 {
 	if (StatComponent->bIsAttacking)
-		return;
-
-	switch (CurPickUpObjectType)
 	{
-	case EWeaponType::UNARMED:
-		break;
-	case EWeaponType::THORWABLE:
-		if (CurPickUpObjectType == EWeaponType::THORWABLE)
-		{
-			//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
-
-			BPThrowable();
-			//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
-			////FOnMontageEnded OnMontageEndeDelegate;
-			////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
-			////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
-
-		}	
-		break;
-	default:
-		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
-		break;
+		return;
 	}
+
+	if (CurrentEquipmentSlot == EEquipment::FIRSTSLOT)
+	{
+		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
+	}
+	else if (CurrentEquipmentSlot == EEquipment::SECONDSLOT)
+	{
+		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
+	}
+	else if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
+	{
+		// BP에서 구현
+	}
+	
+	// switch (CurrentEquipmentSlot)
+	// {
+	// case EEquipment::UNARMED:
+	// 	break;
+	// case EEquipment::THIRDSLOT:
+	// 	if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
+	// 	{
+	// 		//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
+	//
+	// 		BPThrowable();
+	// 		//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
+	// 		////FOnMontageEnded OnMontageEndeDelegate;
+	// 		////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
+	// 		////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
+	//
+	// 	}	
+	// 	break;
+	// default:
+	// 	Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
+	// 	break;
+	// }
 }
 
 void APlayerCharacter::OnAttackPressed()
@@ -454,20 +469,24 @@ void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = false;
+	CurrentEquipmentItem->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = false;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
+
+	UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter : OnAttackBegin()"));
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
+	CurrentEquipmentItem->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = true;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
+
+	UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter : OnAttackEnd()"));
 }
 
 void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)

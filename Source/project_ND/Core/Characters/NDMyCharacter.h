@@ -70,6 +70,9 @@ public:
 	ANDPickUpObject* CurrentEquipmentItem;
 	EEquipment CurrentEquipmentSlot;
 
+	UFUNCTION(BlueprintCallable)
+	EEquipment GetCurrentEquipmentSlot();
+
 	UPROPERTY()
 	ANDPickUpObject* NextEquipmentItem;
 	EEquipment NextEquipmentSLot;
