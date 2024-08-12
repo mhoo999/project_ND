@@ -40,7 +40,12 @@ protected:
 	void OnJump();
 
 	void CrouchStart(const FInputActionValue& Value);
-	void CrouchEnd  (const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleCrouchProgress(float Value);
+
+	UFUNCTION()
+	void HandleZoomProgress(float Value);
 
 	void SprintStart();
 	void SprintEnd  ();
@@ -88,6 +93,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	class UTimelineComponent* ZoomTimeline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	class UTimelineComponent* CrouchTimeline;
+
+	// ÁÜ È¿°ú¸¦ À§ÇÑ °î¼±
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UCurveFloat* ZoomCurve;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* PCamera;
 
@@ -105,4 +120,10 @@ protected:
 	class ANDZombieBase* Target;
 
 	//class ANDWeaponBase* weapon;
+
+	FVector DefaultCameraLocation;
+	FVector ZoomOutLocation;
+
+	FVector DefaulCrouchLocation;
+	FVector CrouchedLocation;
 };

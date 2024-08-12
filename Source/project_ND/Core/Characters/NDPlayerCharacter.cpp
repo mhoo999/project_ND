@@ -8,6 +8,9 @@
 #include "Components/SplineComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/TimelineComponent.h"
+#include "Curves/CurveFloat.h"
+#include "Kismet/GameplayStatics.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "Components/ShapeComponent.h"
@@ -27,17 +30,22 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
-	PCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	PCamera   = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 
 	ProjectilStart = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectilStart"));
-	ProjectilPath = CreateDefaultSubobject<USplineComponent>(TEXT("ProjectilPath"));
+	ProjectilPath  = CreateDefaultSubobject<USplineComponent>(TEXT("ProjectilPath"));
 	
 	SpringArm->SetupAttachment(RootComponent);
 	PCamera->SetupAttachment(SpringArm);
 	PCamera->bUsePawnControlRotation = true;
 
+	SpringArm->SetRelativeLocation(FVector(0.0f, 30.0f, 75.0f));
+
 	ProjectilStart->SetupAttachment(RootComponent);
-	ProjectilPath->SetupAttachment(ProjectilStart);
+	 ProjectilPath->SetupAttachment(ProjectilStart);
+
+	ZoomTimeline   = CreateDefaultSubobject<UTimelineComponent>(TEXT("ZoomTImeline"));
+	CrouchTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("CrouchTimeline"));
 
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
@@ -65,6 +73,30 @@ void APlayerCharacter::BeginPlay()
 		}
 	}
 
+	DefaultCameraLocation = SpringArm->GetRelativeLocation();
+	ZoomOutLocation = DefaultCameraLocation + FVector(-50.0f, 0.0f, 0.0f);
+
+	if (ZoomCurve)
+	{
+		FOnTimelineFloat TimelineCallback;
+		TimelineCallback.BindUFunction(this, FName("HandleZoomProgress"));
+
+		ZoomTimeline->AddInterpFloat(ZoomCurve, TimelineCallback);
+	}
+
+
+	//Crouched
+	DefaulCrouchLocation = SpringArm->GetRelativeLocation();
+	CrouchedLocation = DefaulCrouchLocation + FVector(0.0f, 0.0f, -50.0f);
+
+
+	if (ZoomCurve)
+	{
+		FOnTimelineFloat TimelineCallback;
+		TimelineCallback.BindUFunction(this, FName("HandleCrouchProgress"));
+
+		CrouchTimeline->AddInterpFloat(ZoomCurve, TimelineCallback);
+	}
 }
 
 // Called every frame
@@ -73,6 +105,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//bUseControllerRotationYaw = false;
+
+	if (ZoomTimeline)
+	{
+		ZoomTimeline->TickComponent(DeltaTime, ELevelTick::LEVELTICK_TimeOnly, nullptr);
+	}
 }
 
 // Called to bind functionality to input
@@ -92,7 +129,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->WalkAction, ETriggerEvent::Started  , this, &APlayerCharacter::Walk);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
-		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchEnd);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
@@ -184,45 +220,63 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 
-		SpringArm->TargetArmLength = 120.0f;
-		SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+		if (CrouchTimeline)
+		{
+			CrouchTimeline->Play();
+		}
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 		
 	}
 	else
 	{
-		//GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
-		SpringArm->TargetArmLength = 130.0f;
-		SpringArm->SetRelativeLocation(FVector(0, 30, 75));
+		if (CrouchTimeline)
+		{
+			CrouchTimeline->Reverse();
+		}
 	}
 	
 
 }
 
-void APlayerCharacter::CrouchEnd(const FInputActionValue& Value)
+void APlayerCharacter::HandleCrouchProgress(float Value)
 {
-	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	
-	SpringArm->TargetArmLength = 50.0f;
-	SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+	FVector NewLocation = FMath::Lerp(DefaulCrouchLocation, CrouchedLocation, Value);
+	SpringArm->SetRelativeLocation(NewLocation);
+}
+
+void APlayerCharacter::HandleZoomProgress(float Value)
+{
+	FVector NewLocation = FMath::Lerp(DefaultCameraLocation, ZoomOutLocation, Value);
+	NewLocation.Y = DefaultCameraLocation.Y;
+	SpringArm->SetRelativeLocation(NewLocation);
+	UE_LOG(LogTemp, Warning, TEXT("Zoom Value: %f, NewLocation: %s"), Value, *NewLocation.ToString());
 }
 
 void APlayerCharacter::SprintStart()
 {
 	StatComponent->bIsWalking = false;
 
-	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
-	SpringArm->TargetArmLength = 180.0f;
-	//SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+	if (ZoomTimeline)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 800.0f;
+		ZoomTimeline->Play();
+
+		//UE_LOG(LogTemp, Warning, TEXT("ZoomTimeline Play"));
+	}
 }
 
 void APlayerCharacter::SprintEnd()
 {
-	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	SpringArm->TargetArmLength = 130.0f;
+	if (ZoomTimeline)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+		ZoomTimeline->Reverse();
 
+		//UE_LOG(LogTemp, Warning, TEXT("ZoomTimeline Reverse"));
+	}
 }
 
 void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
