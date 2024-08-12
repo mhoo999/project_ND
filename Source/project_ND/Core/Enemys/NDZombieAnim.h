@@ -6,6 +6,8 @@
 #include "Animation/AnimInstance.h"
 #include "NDZombieAnim.generated.h"
 
+enum EAIState : uint8;
+class ANDAIController;
 class ANDZombieBase;
 /**
  * 
@@ -27,6 +29,9 @@ public:
 
 	UPROPERTY()
 	ANDZombieBase* Zombie;
+
+	UPROPERTY()
+	ANDAIController* AIController;
 
 	UPROPERTY(EditDefaultsOnly, Category="Anims")
 	UAnimMontage* AttackAnim;
@@ -59,4 +64,10 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_ReActiveZombie();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animation", meta=(AllowPrivateAccess))
+	TEnumAsByte<EAIState> ZombieState;
+
+	UFUNCTION()
+	void AnimNotify_EndStunned();
 };

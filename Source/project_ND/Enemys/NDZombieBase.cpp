@@ -108,7 +108,10 @@ void ANDZombieBase::TakeDamage(const float DamageAmount, AActor* Attacker, FHitR
 	}
 	else
 	{
-		AIController->GetDamaged(HitResult.Location);
+		// AIController->GetDamaged(HitResult.Location);
+		AIController->SetAIState("Stunned");
+		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(GetMesh()->GetAnimInstance());
+		ZombieAnim->PlayDamagedAnim();
 	}
 }
 
