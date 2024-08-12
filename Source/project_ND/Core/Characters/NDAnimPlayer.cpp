@@ -36,7 +36,9 @@ void UNDAnimPlayer::NativeUpdateAnimation(float DeltaSeconds)
 	
 	Direction = CalculateDirection(Velocity, BaseRotator);
 
-	CurWeapon = Player->GetCurPickUpObjectType();
+	// CurWeapon = Player->GetCurPickUpObjectType();
+	
+	CurWeapon = Player->CurrentEquipmentSlot;
 
 	//Direction
 

@@ -11,6 +11,7 @@
 
 //#include "project_ND/Core/Interface/NDCharacterInterface.h"
 
+class UNDEquipComponent;
 class UNDEffectComponent;
 class ANDWeaponBase;
 class ANDWeapon;
@@ -20,7 +21,13 @@ class ANDPickUpObject;
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE, FLASHLIGHTON
+	UNARMED, FLASHLIGHT, BLUNTWEAPON, THORWABLE, FLASHLIGHTON, REVOLVER
+};
+
+UENUM(BlueprintType)
+enum class EEquipment : uint8
+{
+	UNARMED, FIRSTSLOT, SECONDSLOT, THIRDSLOT
 };
 
 UCLASS()
@@ -58,8 +65,20 @@ public:
 	void ChangeWeapon(EWeaponType InWeaponType);
 	
 	UNDStatComponent* GetStatComponent() { return StatComponent; }
+	
+	UPROPERTY()
+	ANDPickUpObject* CurrentEquipmentItem;
+	EEquipment CurrentEquipmentSlot;
 
+	UFUNCTION(BlueprintCallable)
+	EEquipment GetCurrentEquipmentSlot();
 
+	UPROPERTY()
+	ANDPickUpObject* NextEquipmentItem;
+	EEquipment NextEquipmentSLot;
+
+	bool bIsSwap;
+	
 private:
 	void SpawnWeapons();
 
@@ -102,7 +121,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
 
-private:
+protected:
 	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
 	UNDEffectComponent* EffectComponent;
+
+	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
+	UNDEquipComponent* EquipComponent;
 };

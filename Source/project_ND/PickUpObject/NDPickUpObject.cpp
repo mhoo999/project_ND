@@ -12,6 +12,7 @@ ANDPickUpObject::ANDPickUpObject()
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
 	SetRootComponent(ItemMesh);
+	ItemMesh->SetCollisionProfileName(TEXT("IgnoreOnlyPawn"));
 }
 
 void ANDPickUpObject::BeginPlay()
