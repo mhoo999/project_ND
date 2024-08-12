@@ -92,6 +92,9 @@ protected:
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
+	UFUNCTION()
+	void HandlePlayerDamaged();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
@@ -112,12 +115,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USpringArmComponent* SpringArm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
+	TSubclassOf<UCameraShakeBase> MyCameraShakeClass;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USceneComponent* ProjectilStart;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USplineComponent* ProjectilPath;
-
 
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;

@@ -18,6 +18,8 @@ class ANDWeapon;
 class UNDStatComponent;
 class ANDPickUpObject;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDamaged);
+
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
@@ -91,6 +93,9 @@ public:
 	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnPlayerDamaged OnPlayerDamaged;
 
 private:
 	void Die();

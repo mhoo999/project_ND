@@ -27,8 +27,6 @@ void ANDMyCharacter::BeginPlay()
 
 	CurrentEquipmentSlot = EEquipment::UNARMED;
 	// SpawnWeapons();
-	
-	UE_LOG(LogTemp, Log, TEXT("Player Initial HP: %f"), StatComponent->GetCurHP());
 }
 
 // Called every frame
@@ -116,7 +114,11 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 		{
 			PlayAnimMontage(HitMontage);
 		}
-		
+
+		if (OnPlayerDamaged.IsBound())
+		{
+			OnPlayerDamaged.Broadcast();
+		}
 	}
 	else
 	{

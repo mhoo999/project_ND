@@ -50,9 +50,6 @@ APlayerCharacter::APlayerCharacter()
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>(TEXT("MyInputComponent"));
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
-
-
-
 }
 
 // Called when the game starts or when spawned
@@ -96,6 +93,8 @@ void APlayerCharacter::BeginPlay()
 
 		CrouchTimeline->AddInterpFloat(ZoomCurve, TimelineCallback);
 	}
+
+	OnPlayerDamaged.AddDynamic(this, &APlayerCharacter::HandlePlayerDamaged);
 }
 
 // Called every frame
@@ -548,6 +547,15 @@ void APlayerCharacter::OnAttackEnd()
 void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	// ChangeWeapon(EWeaponType::UNARMED);
+}
+
+void APlayerCharacter::HandlePlayerDamaged()
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController && MyCameraShakeClass)
+	{
+		PlayerController->ClientStartCameraShake(MyCameraShakeClass);
+	}
 }
 
 
