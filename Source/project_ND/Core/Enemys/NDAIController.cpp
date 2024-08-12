@@ -8,11 +8,9 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
-#include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -56,6 +54,12 @@ void ANDAIController::OnPossess(APawn* InPawn)
 	RunCurrentBehaviorTree();
 }
 
+void ANDAIController::StopAllActions()
+{
+	BrainComponent->StopLogic(TEXT("StopLogic"));	
+	Zombie->GetMesh()->Stop();
+}
+
 void ANDAIController::SetAIState(FString NewState)
 {
 	if (CurrentState == EAIState::Dead)
@@ -92,6 +96,7 @@ EAIState ANDAIController::StringToEAIState(const FString& StateString)
 	if (StateString == "Attack")	return EAIState::Attack;
 	if (StateString == "Dead")		return EAIState::Dead;
 	if (StateString == "Eating")	return EAIState::Eating;
+	if (StateString == "Stunned")	return EAIState::Stunned;
 	
 	return EAIState::Idle;
 }
@@ -120,6 +125,9 @@ void ANDAIController::RunCurrentBehaviorTree()
 	case EAIState::Eating:
 		BeginEating();
 		RunBehaviorTree(EatingBehaviorTree);
+		break;
+	case EAIState::Stunned:
+		StopAllActions();
 		break;
 	default:
 		break;
@@ -238,8 +246,6 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			{
 				if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 				{
-					// UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Sight"), *Actor->GetName());
-					
 					if (Stimulus.WasSuccessfullySensed())
 					{
 						SetAIState("Chase");
@@ -251,8 +257,6 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 			}
 			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 			{
-				// UE_LOG(LogTemp, Warning, TEXT("Detected Object Name : %s, Type : Hearing"), *Actor->GetName());
-				
 				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 				{
 					SetAIState("Patrol");
@@ -265,11 +269,6 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 	}
 }
 
-void ANDAIController::OnTargetForgotten()
-{
-	
-}
-
 void ANDAIController::ToggleBeChasePlayer()
 {
 	bChasePlayer = !bChasePlayer;
@@ -277,47 +276,45 @@ void ANDAIController::ToggleBeChasePlayer()
 
 void ANDAIController::ZombieDie_Implementation()
 {
-	// UE_LOG(LogTemp, Warning, TEXT("NDAIController) ZombieDie"));
-	//
-	// if (AIPerceptionComponent)
-	// {
-	// 	GetAIPerceptionComponent()->Deactivate();
-	// }
-	//
-	// if (BrainComponent)
-	// {
-	// 	BrainComponent->StopLogic(TEXT("Stop Tree"));
-	// }
-	//
-	// if (Zombie)
-	// {
-	// 	Zombie->GetMesh()->SetSimulatePhysics(true);
-	// 	Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	// 	Zombie->SetLifeSpan(3.0f);
-	// 	
-	// 	// BP
-	// 	// UGameplayStatics::SetGamePaused(GetWorld(), true);
-	// 	// WBP_ChooseUpgradeSelector show
-	// 	// upgradeSelector OptionSort() 실행
-	// }
+	// BP
 }
 
-void ANDAIController::GetDamaged(FVector HitLocation)
-{
-	if (!Zombie->bSuperArmor)
-	{
-		BrainComponent->StopLogic(TEXT("Stop Tree"));
-		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(Zombie->GetMesh()->GetAnimInstance());
-		ZombieAnim->PlayDamagedAnim();
-		
-		SetAIState("Patrol");
-		GetBlackboardComponent()->SetValueAsVector("Destination", HitLocation);
-	}
-}
+// void ANDAIController::GetDamaged(FVector HitLocation)
+// {
+// 	if (!Zombie->bSuperArmor)
+// 	{
+// 		bIsStiff = true;
+// 		BrainComponent->StopLogic(TEXT("Stop Tree"));
+// 		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(Zombie->GetMesh()->GetAnimInstance());
+// 		ZombieAnim->PlayDamagedAnim();
+// 		
+// 		if (CurrentState != EAIState::Chase)
+// 		{
+// 			FVector Direction = HitLocation - Zombie->GetActorLocation();
+// 			FRotator Rotation = Direction.Rotation();
+// 			
+// 			Zombie->GetMesh()->SetRelativeRotation(Rotation);
+// 		}
+// 		
+// 		FTimerHandle StiffHandle;
+// 		GetWorld()->GetTimerManager().ClearTimer(StiffHandle);
+// 		GetWorld()->GetTimerManager().SetTimer(StiffHandle, FTimerDelegate::CreateLambda([&]
+// 		{
+// 			RunCurrentBehaviorTree();
+// 			bIsStiff = false;
+// 			UE_LOG(LogTemp, Warning, TEXT("Runt Behavior Tree"));
+// 		}), 5.0f, false);
+// 	}
+// }
 
 void ANDAIController::SetPrintLog()
 {
 	bIsPrintLog = true;
+}
+
+EAIState ANDAIController::GetCurrentState()
+{
+	return CurrentState;
 }
 
 void ANDAIController::StopEating()
