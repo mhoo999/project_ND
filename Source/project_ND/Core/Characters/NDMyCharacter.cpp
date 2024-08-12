@@ -6,6 +6,8 @@
 #include "project_ND/Core/Components/NDEffectComponent.h"
 #include "project_ND/Core/Components/NDEquipComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 // Sets default values
 ANDMyCharacter::ANDMyCharacter()
@@ -13,7 +15,7 @@ ANDMyCharacter::ANDMyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	StatComponent = CreateDefaultSubobject<UNDStatComponent>("StatComponent");
+	StatComponent = CreateDefaultSubobject<UNDStatComponent>(TEXT("StatComponent"));
 	EffectComponent = CreateDefaultSubobject<UNDEffectComponent>(TEXT("Effect Component"));
 	EquipComponent = CreateDefaultSubobject<UNDEquipComponent>(TEXT("Equip Component"));
 }
@@ -25,6 +27,8 @@ void ANDMyCharacter::BeginPlay()
 
 	CurrentEquipmentSlot = EEquipment::UNARMED;
 	// SpawnWeapons();
+	
+	UE_LOG(LogTemp, Log, TEXT("Player Initial HP: %f"), StatComponent->GetCurHP());
 }
 
 // Called every frame
@@ -70,6 +74,11 @@ void ANDMyCharacter::ChangeWeapon(EWeaponType InWeaponType)
 	}
 }
 
+ANDPickUpObject* ANDMyCharacter::GetCurrentEquipmentItem()
+{
+	return CurrentEquipmentItem;
+}
+
 EEquipment ANDMyCharacter::GetCurrentEquipmentSlot()
 {
 	return CurrentEquipmentSlot;
@@ -97,18 +106,63 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 {
 	StatComponent->TakeDamage(DamageAmount);
 
-	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
+	UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), *GetName(), StatComponent->GetCurHP());
 
-	if (StatComponent->CurHP > 0)
+
+	if (StatComponent->GetCurHP() > 0)
+	{
+	
+		if (HitMontage)
+		{
+			PlayAnimMontage(HitMontage);
+		}
+		
+	}
+	else
+	{
+		if (DeathMontage)
+		{
+			PlayAnimMontage(DeathMontage);
+
+			GetCharacterMovement()->DisableMovement();
+
+			APlayerController* PlayerController = Cast<APlayerController>(GetController());
+			if (PlayerController)
+			{
+				PlayerController->SetIgnoreMoveInput(true);
+				PlayerController->SetIgnoreLookInput(true);
+			}
+		}
+	}
+	/*if (StatComponent->GetCurHP() > 0)
 		PlayAnimMontage(HitMontage);
 	else
+	{
 		PlayAnimMontage(DeathMontage);
+
+		GetCharacterMovement()->DisableMovement();
+
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		if (PlayerController)
+		{
+			PlayerController->SetIgnoreMoveInput(true);
+			PlayerController->SetIgnoreLookInput(true); 
+		}
+
+	}*/
 
 }
 
 void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
 {
 	
+}
+
+void ANDMyCharacter::Die()
+{
+	
+
+	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
 }
 
 /*

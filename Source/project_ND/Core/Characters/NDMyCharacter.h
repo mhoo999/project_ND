@@ -63,7 +63,7 @@ public:
 	}
 
 	void ChangeWeapon(EWeaponType InWeaponType);
-	
+
 	UNDStatComponent* GetStatComponent() { return StatComponent; }
 	
 	UPROPERTY()
@@ -71,14 +71,18 @@ public:
 	EEquipment CurrentEquipmentSlot;
 
 	UFUNCTION(BlueprintCallable)
+	ANDPickUpObject* GetCurrentEquipmentItem();
+
+	UFUNCTION(BlueprintCallable)
 	EEquipment GetCurrentEquipmentSlot();
+
 
 	UPROPERTY()
 	ANDPickUpObject* NextEquipmentItem;
 	EEquipment NextEquipmentSLot;
 
 	bool bIsSwap;
-	
+
 private:
 	void SpawnWeapons();
 
@@ -87,6 +91,9 @@ public:
 	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
+
+private:
+	void Die();
 
 protected:
 	//Weapon
@@ -109,9 +116,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EWeaponType NextPickUpObjectType = EWeaponType::UNARMED;
 
-
-	bool bIsCrouched = false;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UNDStatComponent* StatComponent;
 
@@ -121,10 +125,16 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
 
+	bool bIsCrouched = false;
+
+	bool bIsDead;
+
 protected:
 	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
 	UNDEffectComponent* EffectComponent;
 
 	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
 	UNDEquipComponent* EquipComponent;
+
+
 };

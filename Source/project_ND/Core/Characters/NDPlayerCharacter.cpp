@@ -48,10 +48,9 @@ APlayerCharacter::APlayerCharacter()
 	CrouchTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("CrouchTimeline"));
 
 
-	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>("MyInputComponent");
+	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>(TEXT("MyInputComponent"));
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
-	//StatComponent->SetCurHP(100)->SetDamage(40);
 
 
 }
@@ -150,6 +149,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
+void APlayerCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
+{
+	Super::TakeDamage(DamageAmount, Attacker, HitResult);
+}
+
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	//if (CurWeaponType != EWeaponType::UNARMED)
@@ -230,7 +234,7 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 	}
 	else
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 
 		if (CrouchTimeline)
 		{
@@ -447,7 +451,7 @@ void APlayerCharacter::OnAttack()
 	}
 	else if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
 	{
-		// BP에서 구현
+		BPThrowable();
 	}
 	
 	// switch (CurrentEquipmentSlot)
@@ -528,7 +532,6 @@ void APlayerCharacter::OnAttackBegin()
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 
-	UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter : OnAttackBegin()"));
 }
 
 void APlayerCharacter::OnAttackEnd()
@@ -540,7 +543,6 @@ void APlayerCharacter::OnAttackEnd()
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
 
-	UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter : OnAttackEnd()"));
 }
 
 void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)

@@ -33,6 +33,9 @@ public:
 
 	bool GetIsCrouched() { return bIsCrouched; }
 
+	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
+
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

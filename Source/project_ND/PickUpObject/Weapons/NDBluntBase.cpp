@@ -9,9 +9,6 @@
 #include "project_ND/Enemys/NDZombieBase.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 
-
-
-
 ANDBluntBase::ANDBluntBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,17 +38,5 @@ void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCom
 	{
 		Zombie->TakeDamage(10.0f, OwnerCharacter, SweepResult);
 	}
-
-	//UGameplayStatics::ApplyDamage
-	//(
-	//	OtherActor,
-	//	Target = Cast<ANDZombieBase>(OtherActor);
-	//	Target->TakeDamage(10)->Damage,
-	//	Target->GetController(),
-	//	OwnerCharacter->GetStatComponent()->Damage,
-	//	OwnerCharacter->GetController(),
-	//	this,
-	//	nullptr
-	//);
 }
 

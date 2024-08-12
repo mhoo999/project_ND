@@ -6,6 +6,7 @@
 #include "NDEffectComponent.h"
 #include "project_ND/PickUpObject/NDPickUpObject.h"
 #include "project_ND/UI/NDUpgradeSelector.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
 
 UNDStatComponent::UNDStatComponent()
 {
@@ -29,7 +30,7 @@ void UNDStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 float UNDStatComponent::GetCurHP()
 {
-	return 0.0f;
+	return CurHP;
 }
 
 float UNDStatComponent::GetMaxHP()
@@ -92,6 +93,10 @@ void UNDStatComponent::TakeDamage(float DamagedAmount)
 
 	APawn* Player = Cast<APawn>(GetOwner());
 	EffectComponent->PlayHitEffect(Player->GetActorLocation());
+
+	UE_LOG(LogTemp, Log, TEXT("New HP: %f"), CurHP);
+	
+	//UE_LOG(LogTemp, Log, TEXT("% s HP : % f"), *GetName(), CurHP);	
 }
 
 void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
