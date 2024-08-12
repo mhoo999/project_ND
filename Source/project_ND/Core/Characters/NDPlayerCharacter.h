@@ -48,11 +48,12 @@ protected:
 	void FlashLightOn();
 
 	void OnFlashLightKey(const FInputActionValue& Value);
-	void OnBluntWeaponKey(const FInputActionValue& Value);
+	void ChangeFirstSlotItem(const FInputActionValue& Value);
+	void ChangeSecondSlotItem(const FInputActionValue& Value);
+	void ChangeThirdSlotItem(const FInputActionValue& Value);
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BPThrowable();
-	void Throwable(const FInputActionValue& Value);
 
 	void StrafeOn();
 	void StrafeOff();

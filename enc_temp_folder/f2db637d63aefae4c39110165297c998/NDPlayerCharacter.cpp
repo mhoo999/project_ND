@@ -12,7 +12,6 @@
 #include "EnhancedInputComponent.h"
 #include "Components/ShapeComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "project_ND/Core/Components/NDEquipComponent.h"
 #include "project_ND/Core/Components/NDInputComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
@@ -97,17 +96,16 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeFirstSlotItem);
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeSecondSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeSecondSlotItem);
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeThirdSlotItem);
-		
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
+		EnhancedInputComponent->BindAction(MyInputComponent->EquipBluntWeapon, ETriggerEvent::Started, this, &APlayerCharacter::OnBluntWeaponKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
-		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Started  , this, &APlayerCharacter::OnAttackPressed);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::OnAttackPressed);
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
+
+		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Throwable);
 		
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
+		EnhancedInputComponent->BindAction(MyInputComponent->ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
 
 
 		//UE_LOG(,)
@@ -180,33 +178,31 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 
 	if (bIsCrouched)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 
-		SpringArm->TargetArmLength = 120.0f;
-		SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+		SpringArm->TargetArmLength = 50.0f;
 
 		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
 		
 	}
 	else
 	{
-		//GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 
-		SpringArm->TargetArmLength = 130.0f;
-		SpringArm->SetRelativeLocation(FVector(0, 30, 75));
+		SpringArm->TargetArmLength = 50.0f;
+
 	}
 	
+	SpringArm->TargetArmLength = 130.0f;
+
 
 }
 
 void APlayerCharacter::CrouchEnd(const FInputActionValue& Value)
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	
-	SpringArm->TargetArmLength = 50.0f;
-	SpringArm->SetRelativeLocation(FVector(0, 30, 30));
 }
 
 void APlayerCharacter::SprintStart()
@@ -215,7 +211,8 @@ void APlayerCharacter::SprintStart()
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 	SpringArm->TargetArmLength = 180.0f;
-	//SpringArm->SetRelativeLocation(FVector(0, 30, 30));
+	
+	
 }
 
 void APlayerCharacter::SprintEnd()
@@ -230,85 +227,19 @@ void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 	ChangeWeapon(EWeaponType::FLASHLIGHT);
 }
 
-void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
+void APlayerCharacter::OnBluntWeaponKey(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetFirstSlot() == nullptr && bIsSwap)
-	{
-		return;
-	}
-
-	bIsSwap = true;
-	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
-	{
-		if (CurrentEquipmentSlot == EEquipment::UNARMED)
-		{
-			CurrentEquipmentItem = EquipComponent->GetFirstSlot();
-			CurrentEquipmentSlot = EEquipment::FIRSTSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetDrawMontage());
-		}
-		else
-		{
-			NextEquipmentItem = EquipComponent->GetFirstSlot();
-			NextEquipmentSLot = EEquipment::FIRSTSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
-		}
-	}
+	ChangeWeapon(EWeaponType::BLUNTWEAPON);
 }
 
-void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
+void APlayerCharacter::Throwable(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetSecondSlot() == nullptr && bIsSwap)
-	{
-		return;
-	}
-
-	bIsSwap = true;
-	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
-	{
-		if (CurrentEquipmentSlot == EEquipment::UNARMED)
-		{
-			CurrentEquipmentItem = EquipComponent->GetSecondSlot();
-			CurrentEquipmentSlot = EEquipment::SECONDSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetDrawMontage());
-		}
-		else
-		{
-			NextEquipmentItem = EquipComponent->GetSecondSlot();
-			NextEquipmentSLot = EEquipment::SECONDSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
-		}
-	}
-}
-
-void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
-{
-	if (EquipComponent->GetThirdSlot() == nullptr && bIsSwap)
-	{
-		return;
-	}
+	ChangeWeapon(EWeaponType::THORWABLE);
 	
-	bIsSwap = true;
-	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
-	{
-		if (CurrentEquipmentSlot == EEquipment::UNARMED)
-		{
-			CurrentEquipmentItem = EquipComponent->GetThirdSlot();
-			CurrentEquipmentSlot = EEquipment::THIRDSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetDrawMontage());
-		}
-		else
-		{
-			NextEquipmentItem = EquipComponent->GetThirdSlot();
-			NextEquipmentSLot = EEquipment::THIRDSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
-		}
-	}
+	//if (CurPickUpObjectType == EWeaponType::THORWABLE)
+	//{
+	//	BPThrowable();
+	//}
 }
 
 void APlayerCharacter::StrafeOn()
@@ -327,96 +258,59 @@ void APlayerCharacter::StrafeOff()
 
 void APlayerCharacter::OnDrawEnd()
 {
-	// PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
-	//
-	// NextPickUpObjectType = EWeaponType::UNARMED;
-	//
-	// if (CurPickUpObjectType == EWeaponType::UNARMED)
-	// 	StrafeOff();
-	// else
-	// 	StrafeOn();
+	PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
 
-	CurrentEquipmentItem->AttachToHand(GetMesh());
-	bIsSwap = false;
+	NextPickUpObjectType = EWeaponType::UNARMED;
+
+	if (CurPickUpObjectType == EWeaponType::UNARMED)
+		StrafeOff();
+	else
+		StrafeOn();
 }
 
 void APlayerCharacter::OnSheathEnd()
 {
-	// GetCurrentPickUpObject()->AttachToHolster(GetMesh());
-	//
-	// if (NextPickUpObjectType == EWeaponType::UNARMED)
-	// {
-	// 	CurPickUpObjectType = EWeaponType::UNARMED;
-	// 	StrafeOff();
-	// }
-	// else
-	// {
-	// 	CurPickUpObjectType = NextPickUpObjectType;
-	//
-	// 	PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
-	// }
+	GetCurrentPickUpObject()->AttachToHolster(GetMesh());
 
-	CurrentEquipmentItem->AttachToHolster(GetMesh());
-
-	if (NextEquipmentItem && CurrentEquipmentSlot != NextEquipmentSLot)
+	if (NextPickUpObjectType == EWeaponType::UNARMED)
 	{
-		CurrentEquipmentItem = NextEquipmentItem;
-		CurrentEquipmentSlot = NextEquipmentSLot;
-
-		PlayAnimMontage(CurrentEquipmentItem->GetDrawMontage());
-
-		NextEquipmentItem = nullptr;
-		NextEquipmentSLot = EEquipment::UNARMED;
+		CurPickUpObjectType = EWeaponType::UNARMED;
+		StrafeOff();
 	}
 	else
 	{
-		CurrentEquipmentItem = nullptr;
-		CurrentEquipmentSlot = EEquipment::UNARMED;
-		bIsSwap = false;
+		CurPickUpObjectType = NextPickUpObjectType;
+
+		PlayAnimMontage(GetCurrentPickUpObject()->GetDrawMontage());
 	}
 }
 
 void APlayerCharacter::OnAttack()
 {
 	if (StatComponent->bIsAttacking)
-	{
 		return;
-	}
 
-	if (CurrentEquipmentSlot == EEquipment::FIRSTSLOT)
+	switch (CurPickUpObjectType)
 	{
-		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
+	case EWeaponType::UNARMED:
+		break;
+	case EWeaponType::THORWABLE:
+		if (CurPickUpObjectType == EWeaponType::THORWABLE)
+		{
+			//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
+
+			BPThrowable();
+			//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
+			////FOnMontageEnded OnMontageEndeDelegate;
+			////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
+			////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
+
+		}	
+		break;
+	default:
+		Cast<ANDWeaponBase>(GetCurrentPickUpObject())->Attack();
+		break;
 	}
-	else if (CurrentEquipmentSlot == EEquipment::SECONDSLOT)
-	{
-		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
-	}
-	else if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
-	{
-		// BP에서 구현
-	}
-	
-	// switch (CurrentEquipmentSlot)
-	// {
-	// case EEquipment::UNARMED:
-	// 	break;
-	// case EEquipment::THIRDSLOT:
-	// 	if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
-	// 	{
-	// 		//PlayAnimMontage(GetCurrentPickUpObject()->GetSheathMontage());
-	//
-	// 		BPThrowable();
-	// 		//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
-	// 		////FOnMontageEnded OnMontageEndeDelegate;
-	// 		////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
-	// 		////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
-	//
-	// 	}	
-	// 	break;
-	// default:
-	// 	Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
-	// 	break;
-	// }
 }
 
 void APlayerCharacter::OnAttackPressed()
@@ -469,29 +363,25 @@ void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	CurrentEquipmentItem->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = false;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = false;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
-
-	UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter : OnAttackBegin()"));
 }
 
 void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	CurrentEquipmentItem->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = true;
+	GetCurrentPickUpObject()->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCurrentPickUpObject()->GetBodyCollider()->bHiddenInGame = true;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
-
-	UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter : OnAttackEnd()"));
 }
 
 void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	// ChangeWeapon(EWeaponType::UNARMED);
+	ChangeWeapon(EWeaponType::UNARMED);
 }
 
 

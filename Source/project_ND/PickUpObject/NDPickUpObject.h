@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "NDPickUpObject.generated.h"
 
+class ANDPickUpObject;
+
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
@@ -48,6 +50,9 @@ struct FItemBaseData : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	bool bNotUse;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	TSubclassOf<ANDPickUpObject> ItemClass;
 };
 
 UCLASS()
@@ -120,7 +125,6 @@ public:
 
 	bool AttachToHolster(USceneComponent* InParent);
 	bool AttachToHand   (USceneComponent* InParent);
-
 
 	UAnimMontage* GetDrawMontage()   { return DrawMontage; }
 	UAnimMontage* GetSheathMontage() { return SheathMontage; }
