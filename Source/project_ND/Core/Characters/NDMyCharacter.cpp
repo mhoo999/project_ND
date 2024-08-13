@@ -7,6 +7,7 @@
 #include "project_ND/Core/Components/NDEquipComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "project_ND/Core/Characters/NDPlayerController.h"
 
 
 // Sets default values
@@ -128,7 +129,7 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 
 			GetCharacterMovement()->DisableMovement();
 
-			APlayerController* PlayerController = Cast<APlayerController>(GetController());
+			ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
 			if (PlayerController)
 			{
 				PlayerController->SetIgnoreMoveInput(true);
