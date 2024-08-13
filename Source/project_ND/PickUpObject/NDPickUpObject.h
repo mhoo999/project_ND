@@ -11,6 +11,7 @@ class ANDPickUpObject;
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
+	None			UMETA(DisplayName = "None"),
 	HealthPotion	UMETA(DisplayName = "Health Potion"),
 	Food			UMETA(DisplayName = "Food"),
 	Throwable		UMETA(DisplayName = "Throwable Item"),
@@ -24,35 +25,49 @@ struct FItemBaseData : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	int32 ItemID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	int32 ItemID = -1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	FString ItemName;
+	FString ItemName = TEXT("Unknown Item");
 	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	EItemType Type;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	EItemType Type = EItemType::None;
 	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	float RecoveryAmount;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	float DamageAmount;
-	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	UStaticMesh* ItemMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	float RecoveryAmount = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	TSoftObjectPtr<UTexture2D> ItemThumbnail;
+	float DamageAmount = 0.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	UStaticMesh* ItemMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	FText Description;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	bool bNotUse;
+	TSoftObjectPtr<UTexture2D> ItemThumbnail = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
-	TSubclassOf<ANDPickUpObject> ItemClass;
+	FText Description = FText::FromString(TEXT("No Description"));
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	bool bNotUse = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	TSubclassOf<ANDPickUpObject> ItemClass = nullptr;
+
+	FItemBaseData()
+		: ItemID(-1)
+		, ItemName(TEXT("Unknown Item"))
+		, Type(EItemType::None)
+		, RecoveryAmount(0.0f)
+		, DamageAmount(0.0f)
+		, ItemMesh(nullptr)
+		, ItemThumbnail(nullptr)
+		, Description(FText::FromString(TEXT("No Description")))
+		, bNotUse(false)
+		, ItemClass(nullptr)
+	{
+	}
 };
 
 UCLASS()

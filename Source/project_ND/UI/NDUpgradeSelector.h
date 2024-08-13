@@ -14,19 +14,28 @@ struct FUpgradeOptionTable : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
-	FName OptionName;
+	FName OptionName = TEXT("None");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
-	FName UpgradeTo;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
-	float UpgradeAmount;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
-	UTexture2D* Image;
+	FName UpgradeTo = TEXT("None");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
-	TSoftObjectPtr<UTexture2D> IconImage;	
+	float UpgradeAmount = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
+	UTexture2D* Image = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
+	TSoftObjectPtr<UTexture2D> IconImage = nullptr;
+
+	FUpgradeOptionTable()
+		: OptionName(TEXT("None"))
+		, UpgradeTo(TEXT("None"))
+		, UpgradeAmount(0.0f)
+		, Image(nullptr)
+		, IconImage(nullptr)
+	{
+	}
 };
 
 class UImage;
