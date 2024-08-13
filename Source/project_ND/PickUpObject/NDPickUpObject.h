@@ -24,22 +24,22 @@ struct FItemBaseData : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	int32 ItemID;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	FString ItemName;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	EItemType Type;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	float RecoveryAmount;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	float DamageAmount;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
@@ -48,7 +48,7 @@ struct FItemBaseData : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	FText Description;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
 	bool bNotUse;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item")
