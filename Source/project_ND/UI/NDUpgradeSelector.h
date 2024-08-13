@@ -19,10 +19,10 @@ struct FUpgradeOptionTable : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
 	FName UpgradeTo;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
 	float UpgradeAmount;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")
 	UTexture2D* Image;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Options")

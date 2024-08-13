@@ -129,6 +129,11 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 
 			GetCharacterMovement()->DisableMovement();
 
+			if (OnPlayerDamaged.IsBound())
+			{
+				OnPlayerDamaged.Broadcast();
+			}
+
 			ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
 			if (PlayerController)
 			{
@@ -137,23 +142,6 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 			}
 		}
 	}
-	/*if (StatComponent->GetCurHP() > 0)
-		PlayAnimMontage(HitMontage);
-	else
-	{
-		PlayAnimMontage(DeathMontage);
-
-		GetCharacterMovement()->DisableMovement();
-
-		APlayerController* PlayerController = Cast<APlayerController>(GetController());
-		if (PlayerController)
-		{
-			PlayerController->SetIgnoreMoveInput(true);
-			PlayerController->SetIgnoreLookInput(true); 
-		}
-
-	}*/
-
 }
 
 void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
@@ -163,8 +151,6 @@ void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
 
 void ANDMyCharacter::Die()
 {
-	
-
 	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
 }
 
