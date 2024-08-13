@@ -4,11 +4,7 @@
 #include "NDUpgradeSelector.h"
 
 #include "Components/Button.h"
-#include "Components/ButtonSlot.h"
-#include "Components/CanvasPanelSlot.h"
 #include "Components/Image.h"
-#include "GameFramework/PlayerState.h"
-#include "Kismet/GameplayStatics.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 
