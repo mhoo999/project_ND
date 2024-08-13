@@ -10,7 +10,7 @@ class ANDZombieBase;
 class UAISenseConfig_Hearing;
 class UAISenseConfig_Sight;
 
-UENUM()
+UENUM(BlueprintType)
 enum EAIState : uint8
 {
 	Idle	UMETA(DisplayName = "Idle State"),
@@ -18,7 +18,8 @@ enum EAIState : uint8
 	Chase	UMETA(DisplayName = "Chase State"),
 	Attack	UMETA(DisplayName = "Attack State"),
 	Dead	UMETA(DisplayName = "Dead State"),
-	Eating	UMETA(DisplayName = "Eating State")
+	Eating	UMETA(DisplayName = "Eating State"),
+	Stunned UMETA(DisplayName = "Stunned State")
 };
 
 UCLASS()
@@ -36,12 +37,9 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-public:
-	void SetAIState(FString NewState);
-
-	static EAIState StringToEAIState(const FString& StateString);
-	
-	void RunCurrentBehaviorTree();
+private:
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
+	ANDZombieBase* Zombie;
 	
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
 	UBehaviorTree* IdleBehaviorTree;
@@ -63,56 +61,57 @@ public:
 
 	EAIState CurrentState;
 	
+	static EAIState StringToEAIState(const FString& StateString);
+	
 	void PrintState();
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	ANDZombieBase* Zombie;
-	
+	bool bChasePlayer;
 	bool bIsExcitement;
 	FTimerHandle RelaxTimerHandle;
 	void GetExcitement() const;
 	void GetRelax();
-
-	bool bChasePlayer;
 	
-private:
 	void InitializeBehaviorTree();
+	
 	void InitializeAIPerception() const;
-
-protected:
-	UPROPERTY(BlueprintReadOnly, Category="AI")
+	
+	UPROPERTY(BlueprintReadOnly, Category="AI", meta=(AllowPrivateAccess))
 	UAIPerceptionComponent* AIPerceptionComponent;
 
-	UPROPERTY(BlueprintReadOnly, Category="AI")
+	UPROPERTY(BlueprintReadOnly, Category="AI", meta=(AllowPrivateAccess))
 	UAISenseConfig_Sight* SightConfig;
 
-	UPROPERTY(BlueprintReadOnly, Category="AI")
+	UPROPERTY(BlueprintReadOnly, Category="AI", meta=(AllowPrivateAccess))
 	UAISenseConfig_Hearing* HearingConfig;
 
 	UFUNCTION()
 	void OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors);
-
-	UFUNCTION()
-	void OnTargetForgotten();
 	
+	bool bIsPrintLog;
+	
+	void StopEating();
+	void BeginEating();
+	bool bIsEating;
+
+	void StopAllActions();
+	bool bIsStunned;
+
 public:
+	void SetAIState(FString NewState);
+
+	void RunCurrentBehaviorTree();
+	
 	void ToggleBeChasePlayer();
 
 	UFUNCTION(BlueprintNativeEvent)
 	void ZombieDie();
 	virtual void ZombieDie_Implementation();
 
-	void GetDamaged(FVector HitLocation);
+	// void GetDamaged(FVector HitLocation);
 
-private:
-	bool bIsPrintLog;
-
-public:
 	void SetPrintLog();
 
-private:
-	void StopEating();
-	void BeginEating();
+	EAIState GetCurrentState();
 
-	bool bIsEating;
+	void FocusActor();
 };

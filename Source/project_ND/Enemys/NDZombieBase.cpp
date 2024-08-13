@@ -3,15 +3,11 @@
 
 #include "NDZombieBase.h"
 
-#include "Components/CapsuleComponent.h"
 #include "project_ND/Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
-#include "project_ND/Core/Characters/NDPlayerCharacter.h"
 #include "project_ND/Core/Enemys/NDZombieAnim.h"
-#include "Storage/Nodes/FileEntry.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
-
 
 
 ANDZombieBase::ANDZombieBase()
@@ -108,7 +104,10 @@ void ANDZombieBase::TakeDamage(const float DamageAmount, AActor* Attacker, FHitR
 	}
 	else
 	{
-		AIController->GetDamaged(HitResult.Location);
+		// AIController->GetDamaged(HitResult.Location);
+		AIController->SetAIState("Stunned");
+		UNDZombieAnim* ZombieAnim = Cast<UNDZombieAnim>(GetMesh()->GetAnimInstance());
+		ZombieAnim->PlayDamagedAnim();
 	}
 }
 
