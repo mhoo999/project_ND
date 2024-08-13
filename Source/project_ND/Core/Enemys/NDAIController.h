@@ -38,7 +38,6 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 private:
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	ANDZombieBase* Zombie;
 	
 	UPROPERTY(EditDefaultsOnly, Category="AI", meta=(AllowPrivateAccess))
