@@ -3,6 +3,7 @@
 
 #include "NDZombieAnim.h"
 
+#include "BrainComponent.h"
 #include "NDAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
@@ -12,6 +13,7 @@ void UNDZombieAnim::NativeBeginPlay()
 	Super::NativeBeginPlay();
 	
 	Zombie = Cast<ANDZombieBase>(TryGetPawnOwner());
+	AIController = Cast<ANDAIController>(Zombie->GetController());
 	
 	if (!Zombie)
 	{
@@ -35,6 +37,11 @@ void UNDZombieAnim::NativeUpdateAnimation(float DeltaSeconds)
 
 		bIsAttacking = Zombie->GetIsAttacking();
 		bIsDamaged = Zombie->GetIsDamaged();
+	}
+
+	if (AIController)
+	{
+		ZombieState = AIController->GetCurrentState();
 	}
 }
 
@@ -60,8 +67,13 @@ void UNDZombieAnim::AnimNotify_ToggleSuperArmor()
 
 void UNDZombieAnim::AnimNotify_ReActiveZombie()
 {
-	ANDAIController* AIController = Cast<ANDAIController>(Zombie->GetOwner());
 	AIController->RunCurrentBehaviorTree();
+}
+
+void UNDZombieAnim::AnimNotify_EndStunned()
+{
+	AIController->BrainComponent->StartLogic();
+	AIController->SetAIState("Chase");
 }
 
 void UNDZombieAnim::PlayDamagedAnim()
