@@ -103,6 +103,11 @@ void ANDMyCharacter::SpawnWeapons()
 
 void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
+	if (bIsDead)
+	{
+		return;
+	}
+
 	StatComponent->TakeDamage(DamageAmount);
 
 	UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), *GetName(), StatComponent->GetCurHP());
@@ -123,6 +128,8 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 	}
 	else
 	{
+		bIsDead = true;
+
 		if (DeathMontage)
 		{
 			PlayAnimMontage(DeathMontage);
@@ -140,6 +147,8 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 				PlayerController->SetIgnoreMoveInput(true);
 				PlayerController->SetIgnoreLookInput(true);
 			}
+
+			ShowDeathScreen();
 		}
 	}
 }
@@ -149,10 +158,12 @@ void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
 	
 }
 
-void ANDMyCharacter::Die()
-{
-	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
-}
+
+//void ANDMyCharacter::Die()
+//{
+//
+//	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
+//}
 
 /*
 * float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
