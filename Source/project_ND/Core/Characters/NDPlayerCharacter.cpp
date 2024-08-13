@@ -19,6 +19,7 @@
 #include "project_ND/Core/Components/NDInputComponent.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
+#include "Perception/AISense_Hearing.h"
 
 
 
@@ -431,6 +432,13 @@ void APlayerCharacter::OnSheathEnd()
 		CurrentEquipmentSlot = EEquipment::UNARMED;
 		bIsSwap = false;
 	}
+}
+
+void APlayerCharacter::FootStepSound()
+{
+	FVector NoiseLocation = this->GetActorLocation();
+	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
+	UE_LOG(LogTemp, Warning, TEXT("Walk"));
 }
 
 void APlayerCharacter::OnAttack()
