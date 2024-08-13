@@ -255,7 +255,7 @@ void APlayerCharacter::HandleZoomProgress(float Value)
 	FVector NewLocation = FMath::Lerp(DefaultCameraLocation, ZoomOutLocation, Value);
 	NewLocation.Y = DefaultCameraLocation.Y;
 	SpringArm->SetRelativeLocation(NewLocation);
-	UE_LOG(LogTemp, Warning, TEXT("Zoom Value: %f, NewLocation: %s"), Value, *NewLocation.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Zoom Value: %f, NewLocation: %s"), Value, *NewLocation.ToString());
 }
 
 void APlayerCharacter::SprintStart()
