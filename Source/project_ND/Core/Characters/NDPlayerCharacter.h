@@ -33,6 +33,9 @@ public:
 
 	bool GetIsCrouched() { return bIsCrouched; }
 
+	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
+
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -40,7 +43,12 @@ protected:
 	void OnJump();
 
 	void CrouchStart(const FInputActionValue& Value);
-	void CrouchEnd  (const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleCrouchProgress(float Value);
+
+	UFUNCTION()
+	void HandleZoomProgress(float Value);
 
 	void SprintStart();
 	void SprintEnd  ();
@@ -84,9 +92,22 @@ protected:
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
+	UFUNCTION()
+	void HandlePlayerDamaged();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	class UTimelineComponent* ZoomTimeline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	class UTimelineComponent* CrouchTimeline;
+
+	// ÁÜ È¿°ú¸¦ À§ÇÑ °î¼±
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UCurveFloat* ZoomCurve;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* PCamera;
@@ -94,15 +115,23 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USpringArmComponent* SpringArm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
+	TSubclassOf<UCameraShakeBase> MyCameraShakeClass;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USceneComponent* ProjectilStart;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USplineComponent* ProjectilPath;
 
-
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
 
 	//class ANDWeaponBase* weapon;
+
+	FVector DefaultCameraLocation;
+	FVector ZoomOutLocation;
+
+	FVector DefaulCrouchLocation;
+	FVector CrouchedLocation;
 };
