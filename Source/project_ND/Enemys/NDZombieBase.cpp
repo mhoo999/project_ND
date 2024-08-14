@@ -14,13 +14,13 @@ ANDZombieBase::ANDZombieBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
-	// static ConstructorHelpers::FClassFinder<ANDAIController> AIController(TEXT("/Script/Engine.Blueprint'/Game/Project_ND/Core/Enemys/AIC_NDAIController.AIC_NDAIController'"));
-	// if (AIController.Succeeded())
-	// {
-	// 	AIControllerClass = AIController.Class;
-	// }
-	//
-	// AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	static ConstructorHelpers::FClassFinder<ANDAIController> AIController(TEXT("/Script/Engine.Blueprint'/Game/Project_ND/Core/Enemys/AIC_NDAIController.AIC_NDAIController'"));
+	if (AIController.Succeeded())
+	{
+		AIControllerClass = AIController.Class;
+	}
+	
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	PerceptionSocket = "pelvis";
 	
