@@ -9,10 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/BS_UpZombie.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/BS_UpZombie.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -241,6 +237,7 @@
       <workItem from="1723542318301" duration="606000" />
       <workItem from="1723544762034" duration="1299000" />
       <workItem from="1723599324145" duration="1717000" />
+      <workItem from="1723601556787" duration="1493000" />
     </task>
     <servers />
   </component>
