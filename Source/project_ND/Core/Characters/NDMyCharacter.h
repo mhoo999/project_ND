@@ -97,8 +97,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerDamaged OnPlayerDamaged;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void ShowDeathScreen();
+
 private:
-	void Die();
+
 
 protected:
 	//Weapon

@@ -72,6 +72,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnSheathEnd();
 
+	UFUNCTION(BlueprintCallable)
+	void FootStepSound();
+
 	void OnAttack();
 
 
@@ -109,13 +112,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCurveFloat* ZoomCurve;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Camera")
 	class UCameraComponent* PCamera;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	class USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TSubclassOf<UCameraShakeBase> MyCameraShakeClass;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

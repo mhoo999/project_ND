@@ -19,7 +19,7 @@ ANDZombieBase::ANDZombieBase()
 	{
 		AIControllerClass = AIController.Class;
 	}
-
+	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	PerceptionSocket = "pelvis";

@@ -103,6 +103,11 @@ void ANDMyCharacter::SpawnWeapons()
 
 void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
+	if (bIsDead)
+	{
+		return;
+	}
+
 	StatComponent->TakeDamage(DamageAmount);
 
 	UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), *GetName(), StatComponent->GetCurHP());
@@ -123,11 +128,18 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 	}
 	else
 	{
+		bIsDead = true;
+
 		if (DeathMontage)
 		{
 			PlayAnimMontage(DeathMontage);
 
 			GetCharacterMovement()->DisableMovement();
+
+			if (OnPlayerDamaged.IsBound())
+			{
+				OnPlayerDamaged.Broadcast();
+			}
 
 			ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
 			if (PlayerController)
@@ -135,25 +147,10 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 				PlayerController->SetIgnoreMoveInput(true);
 				PlayerController->SetIgnoreLookInput(true);
 			}
+
+			ShowDeathScreen();
 		}
 	}
-	/*if (StatComponent->GetCurHP() > 0)
-		PlayAnimMontage(HitMontage);
-	else
-	{
-		PlayAnimMontage(DeathMontage);
-
-		GetCharacterMovement()->DisableMovement();
-
-		APlayerController* PlayerController = Cast<APlayerController>(GetController());
-		if (PlayerController)
-		{
-			PlayerController->SetIgnoreMoveInput(true);
-			PlayerController->SetIgnoreLookInput(true); 
-		}
-
-	}*/
-
 }
 
 void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
@@ -161,12 +158,12 @@ void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
 	
 }
 
-void ANDMyCharacter::Die()
-{
-	
 
-	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
-}
+//void ANDMyCharacter::Die()
+//{
+//
+//	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
+//}
 
 /*
 * float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
