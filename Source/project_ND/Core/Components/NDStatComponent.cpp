@@ -35,32 +35,32 @@ float UNDStatComponent::GetCurHP()
 
 float UNDStatComponent::GetMaxHP()
 {
-	return 0.0f;
+	return MaxHP;
 }
 
 float UNDStatComponent::GetDamage()
 {
-	return 0.0f;
+	return Damage;
 }
 
 float UNDStatComponent::GetCurHungry()
 {
-	return 0.0f;
+	return CurHungry;
 }
 
 float UNDStatComponent::GetMaxHungry()
 {
-	return 0.0f;
+	return MaxHungry;
 }
 
 float UNDStatComponent::GetCurHeartbeat()
 {
-	return 0.0f;
+	return CurHeartbeat;
 }
 
 float UNDStatComponent::GetMaxHeartbeat()
 {
-	return 0.0f;
+	return MaxHeartbeat;
 }
 
 void UNDStatComponent::UpgradeStat(FUpgradeOptionTable Option)
