@@ -8,6 +8,9 @@
 #include "project_ND/Core/Components/NDStatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "project_ND/Core/Characters/NDPlayerController.h"
+#include "Components/CapsuleComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Components/WidgetComponent.h"
 
 
 // Sets default values
@@ -16,9 +19,9 @@ ANDMyCharacter::ANDMyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	StatComponent = CreateDefaultSubobject<UNDStatComponent>(TEXT("StatComponent"));
+	StatComponent   = CreateDefaultSubobject<UNDStatComponent>(TEXT("StatComponent"));
 	EffectComponent = CreateDefaultSubobject<UNDEffectComponent>(TEXT("Effect Component"));
-	EquipComponent = CreateDefaultSubobject<UNDEquipComponent>(TEXT("Equip Component"));
+	EquipComponent  = CreateDefaultSubobject<UNDEquipComponent>(TEXT("Equip Component"));
 }
 
 // Called when the game starts or when spawned
@@ -133,6 +136,9 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 		if (DeathMontage)
 		{
 			PlayAnimMontage(DeathMontage);
+			DeathMontage->bEnableAutoBlendOut = false;
+
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 			GetCharacterMovement()->DisableMovement();
 

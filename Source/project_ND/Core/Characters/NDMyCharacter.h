@@ -133,6 +133,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
 
+
 	bool bIsCrouched = false;
 
 	bool bIsDead;
