@@ -4,6 +4,8 @@ Content/Megascans/*
 Content/MSPresets/*
 Content/Project_ND/Maps/_GENERATED/*
 
+# IntelliJ IDEA
+.idea/
 
 # Visual Studio 2015 user specific files
 .vs/

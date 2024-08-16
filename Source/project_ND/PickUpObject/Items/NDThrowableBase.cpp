@@ -36,7 +36,7 @@ void ANDThrowableBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		FVector NoiseLocation = this->GetActorLocation();
 		// Make noise code
 		UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
-		UE_LOG(LogTemp, Warning, TEXT("Make Noise : %lld.%lld.%lld"), FMath::TruncToInt(NoiseLocation.X), FMath::TruncToInt(NoiseLocation.Y), FMath::TruncToInt(NoiseLocation.Z));
+		// UE_LOG(LogTemp, Warning, TEXT("Make Noise : %lld.%lld.%lld"), FMath::TruncToInt(NoiseLocation.X), FMath::TruncToInt(NoiseLocation.Y), FMath::TruncToInt(NoiseLocation.Z));
 		
 		if (BreakSound)
 		{

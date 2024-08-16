@@ -11,6 +11,11 @@
 UNDStatComponent::UNDStatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	ATK = 10.0f;
+	DEF = 0.0f;
+	MoveSpeed = 300.0f;
+	AttackSpeed = 10.0f;
 }
 
 void UNDStatComponent::BeginPlay()
