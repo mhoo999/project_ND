@@ -242,8 +242,6 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 			CrouchTimeline->Reverse();
 		}
 	}
-	
-
 }
 
 void APlayerCharacter::HandleCrouchProgress(float Value)
@@ -547,7 +545,6 @@ void APlayerCharacter::OnAttackBegin()
 	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = false;
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
-
 }
 
 void APlayerCharacter::OnAttackEnd()

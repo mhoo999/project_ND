@@ -109,21 +109,29 @@ void ANDAIController::RunCurrentBehaviorTree()
 	{
 	case EAIState::Idle:
 		RunBehaviorTree(IdleBehaviorTree);
+		Zombie->StopAllSounds();
+		Zombie->PlayIdleAudio();
 		break;
 	case EAIState::Patrol:
 		RunBehaviorTree(PatrolBehaviorTree);
+		Zombie->StopAllSounds();
+		Zombie->PlayExcitementAudio();
 		break;
 	case EAIState::Chase:
 		RunBehaviorTree(ChaseBehaviorTree);
 		break;
 	case EAIState::Attack:
 		RunBehaviorTree(AttackBehaviorTree);
+		Zombie->PlayAttackSound();
 		break;
 	case EAIState::Dead:
+		Zombie->StopAllSounds();
+		Zombie->PlayDieSound();
 		RunBehaviorTree(DeadBehaviorTree);
 		break;
 	case EAIState::Eating:
 		BeginEating();
+		Zombie->PlayEatingAudio();
 		RunBehaviorTree(EatingBehaviorTree);
 		break;
 	case EAIState::Stunned:

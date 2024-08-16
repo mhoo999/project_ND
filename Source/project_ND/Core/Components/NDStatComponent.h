@@ -42,13 +42,24 @@ public:
 	UNDStatComponent* SetCurHeartbeat(float InCurHeartbeat) { this->CurHeartbeat = InCurHeartbeat; return this; }
 	UNDStatComponent* SetMaxHeartbeat(float InMaxHeartbeat) { this->MaxHeartbeat = InMaxHeartbeat; return this; }
 
+	UFUNCTION(BlueprintCallable)
 	float GetCurHP();       
+
+	UFUNCTION(BlueprintCallable)
 	float GetMaxHP();       
+
+
 	float GetDamage();      
-	float GetCurHungry();   
+
+	UFUNCTION(BlueprintCallable)
+	float GetCurHungry(); 
+
+	UFUNCTION(BlueprintCallable)
 	float GetMaxHungry(); 
 
+	
 	float GetCurHeartbeat();
+
 	float GetMaxHeartbeat();
 
 public:
@@ -66,26 +77,26 @@ public:
 	bool bIsCrouched  = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHP;
+	float CurHP = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHP;
+	float MaxHP = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float Damage;
+	float Damage = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHungry;
+	float CurHungry = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHungry;
+	float MaxHungry = 0.0f;
 
     // next // 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurHeartbeat;
+	float CurHeartbeat = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float MaxHeartbeat;
+	float MaxHeartbeat = 0.0f;
 
 	void UpgradeStat(FUpgradeOptionTable Option);
 
@@ -126,4 +137,17 @@ private:
 	void ContinuousDecreaseHungry(float DeltaSeconds);
 
 	void TemporaryDecreaseHungry();
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float ATK;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float DEF;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float MoveSpeed;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float AttackSpeed;
 };
