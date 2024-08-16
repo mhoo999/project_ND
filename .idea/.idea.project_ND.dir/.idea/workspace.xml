@@ -8,10 +8,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieAttackSound.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieAttackSound_Cue.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieDieSound.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieDieSound_Cue.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieEatingAudio.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieEatingAudio_Cue.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieExcitementAudio.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieExcitementAudio_Cue.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieGetHitSound.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieGetHitSound_Cue.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieIdleAudio.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/Sound/ZombieIdleAudio_Cue.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/BP_UpZombie.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/BP_UpZombie.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,7 +264,8 @@
       <workItem from="1723617955415" duration="805000" />
       <workItem from="1723620417529" duration="275000" />
       <workItem from="1723772872630" duration="1681000" />
-      <workItem from="1723786096010" duration="4930000" />
+      <workItem from="1723786096010" duration="4966000" />
+      <workItem from="1723793827314" duration="2349000" />
     </task>
     <servers />
   </component>

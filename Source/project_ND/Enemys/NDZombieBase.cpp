@@ -21,6 +21,10 @@ ANDZombieBase::ANDZombieBase()
 	{
 		AIControllerClass = AIController.Class;
 	}
+
+	IdleAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Idle Audio Component"));
+	ExcitementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Excitement Audio Component"));
+	EatingAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Eating Audio Component"));
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
@@ -284,7 +288,7 @@ void ANDZombieBase::PlayDieSound()
 
 void ANDZombieBase::StopAllSounds()
 {
-	if (IdleAudioComponent && IdleAudioComponent->IsPlaying()())
+	if (IdleAudioComponent && IdleAudioComponent->IsPlaying())
 	{
 		IdleAudioComponent->Stop();
 	}
