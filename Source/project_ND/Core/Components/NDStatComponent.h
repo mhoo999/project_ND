@@ -126,4 +126,17 @@ private:
 	void ContinuousDecreaseHungry(float DeltaSeconds);
 
 	void TemporaryDecreaseHungry();
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float ATK;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float DEF;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float MoveSpeed;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float AttackSpeed;
 };
