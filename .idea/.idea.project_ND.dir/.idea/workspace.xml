@@ -9,7 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Items/NDThrowableBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Items/NDThrowableBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +253,7 @@
       <workItem from="1723617955415" duration="805000" />
       <workItem from="1723620417529" duration="275000" />
       <workItem from="1723772872630" duration="1681000" />
-      <workItem from="1723786096010" duration="1211000" />
+      <workItem from="1723786096010" duration="4930000" />
     </task>
     <servers />
   </component>

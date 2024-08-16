@@ -3,8 +3,10 @@
 
 #include "NDZombieBase.h"
 
+#include "Components/AudioComponent.h"
 #include "project_ND/Core/Enemys/NDAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "project_ND/Core/Enemys/NDZombieAnim.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
@@ -95,6 +97,7 @@ void ANDZombieBase::SetHitLocationByBoneName(const FName& BoneName)
 void ANDZombieBase::TakeDamage(const float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
 	ANDAIController* AIController = Cast<ANDAIController>(GetController());
+	PlayGetHitSound();
 	
 	HP -= DamageAmount;
 	
@@ -228,5 +231,69 @@ void ANDZombieBase::PlayDeathAnim()
 	if (DeathAnimation)
 	{
 		GetMesh()->PlayAnimation(DeathAnimation, false);
+	}
+}
+
+void ANDZombieBase::PlayIdleAudio()
+{
+	if (IdleAudioComponent && !IdleAudioComponent->IsPlaying())
+	{
+		IdleAudioComponent->Play();
+	}
+}
+
+void ANDZombieBase::PlayExcitementAudio()
+{
+	if (ExcitementAudioComponent && !ExcitementAudioComponent->IsPlaying())
+	{
+		ExcitementAudioComponent->Play();
+	}
+}
+
+void ANDZombieBase::PlayEatingAudio()
+{
+	if (EatingAudioComponent && EatingAudioComponent->IsPlaying())
+	{
+		EatingAudioComponent->Play();
+	}
+}
+
+void ANDZombieBase::PlayAttackSound()
+{
+	if (AttackSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), AttackSound, GetActorLocation(), GetActorRotation());
+	}
+}
+
+void ANDZombieBase::PlayGetHitSound()
+{
+	if (GetHitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), GetHitSound, GetActorLocation(), GetActorRotation());
+	}
+}
+
+void ANDZombieBase::PlayDieSound()
+{
+	if (DieSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DieSound, GetActorLocation(), GetActorRotation());
+	}
+}
+
+void ANDZombieBase::StopAllSounds()
+{
+	if (IdleAudioComponent && IdleAudioComponent->IsPlaying()())
+	{
+		IdleAudioComponent->Stop();
+	}
+	if (ExcitementAudioComponent && ExcitementAudioComponent->IsPlaying())
+	{
+		ExcitementAudioComponent->Stop();
+	}
+	if (EatingAudioComponent && EatingAudioComponent->IsPlaying())
+	{
+		EatingAudioComponent->Stop();
 	}
 }
