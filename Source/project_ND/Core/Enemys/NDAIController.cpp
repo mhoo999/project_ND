@@ -213,7 +213,7 @@ void ANDAIController::InitializeAIPerception() const
 
 void ANDAIController::GetExcitement() const
 {
-	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 3.0f;
+	Zombie->GetCharacterMovement()->MaxWalkSpeed *= 1.5f;
 }
 
 void ANDAIController::GetRelax()
@@ -255,14 +255,18 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 					}
 				}
 			}
-			else if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
+			
+			if (CurrentState == EAIState::Idle || CurrentState == EAIState::Eating)
 			{
-				if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+				if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 				{
-					SetAIState("Patrol");
-					GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-					GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
-					return;
+					if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+					{
+						SetAIState("Patrol");
+						GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+						GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
+						return;
+					}
 				}
 			}
 		}

@@ -111,6 +111,4 @@ public:
 	void SetPrintLog();
 
 	EAIState GetCurrentState();
-
-	void FocusActor();
 };

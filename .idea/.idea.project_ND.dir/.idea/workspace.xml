@@ -8,18 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/Title.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/TestPawn/BP_NDTestItem.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/TestPawn/BP_NDTestItem.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/Quest/BP_QuestCollect.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/Quest/BP_QuestCollect.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/Component/BPC_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/Component/BPC_Inventory.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/Util/UtilityUI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/Util/UtilityUI.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/WBP_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/WBP_Inventory.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Slot/WBP_Slot.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Slot/WBP_Slot.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/StarterContent/Architecture/Floor_400x400.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Architecture/Floor_400x400.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/StarterContent/Blueprints/Blueprint_CeilingLight.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Blueprints/Blueprint_CeilingLight.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/UI/NDUpgradeSelector.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/UI/NDUpgradeSelector.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Title/WBP_Title.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Title/WBP_Title.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/building/lighting/loungeRef_LightDown.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/building/lighting/loungeRef_LightDown.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/building/lighting/loungeRef_LightU.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/building/lighting/loungeRef_LightU.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,6 +243,20 @@
       <workItem from="1723541881435" duration="114000" />
       <workItem from="1723542318301" duration="606000" />
       <workItem from="1723544762034" duration="1299000" />
+      <workItem from="1723599324145" duration="1717000" />
+      <workItem from="1723601556787" duration="1493000" />
+      <workItem from="1723603199772" duration="711000" />
+      <workItem from="1723604218787" duration="179000" />
+      <workItem from="1723604466387" duration="727000" />
+      <workItem from="1723605715706" duration="647000" />
+      <workItem from="1723606478591" duration="1047000" />
+      <workItem from="1723612032446" duration="599000" />
+      <workItem from="1723612662007" duration="411000" />
+      <workItem from="1723613100092" duration="1373000" />
+      <workItem from="1723614958395" duration="1519000" />
+      <workItem from="1723617321954" duration="550000" />
+      <workItem from="1723617955415" duration="805000" />
+      <workItem from="1723620417529" duration="275000" />
     </task>
     <servers />
   </component>
