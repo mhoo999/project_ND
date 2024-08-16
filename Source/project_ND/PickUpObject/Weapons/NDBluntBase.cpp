@@ -21,6 +21,18 @@ void ANDBluntBase::BeginPlay()
 	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
 }
 
+void ANDBluntBase::BluntSwingSound()
+{
+	FVector NoiseLocation = this->GetActorLocation();
+	
+	if (SwingSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, SwingSound, GetActorLocation());
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("BluntSwing"));
+}
+
 void ANDBluntBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

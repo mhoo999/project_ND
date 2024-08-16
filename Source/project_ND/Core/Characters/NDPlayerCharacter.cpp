@@ -20,6 +20,7 @@
 #include "project_ND/Core/Components/NDStatComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 #include "Perception/AISense_Hearing.h"
+#include "Sound/SoundBase.h"
 
 
 
@@ -438,7 +439,14 @@ void APlayerCharacter::FootStepSound()
 {
 	FVector NoiseLocation = this->GetActorLocation();
 	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
+
+
 	UE_LOG(LogTemp, Warning, TEXT("Walk"));
+
+	if (StepSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, StepSound, GetActorLocation());
+	}
 }
 
 void APlayerCharacter::OnAttack()
@@ -451,6 +459,7 @@ void APlayerCharacter::OnAttack()
 	if (CurrentEquipmentSlot == EEquipment::FIRSTSLOT)
 	{
 		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
+	
 	}
 	else if (CurrentEquipmentSlot == EEquipment::SECONDSLOT)
 	{

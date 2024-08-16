@@ -127,6 +127,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USplineComponent* ProjectilPath;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundBase* StepSound;
+
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
 
