@@ -25,6 +25,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
 	USoundBase* SwingSound;
 
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -39,4 +41,10 @@ public:
 		bool bFromSweep, 
 		const FHitResult& SweepResult
 	);
+
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
+protected:
+	//class UShapeComponent* BodyCollider;
 };

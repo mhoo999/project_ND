@@ -2,6 +2,7 @@
 
 
 #include "NDRevolverBase.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
 
 
 // Sets default values
@@ -16,11 +17,32 @@ void ANDRevolverBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	/*FActorSpawnParameters Param;
+	
+	Param.Owner = OwnerCharacter;
+
+	
+	Bullet = GetWorld()->SpawnActor<AActor>(BulletClassReference, Param);
+	
+	Bullet->AttachToComponent
+	(
+		OwnerCharacter->GetMesh(),
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+		BulletEquipSocketName
+	);*/
 }
 
 // Called every frame
 void ANDRevolverBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ANDRevolverBase::OnAttackBegin()
+{
+}
+
+void ANDRevolverBase::OnAttackEnd()
+{
 }
 

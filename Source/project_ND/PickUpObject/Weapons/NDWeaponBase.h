@@ -46,6 +46,9 @@ public:
 
 	void Attack();
 
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
 protected:
 
 	class ANDZombieBase* Target;

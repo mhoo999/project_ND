@@ -541,8 +541,9 @@ void APlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	CurrentEquipmentItem->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = false;
+	CurrentEquipmentItem->OnAttackBegin();
+
+	
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 }
@@ -551,8 +552,8 @@ void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
-	CurrentEquipmentItem->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CurrentEquipmentItem->GetBodyCollider()->bHiddenInGame = true;
+	CurrentEquipmentItem->OnAttackEnd();
+
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
 

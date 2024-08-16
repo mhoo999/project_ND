@@ -18,6 +18,8 @@ void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
 }
 
@@ -50,5 +52,17 @@ void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCom
 	{
 		Zombie->TakeDamage(10.0f, OwnerCharacter, SweepResult);
 	}
+}
+
+void ANDBluntBase::OnAttackBegin()
+{
+	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetBodyCollider()->bHiddenInGame = false;
+}
+
+void ANDBluntBase::OnAttackEnd()
+{
+	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetBodyCollider()->bHiddenInGame = true;
 }
 

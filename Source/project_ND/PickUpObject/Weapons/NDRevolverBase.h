@@ -22,4 +22,18 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
+protected:
+
+	/*UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	AActor* Bullet;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	FName BulletEquipSocketName;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TSubclassOf<AActor> BulletClassReference;*/
 };

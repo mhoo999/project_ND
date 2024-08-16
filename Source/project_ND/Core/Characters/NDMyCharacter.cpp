@@ -136,7 +136,6 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 		if (DeathMontage)
 		{
 			PlayAnimMontage(DeathMontage);
-			DeathMontage->bEnableAutoBlendOut = false;
 
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -155,6 +154,7 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 			}
 
 			ShowDeathScreen();
+			DeathMontage->bEnableAutoBlendOut = false;
 		}
 	}
 }

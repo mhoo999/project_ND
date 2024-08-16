@@ -18,7 +18,7 @@ void ANDWeaponBase::BeginPlay()
 
 	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
 
-	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	//BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
 }
 
 void ANDWeaponBase::Tick(float DeltaTime)
@@ -32,6 +32,14 @@ void ANDWeaponBase::Attack()
 	{
 		OwnerCharacter->PlayAnimMontage(AttackMontage);
 	}
+}
+
+void ANDWeaponBase::OnAttackBegin()
+{
+}
+
+void ANDWeaponBase::OnAttackEnd()
+{
 }
 
 
