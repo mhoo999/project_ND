@@ -3,6 +3,7 @@
 
 #include "NDRevolverBase.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "project_ND/PickUpObject/Weapons/NDBulletBase.h"
 
 
 // Sets default values
@@ -16,6 +17,19 @@ ANDRevolverBase::ANDRevolverBase()
 void ANDRevolverBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FActorSpawnParameters Param;
+
+	Param.Owner = OwnerCharacter;
+
+	for (uint32 i = 0; i < 30; i++)
+	{
+		ANDBulletBase* Bullet = GetWorld()->SpawnActor<ANDBulletBase>(BulletClassReference, Param);
+
+		Bullets.Add(Bullet);
+	}
+
+	 
 	
 	/*FActorSpawnParameters Param;
 	

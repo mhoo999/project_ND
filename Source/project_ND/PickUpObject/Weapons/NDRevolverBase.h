@@ -27,6 +27,11 @@ public:
 	virtual void OnAttackEnd();
 
 protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TSubclassOf<class ANDBulletBase> BulletClassReference;
+
+	TArray<class ANDBulletBase*> Bullets;
+
 
 	/*UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	AActor* Bullet;

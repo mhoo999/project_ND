@@ -23,11 +23,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetActive(bool IsActive);
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UShapeComponent* Collider;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UParticleSystemComponent* TrailEffect;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	class UProjectileMovementComponent* ProjectileMovement;
 
+	bool bIsActive = false;
 };

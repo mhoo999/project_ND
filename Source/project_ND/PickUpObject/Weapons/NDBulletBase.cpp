@@ -5,6 +5,7 @@
 #include "Components/ShapeComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 ANDBulletBase::ANDBulletBase()
@@ -18,8 +19,9 @@ ANDBulletBase::ANDBulletBase()
 	Collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	Collider->SetupAttachment(TrailEffect);
 
-	
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 
+	SetActive(false);
 }
 
 // Called when the game starts or when spawned
@@ -34,5 +36,34 @@ void ANDBulletBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ANDBulletBase::SetActive(bool IsActive)
+{
+	bIsActive = IsActive;
+
+	if (bIsActive)
+	{
+		SetActorHiddenInGame(false);
+		
+
+		Collider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+		ProjectileMovement->Velocity = GetActorForwardVector() * 100.0f;
+		ProjectileMovement->bSimulationEnabled = true; //isActive == 
+
+		TrailEffect->Activate(true);
+	}
+	else
+	{
+		SetActorHiddenInGame(true);
+
+		Collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		ProjectileMovement->Velocity = FVector::ZeroVector;
+		ProjectileMovement->bSimulationEnabled = false; 
+
+		TrailEffect->Deactivate();
+	}
 }
 
