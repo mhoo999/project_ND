@@ -56,7 +56,7 @@ void ANDBulletBase::SetActive(bool IsActive)
 
 		Collider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-		ProjectileMovement->Velocity = GetActorForwardVector() * 100.0f;
+		ProjectileMovement->Velocity = GetActorForwardVector() * BulletSpeed;
 		ProjectileMovement->bSimulationEnabled = true; //isActive == 
 
 		TrailEffects->Activate(true);

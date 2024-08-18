@@ -66,4 +66,10 @@ protected:
 	class ANDMyCharacter* OwnerCharacter;
 
 	float DamageRate = 1.0f;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class UParticleSystem* HitEffect = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class USoundBase* HitSound = nullptr;
 };

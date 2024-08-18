@@ -5,7 +5,7 @@
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "project_ND/PickUpObject/Weapons/NDBulletBase.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-
+#include "Camera/CameraComponent.h"
 
 
 // Sets default values
@@ -13,6 +13,7 @@ ANDRevolverBase::ANDRevolverBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -49,7 +50,7 @@ void ANDRevolverBase::OnAttackBegin()
 
 		UE_LOG(LogTemp, Warning, TEXT("Found an inactive bullet. Firing it now."));
 
-		Bullet->GetProjectile()->Velocity = OwnerCharacter->GetActorForwardVector() * 1000.0f;
+		Bullet->GetProjectile()->Velocity = OwnerCharacter->GetActorForwardVector() * 100000.0f;
 		Bullet->SetActorRotation(OwnerCharacter->GetActorRotation());
 		Bullet->SetActorLocation(this->GetActorLocation());
 

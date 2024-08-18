@@ -32,13 +32,4 @@ protected:
 
 	TArray<class ANDBulletBase*> Bullets;
 
-
-	/*UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	AActor* Bullet;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	FName BulletEquipSocketName;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TSubclassOf<AActor> BulletClassReference;*/
 };

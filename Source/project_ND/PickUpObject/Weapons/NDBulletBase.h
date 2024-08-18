@@ -51,4 +51,7 @@ protected:
 	class UProjectileMovementComponent* ProjectileMovement;
 
 	bool bIsActive = false;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	float BulletSpeed = 3000.0f;
 };

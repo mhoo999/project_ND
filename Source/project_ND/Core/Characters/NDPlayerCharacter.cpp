@@ -33,6 +33,8 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	PCamera   = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	AimCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("AimCamera"));
+
 
 	ProjectilStart = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectilStart"));
 	ProjectilPath  = CreateDefaultSubobject<USplineComponent>(TEXT("ProjectilPath"));
@@ -40,6 +42,8 @@ APlayerCharacter::APlayerCharacter()
 	SpringArm->SetupAttachment(RootComponent);
 	PCamera->SetupAttachment(SpringArm);
 	PCamera->bUsePawnControlRotation = true;
+	AimCamera->SetupAttachment(RootComponent);
+	
 
 	SpringArm->SetRelativeLocation(FVector(0.0f, 30.0f, 75.0f));
 
@@ -97,6 +101,8 @@ void APlayerCharacter::BeginPlay()
 	}
 
 	OnPlayerDamaged.AddDynamic(this, &APlayerCharacter::HandlePlayerDamaged);
+
+	AimCamera->SetActive(false);
 }
 
 // Called every frame
@@ -133,15 +139,18 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
 		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeFirstSlotItem);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot , ETriggerEvent::Started, this, &APlayerCharacter::ChangeFirstSlotItem );
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeSecondSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeSecondSlotItem);
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeThirdSlotItem);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot , ETriggerEvent::Started, this, &APlayerCharacter::ChangeThirdSlotItem );
 		
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
-		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Started  , this, &APlayerCharacter::OnAttackPressed);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Started  , this, &APlayerCharacter::OnAttackPressed );
 		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAttackReleased);
+
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::ChangeToAimCamera );
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Completed, this, &APlayerCharacter::ChangeToMainCamera);
 		
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
 
@@ -457,11 +466,12 @@ void APlayerCharacter::OnAttack()
 	if (CurrentEquipmentSlot == EEquipment::FIRSTSLOT)
 	{
 		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
-	
+		
 	}
 	else if (CurrentEquipmentSlot == EEquipment::SECONDSLOT)
 	{
 		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
+		HandlePlayerDamaged();
 	}
 	else if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
 	{
@@ -571,6 +581,25 @@ void APlayerCharacter::HandlePlayerDamaged()
 	{
 		PlayerController->ClientStartCameraShake(MyCameraShakeClass);
 	}
+}
+
+void APlayerCharacter::ChangeToMainCamera()
+{
+	if (CurrentEquipmentSlot != EEquipment::SECONDSLOT)
+		return;
+
+	PCamera->SetActive(true);
+	AimCamera->SetActive(false);
+}
+
+void APlayerCharacter::ChangeToAimCamera()
+{
+	if (CurrentEquipmentSlot != EEquipment::SECONDSLOT)
+		return;
+
+	PCamera->SetActive(false);
+	AimCamera->SetActive(true);
+	AimCamera->bUsePawnControlRotation = true;
 }
 
 

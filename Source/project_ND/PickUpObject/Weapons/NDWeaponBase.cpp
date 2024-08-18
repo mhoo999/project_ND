@@ -60,4 +60,25 @@ void ANDWeaponBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 	{
 		Zombie->TakeDamage(10.0f * DamageRate, OwnerCharacter, SweepResult);
 	}
+
+	if (HitEffect)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation
+		(
+			GetWorld(),
+			HitEffect,
+			OverlappedComponent->GetComponentTransform()
+		);
+	}
+
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation
+		(
+			GetWorld(),
+			HitSound,
+			OverlappedComponent->GetComponentLocation()
+		);
+	}
+
 }

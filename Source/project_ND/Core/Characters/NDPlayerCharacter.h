@@ -98,6 +98,9 @@ protected:
 	UFUNCTION()
 	void HandlePlayerDamaged();
 
+	void ChangeToMainCamera();
+	void ChangeToAimCamera();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
@@ -114,6 +117,9 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Camera")
 	class UCameraComponent* PCamera;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Camera")
+	class UCameraComponent* AimCamera;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	class USpringArmComponent* SpringArm;
