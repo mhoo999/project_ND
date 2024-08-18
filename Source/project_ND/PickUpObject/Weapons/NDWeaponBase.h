@@ -41,7 +41,6 @@ protected:
 	//UShapeComponent* BodyCollider;
 	
 public:
-
 	//UShapeComponent* GetBodyCollider() { return BodyCollider; }
 
 	void Attack();
@@ -49,9 +48,22 @@ public:
 	virtual void OnAttackBegin();
 	virtual void OnAttackEnd();
 
+	UFUNCTION()
+	void OnBodyColliderBeginOverlap
+	(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);
+
 protected:
 
 	class ANDZombieBase* Target;
 
 	class ANDMyCharacter* OwnerCharacter;
+
+	float DamageRate = 1.0f;
 };

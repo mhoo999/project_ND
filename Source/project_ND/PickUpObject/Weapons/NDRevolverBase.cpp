@@ -4,6 +4,8 @@
 #include "NDRevolverBase.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "project_ND/PickUpObject/Weapons/NDBulletBase.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+
 
 
 // Sets default values
@@ -20,7 +22,7 @@ void ANDRevolverBase::BeginPlay()
 
 	FActorSpawnParameters Param;
 
-	Param.Owner = OwnerCharacter;
+	Param.Owner = this;
 
 	for (uint32 i = 0; i < 30; i++)
 	{
@@ -29,21 +31,7 @@ void ANDRevolverBase::BeginPlay()
 		Bullets.Add(Bullet);
 	}
 
-	 
-	
-	/*FActorSpawnParameters Param;
-	
-	Param.Owner = OwnerCharacter;
-
-	
-	Bullet = GetWorld()->SpawnActor<AActor>(BulletClassReference, Param);
-	
-	Bullet->AttachToComponent
-	(
-		OwnerCharacter->GetMesh(),
-		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
-		BulletEquipSocketName
-	);*/
+	//DamageRate = 1.5f;
 }
 
 // Called every frame
@@ -54,6 +42,21 @@ void ANDRevolverBase::Tick(float DeltaTime)
 
 void ANDRevolverBase::OnAttackBegin()
 {
+	for (auto& Bullet : Bullets)
+	{
+		if (Bullet->GetIsActive())
+			continue;
+
+		UE_LOG(LogTemp, Warning, TEXT("Found an inactive bullet. Firing it now."));
+
+		Bullet->GetProjectile()->Velocity = OwnerCharacter->GetActorForwardVector() * 1000.0f;
+		Bullet->SetActorRotation(OwnerCharacter->GetActorRotation());
+		Bullet->SetActorLocation(this->GetActorLocation());
+
+		Bullet->SetActive(true);
+
+		break;
+	}
 }
 
 void ANDRevolverBase::OnAttackEnd()

@@ -6,6 +6,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "project_ND/PickUpObject/Weapons/NDRevolverBase.h"
+#include "project_ND/Enemys/NDZombieBase.h"
+
 
 // Sets default values
 ANDBulletBase::ANDBulletBase()
@@ -13,29 +16,33 @@ ANDBulletBase::ANDBulletBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	TrailEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("TrailEffect"));
-	TrailEffect->SetupAttachment(RootComponent);
+	TrailEffects = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("TrailEffect"));
+	SetRootComponent(TrailEffects);
 
 	Collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
-	Collider->SetupAttachment(TrailEffect);
+	Collider->SetupAttachment(TrailEffects);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-
-	SetActive(false);
 }
 
 // Called when the game starts or when spawned
 void ANDBulletBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	SetActive(false);
+
+	ANDRevolverBase* Revolver = Cast<ANDRevolverBase>(GetOwner());
+
+	Collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Collider->OnComponentBeginOverlap.AddDynamic(this,     &ANDBulletBase::OnBodyColliderBeginOverlap);
+	Collider->OnComponentBeginOverlap.AddDynamic(Revolver, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 }
 
 // Called every frame
 void ANDBulletBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ANDBulletBase::SetActive(bool IsActive)
@@ -52,7 +59,7 @@ void ANDBulletBase::SetActive(bool IsActive)
 		ProjectileMovement->Velocity = GetActorForwardVector() * 100.0f;
 		ProjectileMovement->bSimulationEnabled = true; //isActive == 
 
-		TrailEffect->Activate(true);
+		TrailEffects->Activate(true);
 	}
 	else
 	{
@@ -63,7 +70,26 @@ void ANDBulletBase::SetActive(bool IsActive)
 		ProjectileMovement->Velocity = FVector::ZeroVector;
 		ProjectileMovement->bSimulationEnabled = false; 
 
-		TrailEffect->Deactivate();
+		TrailEffects->Deactivate();
 	}
 }
+
+void ANDBulletBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ANDRevolverBase* Revolver = Cast<ANDRevolverBase>(GetOwner());
+
+	if (OtherActor == Revolver)
+		return;
+
+	if (OtherActor == Revolver->GetOwner())
+		return;
+
+	SetActive(false);
+
+	/*if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
+	{
+		Zombie->TakeDamage(10.0f, Revolver->GetOwner(), SweepResult);
+	}*/
+}
+
 
