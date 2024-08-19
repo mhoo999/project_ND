@@ -27,9 +27,20 @@ public:
 	virtual void OnAttackEnd();
 
 protected:
+	int32 CurBullets;
+	int32 MaxBullets;
+	bool bIsReloading;
+
+	void Reload();
+	void OnReloadMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	void FinishReloading();
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TSubclassOf<class ANDBulletBase> BulletClassReference;
 
 	TArray<class ANDBulletBase*> Bullets;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UAnimMontage* ReloadMontage;
 
 };

@@ -22,7 +22,7 @@ void ANDBluntBase::BeginPlay()
 	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 
-	DamageRate = 1.1f;
+	DamageRate = 1.0f;
 }
 
 void ANDBluntBase::BluntSwingSound()
@@ -47,6 +47,7 @@ void ANDBluntBase::OnAttackBegin()
 {
 	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetBodyCollider()->bHiddenInGame = false;
+	bHasApplindDamage = false;
 }
 
 void ANDBluntBase::OnAttackEnd()

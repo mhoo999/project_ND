@@ -36,4 +36,6 @@ public:
 
 protected:
 	//class UShapeComponent* BodyCollider;
+
+
 };

@@ -101,6 +101,8 @@ protected:
 	void ChangeToMainCamera();
 	void ChangeToAimCamera();
 
+	void SetCharging();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	class UNDInputComponent* MyInputComponent;
@@ -146,4 +148,6 @@ protected:
 
 	FVector DefaulCrouchLocation;
 	FVector CrouchedLocation;
+
+	bool bIsCharging = false;
 };

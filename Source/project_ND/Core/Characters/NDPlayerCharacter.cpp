@@ -466,7 +466,7 @@ void APlayerCharacter::OnAttack()
 	if (CurrentEquipmentSlot == EEquipment::FIRSTSLOT)
 	{
 		Cast<ANDWeaponBase>(CurrentEquipmentItem)->Attack();
-		
+	
 	}
 	else if (CurrentEquipmentSlot == EEquipment::SECONDSLOT)
 	{

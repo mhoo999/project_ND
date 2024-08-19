@@ -56,9 +56,16 @@ void ANDWeaponBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 		return;
 	}
 
-	if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
+	
+	if (!bHasApplindDamage)
 	{
-		Zombie->TakeDamage(10.0f * DamageRate, OwnerCharacter, SweepResult);
+		if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
+		{
+			Zombie->TakeDamage(10.0f * DamageRate, OwnerCharacter, SweepResult);
+
+			bHasApplindDamage = true;
+		}
+
 	}
 
 	if (HitEffect)
