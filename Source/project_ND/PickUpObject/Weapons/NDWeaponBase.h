@@ -72,4 +72,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
 	class USoundBase* HitSound = nullptr;
+
+public:
+	bool bHasApplindDamage = false;
 };

@@ -66,4 +66,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UInputAction* ChangeCameraAction;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UInputAction* ReloadAction;
+
 };

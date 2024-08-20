@@ -60,6 +60,9 @@ void ANDBulletBase::SetActive(bool IsActive)
 		ProjectileMovement->bSimulationEnabled = true; //isActive == 
 
 		TrailEffects->Activate(true);
+
+		//Add
+		GetWorld()->GetTimerManager().SetTimer(LifespanTimerHandle, this, &ANDBulletBase::DestroyBullet, BulletLifespan, false);
 	}
 	else
 	{
@@ -71,7 +74,18 @@ void ANDBulletBase::SetActive(bool IsActive)
 		ProjectileMovement->bSimulationEnabled = false; 
 
 		TrailEffects->Deactivate();
+
+		//Add
+		GetWorld()->GetTimerManager().ClearTimer(LifespanTimerHandle);
 	}
+}
+
+void ANDBulletBase::DestroyBullet()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Bullet disappeared without hitting any target."));
+	
+	SetActive(false);
+	//this->Destroy();
 }
 
 void ANDBulletBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -85,6 +99,8 @@ void ANDBulletBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 		return;
 
 	SetActive(false);
+
+
 
 	/*if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
 	{
