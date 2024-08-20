@@ -113,8 +113,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UseItem(FItemBaseData ItemInfo);
 
+	UFUNCTION(BlueprintCallable)
 	void IncreaseHungry(float Amount);
-	
+
+	UFUNCTION(BlueprintCallable)
 	void DecreaseHungry(float Amount);
 
 private:

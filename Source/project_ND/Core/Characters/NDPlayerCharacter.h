@@ -53,6 +53,7 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
+	UFUNCTION(BlueprintCallable)
 	void FlashLightOn();
 
 	void OnFlashLightKey(const FInputActionValue& Value);
@@ -75,14 +76,13 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void FootStepSound();
 
+
+
 	void OnAttack();
 
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Throwables();
-	void OnAttackPressed();
-	
-	void OnAttackReleased();
 
 
 	UFUNCTION(BlueprintCallable)
@@ -102,6 +102,9 @@ protected:
 	void ChangeToAimCamera();
 
 	void SetCharging();
+
+	UFUNCTION(BlueprintCallable)
+	void RevolverReload();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
