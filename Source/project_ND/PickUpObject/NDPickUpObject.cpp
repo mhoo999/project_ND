@@ -29,6 +29,14 @@ void ANDPickUpObject::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ANDPickUpObject::OnAttackBegin()
+{
+}
+
+void ANDPickUpObject::OnAttackEnd()
+{
+}
+
 void ANDPickUpObject::OnPickedUp()
 {
 	if(OwnerCharacter)

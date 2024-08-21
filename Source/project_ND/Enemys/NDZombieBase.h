@@ -108,4 +108,32 @@ private:
 
 public:
 	void PlayDeathAnim();
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	UAudioComponent* IdleAudioComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	UAudioComponent* ExcitementAudioComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	UAudioComponent* EatingAudioComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	USoundBase* AttackSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	USoundBase* GetHitSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sound", meta=(AllowPrivateAccess))
+	USoundBase* DieSound;
+
+public:
+	void PlayIdleAudio();
+	void PlayExcitementAudio();
+	void PlayEatingAudio();
+	void PlayAttackSound();
+	void PlayGetHitSound();
+	void PlayDieSound();
+	void StopAllSounds();
 };

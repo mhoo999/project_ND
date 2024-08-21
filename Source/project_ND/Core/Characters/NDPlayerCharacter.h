@@ -53,6 +53,7 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
+	UFUNCTION(BlueprintCallable)
 	void FlashLightOn();
 
 	void OnFlashLightKey(const FInputActionValue& Value);
@@ -75,14 +76,13 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void FootStepSound();
 
+
+
 	void OnAttack();
 
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Throwables();
-	void OnAttackPressed();
-	
-	void OnAttackReleased();
 
 
 	UFUNCTION(BlueprintCallable)
@@ -97,6 +97,12 @@ protected:
 
 	UFUNCTION()
 	void HandlePlayerDamaged();
+
+	void ChangeToMainCamera();
+	void ChangeToAimCamera();
+
+	UFUNCTION(BlueprintCallable)
+	void RevolverReload();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
@@ -115,6 +121,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Camera")
 	class UCameraComponent* PCamera;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Camera")
+	class UCameraComponent* AimCamera;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	class USpringArmComponent* SpringArm;
 
@@ -127,6 +136,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USplineComponent* ProjectilPath;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundBase* StepSound;
+
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
 
@@ -137,4 +149,6 @@ protected:
 
 	FVector DefaulCrouchLocation;
 	FVector CrouchedLocation;
+
+	bool bIsCharging = false;
 };

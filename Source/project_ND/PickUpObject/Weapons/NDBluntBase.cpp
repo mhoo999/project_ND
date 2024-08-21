@@ -18,7 +18,21 @@ void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDBluntBase::OnBodyColliderBeginOverlap);
+	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
+
+	DamageRate = 1.0f;
+}
+
+void ANDBluntBase::BluntSwingSound()
+{
+	FVector NoiseLocation = this->GetActorLocation();
+	
+	if (SwingSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, SwingSound, GetActorLocation());
+	}
 }
 
 void ANDBluntBase::Tick(float DeltaTime)
@@ -26,17 +40,17 @@ void ANDBluntBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ANDBluntBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+
+void ANDBluntBase::OnAttackBegin()
 {
-	if (OtherActor == OwnerCharacter)
-	{
-		return;
-	}
-	
-	if(ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
-	{
-		Zombie->TakeDamage(10.0f, OwnerCharacter, SweepResult);
-	}
+	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetBodyCollider()->bHiddenInGame = false;
+	bHasApplindDamage = false;
+}
+
+void ANDBluntBase::OnAttackEnd()
+{
+	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetBodyCollider()->bHiddenInGame = true;
 }
 

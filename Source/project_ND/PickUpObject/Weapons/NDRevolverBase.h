@@ -22,4 +22,35 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
+public:
+	void Reload();
+	void OnReloadMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	void FinishReloading();
+	bool IsReloading() const;
+
+	uint32 GetCurBullets();
+	uint32 GetMaxBullets();
+
+protected:
+	uint32 CurBullets;
+	uint32 MaxBullets;
+	bool bIsReloading;
+	float relodingDelayTime = 3.0f;
+	float BulletLifespan = 2.0f;
+
+	FTimerHandle ReloadTimerHandle;
+
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TSubclassOf<class ANDBulletBase> BulletClassReference;
+
+	TArray<class ANDBulletBase*> Bullets;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UAnimMontage* ReloadMontage;
+
 };

@@ -41,14 +41,44 @@ protected:
 	//UShapeComponent* BodyCollider;
 	
 public:
-
 	//UShapeComponent* GetBodyCollider() { return BodyCollider; }
 
 	void Attack();
+
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
+	UFUNCTION()
+	void OnBodyColliderBeginOverlap
+	(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);
 
 protected:
 
 	class ANDZombieBase* Target;
 
 	class ANDMyCharacter* OwnerCharacter;
+
+	float DamageRate = 1.0f;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class UParticleSystem* HitEffect = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class USoundBase* HitSound = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class USoundBase* ShootSound = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class USoundBase* ReloadSound = nullptr;
+
+public:
+	bool bHasApplindDamage = false;
 };

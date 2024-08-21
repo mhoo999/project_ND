@@ -131,7 +131,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectSettings")
 	UShapeComponent* BodyCollider;
 
+
 public:
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
 	virtual void OnPickedUp();
 
 	void SetItemMesh(UStaticMesh* Mesh) const;

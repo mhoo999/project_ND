@@ -19,18 +19,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	void BluntSwingSound();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
+	USoundBase* SwingSound;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION()
-	void OnBodyColliderBeginOverlap
-	(
-		UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor, 
-		UPrimitiveComponent* OtherComp, 
-		int32 OtherBodyIndex, 
-		bool bFromSweep, 
-		const FHitResult& SweepResult
-	);
+
+
+	virtual void OnAttackBegin();
+	virtual void OnAttackEnd();
+
+protected:
+	//class UShapeComponent* BodyCollider;
+
+
 };

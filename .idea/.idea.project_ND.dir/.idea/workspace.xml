@@ -9,11 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/BS_UpZombie.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/UpZombie/BS_UpZombie.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/UpgradeSelector/WBP_UpgradeSelector.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/UpgradeSelector/WBP_UpgradeSelector.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,6 +238,24 @@
       <workItem from="1723542318301" duration="606000" />
       <workItem from="1723544762034" duration="1299000" />
       <workItem from="1723599324145" duration="1717000" />
+      <workItem from="1723601556787" duration="1493000" />
+      <workItem from="1723603199772" duration="711000" />
+      <workItem from="1723604218787" duration="179000" />
+      <workItem from="1723604466387" duration="727000" />
+      <workItem from="1723605715706" duration="647000" />
+      <workItem from="1723606478591" duration="1047000" />
+      <workItem from="1723612032446" duration="599000" />
+      <workItem from="1723612662007" duration="411000" />
+      <workItem from="1723613100092" duration="1373000" />
+      <workItem from="1723614958395" duration="1519000" />
+      <workItem from="1723617321954" duration="550000" />
+      <workItem from="1723617955415" duration="805000" />
+      <workItem from="1723620417529" duration="275000" />
+      <workItem from="1723772872630" duration="1681000" />
+      <workItem from="1723786096010" duration="4966000" />
+      <workItem from="1723793827314" duration="2349000" />
+      <workItem from="1724031451393" duration="319000" />
+      <workItem from="1724032390885" duration="317000" />
     </task>
     <servers />
   </component>
