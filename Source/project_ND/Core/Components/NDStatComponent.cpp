@@ -100,6 +100,8 @@ void UNDStatComponent::TakeDamage(float DamagedAmount)
 	EffectComponent->PlayHitEffect(Player->GetActorLocation());
 
 	UE_LOG(LogTemp, Log, TEXT("New HP: %f"), CurHP);
+
+
 	
 	//UE_LOG(LogTemp, Log, TEXT("% s HP : % f"), *GetName(), CurHP);	
 }
@@ -131,6 +133,8 @@ void UNDStatComponent::IncreaseHungry(float Amount)
 	{
 		CurHungry = MaxHungry;
 	}
+
+
 }
 
 void UNDStatComponent::DecreaseHungry(float Amount)

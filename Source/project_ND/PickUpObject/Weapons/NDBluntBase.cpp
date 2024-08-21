@@ -33,8 +33,6 @@ void ANDBluntBase::BluntSwingSound()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, SwingSound, GetActorLocation());
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("BluntSwing"));
 }
 
 void ANDBluntBase::Tick(float DeltaTime)

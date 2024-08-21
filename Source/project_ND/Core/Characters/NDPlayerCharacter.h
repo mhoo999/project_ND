@@ -101,8 +101,6 @@ protected:
 	void ChangeToMainCamera();
 	void ChangeToAimCamera();
 
-	void SetCharging();
-
 	UFUNCTION(BlueprintCallable)
 	void RevolverReload();
 

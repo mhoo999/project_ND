@@ -73,6 +73,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
 	class USoundBase* HitSound = nullptr;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class USoundBase* ShootSound = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Effect")
+	class USoundBase* ReloadSound = nullptr;
+
 public:
 	bool bHasApplindDamage = false;
 };

@@ -143,6 +143,4 @@ protected:
 
 	UPROPERTY(Editanywhere, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess))
 	UNDEquipComponent* EquipComponent;
-
-
 };

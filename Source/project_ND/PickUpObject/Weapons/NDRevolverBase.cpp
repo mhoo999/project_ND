@@ -6,7 +6,7 @@
 #include "project_ND/PickUpObject/Weapons/NDBulletBase.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Camera/CameraComponent.h"
-
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ANDRevolverBase::ANDRevolverBase()
@@ -55,38 +55,9 @@ void ANDRevolverBase::OnAttackBegin()
 	if (CurBullets <= 0)
 	{
 		Reload();
-		UE_LOG(LogTemp, Warning, TEXT("Reload"));
+	
 		return;
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("affter"));
-
-	/*for (auto& Bullet : Bullets)
-	{
-		
-		if (Bullet->GetIsActive())
-			continue;
-
-
-		FRotator ControlRotation = OwnerCharacter->GetControlRotation();
-		FVector FireDirection = ControlRotation.Vector();
-
-		Bullet->GetProjectile()->Velocity = OwnerCharacter->GetActorForwardVector() * 100.0f;
-		Bullet->SetActorRotation(OwnerCharacter->GetControlRotation());
-		Bullet->SetActorLocation(this->GetActorLocation());
-
-		FVector MuzzleLocation = this->GetActorLocation() + FVector(0.0f, 0.0f, 10.0f);
-		Bullet->SetActorLocation(MuzzleLocation);
-
-		Bullet->SetActive(true);
-
-		CurBullets--;
-
-		UE_LOG(LogTemp, Warning, TEXT("Fired! Remaining Bullets: %d"), CurBullets);
-
-		break;
-
-	}*/
 
 	for (auto& Bullet : Bullets)
 	{
@@ -101,37 +72,10 @@ void ANDRevolverBase::OnAttackBegin()
 
 			CurBullets--;
 
-			UE_LOG(LogTemp, Warning, TEXT("Fired! Remaining Bullets: %d"), CurBullets);
-
 			break; 
 		}
 	}
-
-
 	bHasApplindDamage = false;
-
-	/*for (auto& Bullet : Bullets)
-	{
-		if (Bullet->GetIsActive())
-			continue;
-
-		
-		FRotator ControlRotation = OwnerCharacter->GetControlRotation();
-		FVector FireDirection = ControlRotation.Vector();
-
-		Bullet->GetProjectile()->Velocity = OwnerCharacter->GetActorForwardVector() * 100.0f;
-		Bullet->SetActorRotation(OwnerCharacter->GetControlRotation());
-		Bullet->SetActorLocation(this->GetActorLocation());
-
-		FVector MuzzleLocation = this->GetActorLocation() + FVector(0.0f, 0.0f, 10.0f);
-		Bullet->SetActorLocation(MuzzleLocation);
-
-		Bullet->SetActive(true);
-
-		break;
-		
-	}
-		bHasApplindDamage = false;*/
 }
 
 void ANDRevolverBase::OnAttackEnd()
@@ -156,11 +100,22 @@ void ANDRevolverBase::Reload()
 
 		AnimInstance->Montage_Play(ReloadMontage);
 		AnimInstance->Montage_SetEndDelegate(MontageEndedDelegate, ReloadMontage);
+
 	}
 
+	if (ReloadSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation
+		(
+			GetWorld(),
+			ReloadSound,
+			GetActorLocation()
+		);
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("aa"));
+
+	}
 	
 
-	UE_LOG(LogTemp, Warning, TEXT("Reloading..."));
 }
 
 void ANDRevolverBase::OnReloadMontageEnded(UAnimMontage* Montage, bool bInterrupted)
@@ -168,7 +123,6 @@ void ANDRevolverBase::OnReloadMontageEnded(UAnimMontage* Montage, bool bInterrup
 	if (Montage == ReloadMontage)
 	{
 		FinishReloading();
-		UE_LOG(LogTemp, Warning, TEXT("Reload Complete."));
 	}
 }
 
@@ -176,8 +130,6 @@ void ANDRevolverBase::FinishReloading()
 {
 	CurBullets = MaxBullets;
 	bIsReloading = false;
-
-	UE_LOG(LogTemp, Warning, TEXT("Reload Complete. Ammo refilled to %d"), CurBullets);
 }
 
 bool ANDRevolverBase::IsReloading() const

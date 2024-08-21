@@ -450,9 +450,6 @@ void APlayerCharacter::FootStepSound()
 	FVector NoiseLocation = this->GetActorLocation();
 	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
 
-
-	UE_LOG(LogTemp, Warning, TEXT("Walk"));
-
 	if (StepSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, StepSound, GetActorLocation());
@@ -610,6 +607,8 @@ void APlayerCharacter::RevolverReload()
 		if (Revolver && !Revolver->IsReloading())
 		{
 			Revolver->Reload();
+			
+
 		}
 	}
 }
