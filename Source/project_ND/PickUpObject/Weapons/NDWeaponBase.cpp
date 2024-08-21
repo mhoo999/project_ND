@@ -95,8 +95,6 @@ void ANDWeaponBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 			HitSound,
 			OverlappedComponent->GetComponentLocation()
 		);
-
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("dddddd"));
 	}
 
 }

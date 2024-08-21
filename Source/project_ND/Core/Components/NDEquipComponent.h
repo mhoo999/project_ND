@@ -60,6 +60,8 @@ private:
 	FName SecondSlotSocketName;
 	FName ThirdSlotSocketName;
 	FName LanternSlotSocketName;
+	FName SecondSlotEquipName;
+
 
 public:
 	UFUNCTION(BlueprintCallable)

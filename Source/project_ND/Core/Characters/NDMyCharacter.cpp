@@ -113,9 +113,6 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 
 	StatComponent->TakeDamage(DamageAmount);
 
-	UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), *GetName(), StatComponent->GetCurHP());
-
-
 	if (StatComponent->GetCurHP() > 0)
 	{
 	
@@ -131,37 +128,51 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 	}
 	else
 	{
-		bIsDead = true;
-
-		if (DeathMontage)
-		{
-			PlayAnimMontage(DeathMontage);
-
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-			GetCharacterMovement()->DisableMovement();
-
-			if (OnPlayerDamaged.IsBound())
-			{
-				OnPlayerDamaged.Broadcast();
-			}
-
-			ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
-			if (PlayerController)
-			{
-				PlayerController->SetIgnoreMoveInput(true);
-				PlayerController->SetIgnoreLookInput(true);
-			}
-
-			ShowDeathScreen();
-			DeathMontage->bEnableAutoBlendOut = false;
-		}
+		Death();
 	}
 }
 
 void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
 {
 	
+}
+
+void ANDMyCharacter::Death()
+{
+
+	DeathMontage->bEnableAutoBlendOut = false;
+
+	if (bIsDead)
+	{
+		return; 
+	}
+
+	bIsDead = true;
+
+
+
+	if (DeathMontage)
+	{
+		PlayAnimMontage(DeathMontage);
+
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		GetCharacterMovement()->DisableMovement();
+
+		if (OnPlayerDamaged.IsBound())
+		{
+			OnPlayerDamaged.Broadcast();
+		}
+
+		ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
+		if (PlayerController)
+		{
+			PlayerController->SetIgnoreMoveInput(true);
+			PlayerController->SetIgnoreLookInput(true);
+		}
+
+		ShowDeathScreen();
+	}
 }
 
 

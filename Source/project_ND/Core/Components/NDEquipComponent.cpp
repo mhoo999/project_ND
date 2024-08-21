@@ -14,6 +14,7 @@ UNDEquipComponent::UNDEquipComponent()
 	SecondSlotSocketName	= TEXT("RevolverWeapon_Holster");
 	ThirdSlotSocketName		= TEXT("Throwable_Holster");
 	LanternSlotSocketName	= TEXT("FlashLight_Holster");
+	//ThirdSlotSocketName     = TEXT("Throwable_Equip");
 }
 
 void UNDEquipComponent::BeginPlay()

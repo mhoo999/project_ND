@@ -53,8 +53,7 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
-	UFUNCTION(BlueprintCallable)
-	void FlashLightOn();
+	
 
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void ChangeFirstSlotItem(const FInputActionValue& Value);
@@ -76,10 +75,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void FootStepSound();
 
-
-
 	void OnAttack();
-
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Throwables();
@@ -100,6 +96,12 @@ protected:
 
 	void ChangeToMainCamera();
 	void ChangeToAimCamera();
+
+	UFUNCTION(BlueprintCallable)
+	void FlashLightOn();
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleFlashLightVisibility();
 
 	UFUNCTION(BlueprintCallable)
 	void RevolverReload();
@@ -130,6 +132,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TSubclassOf<UCameraShakeBase> MyCameraShakeClass;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SportLight")
+	class USpringArmComponent* FlahsSpringArm;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SportLight")
+	class USpotLightComponent* FlashLightSpot;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USceneComponent* ProjectilStart;
 
@@ -138,6 +146,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundBase* StepSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundBase* FlashSound;
 
 	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
@@ -151,4 +162,6 @@ protected:
 	FVector CrouchedLocation;
 
 	bool bIsCharging = false;
+	bool bHasWeaponEquip;
+	bool bIsFlashLightOn;
 };
