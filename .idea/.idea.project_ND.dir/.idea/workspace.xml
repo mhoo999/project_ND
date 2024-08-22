@@ -7,7 +7,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="" />
+    <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/BP_OverlapOrderSpawnTraceZombie.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Enemys/BP_TraceZombieSpawner.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDOverlapSpawnTraceZombie.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDOverlapSpawnTraceZombie.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDTraceZombieSpawner.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDTraceZombieSpawner.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -252,7 +263,10 @@
       <workItem from="1723793827314" duration="2349000" />
       <workItem from="1724031451393" duration="319000" />
       <workItem from="1724032390885" duration="317000" />
-      <workItem from="1724235566806" duration="523000" />
+      <workItem from="1724235566806" duration="1122000" />
+      <workItem from="1724240667229" duration="207000" />
+      <workItem from="1724241225828" duration="94000" />
+      <workItem from="1724291018415" duration="4188000" />
     </task>
     <servers />
   </component>

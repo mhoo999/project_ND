@@ -111,4 +111,6 @@ public:
 	void SetPrintLog();
 
 	EAIState GetCurrentState();
+
+	void MakeExcitementZombie();
 };

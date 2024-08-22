@@ -329,6 +329,11 @@ EAIState ANDAIController::GetCurrentState()
 	return CurrentState;
 }
 
+void ANDAIController::MakeExcitementZombie()
+{
+	GetExcitement();
+}
+
 void ANDAIController::StopEating()
 {
 	bIsEating = false;
