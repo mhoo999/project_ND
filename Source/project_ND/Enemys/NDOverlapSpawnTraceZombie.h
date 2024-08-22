@@ -30,6 +30,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Settings", meta=(AllowPrivateAccess))
 	TArray<ANDTraceZombieSpawner*> Spawners;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="settings", meta=(AllowPrivateAccess))
+	USoundBase* AggroSound;
+
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 

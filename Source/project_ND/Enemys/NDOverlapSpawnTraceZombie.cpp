@@ -5,6 +5,7 @@
 
 #include "NDTraceZombieSpawner.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ANDOverlapSpawnTraceZombie::ANDOverlapSpawnTraceZombie()
@@ -38,6 +39,15 @@ void ANDOverlapSpawnTraceZombie::OnBoxBeginOverlap(UPrimitiveComponent* Overlapp
 		{
 			Spawner->SpawnZombie(Player);
 		}
+
+		FTimerHandle TraceHandle;
+		GetWorld()->GetTimerManager().SetTimer(TraceHandle, FTimerDelegate::CreateLambda([&]
+		{
+			if (AggroSound)
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(), AggroSound);
+			}
+		}), 5.f, false);
 	}
 }
 
