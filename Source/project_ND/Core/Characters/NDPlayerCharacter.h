@@ -86,7 +86,6 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void OnAttackEnd();
-	//void Crouched(const FInputActionValue& Value);
 
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
@@ -116,7 +115,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	class UTimelineComponent* CrouchTimeline;
 
-	// ÁÜ È¿°ú¸¦ À§ÇÑ °î¼±
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCurveFloat* ZoomCurve;
 
@@ -150,7 +148,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundBase* FlashSound;
 
-	//ANDZombieBase* Target;
 	class ANDZombieBase* Target;
 
 	//class ANDWeaponBase* weapon;

@@ -52,8 +52,6 @@ APlayerCharacter::APlayerCharacter()
 	
 	FlashLightSpot->IsVisible();
 
-	
-
 	SpringArm->SetRelativeLocation(FVector(0.0f, 30.0f, 75.0f));
 
 	ProjectilStart->SetupAttachment(RootComponent);
@@ -64,7 +62,6 @@ APlayerCharacter::APlayerCharacter()
 
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>(TEXT("MyInputComponent"));
-	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
 
 }
 
@@ -114,7 +111,7 @@ void APlayerCharacter::BeginPlay()
 
 	AimCamera->SetActive(false);
 
-	//bIsFlashLightOn = false;
+	bIsFlashLightOn = false;
 	FlashLightSpot->SetVisibility(false);
 }
 
@@ -167,10 +164,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::RevolverReload);
 
-
-
-
-		//UE_LOG(,)
 	}
 }
 
@@ -247,15 +240,10 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 
-		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
-
 		if (CrouchTimeline)
 		{
 			CrouchTimeline->Play();
 		}
-
-		//UE_LOG(LogTemp, Warning, TEXT("Target Arm Length : %f"), SpringArm->TargetArmLength);
-		
 	}
 	else
 	{
@@ -279,7 +267,6 @@ void APlayerCharacter::HandleZoomProgress(float Value)
 	FVector NewLocation = FMath::Lerp(DefaultCameraLocation, ZoomOutLocation, Value);
 	NewLocation.Y = DefaultCameraLocation.Y;
 	SpringArm->SetRelativeLocation(NewLocation);
-	//UE_LOG(LogTemp, Warning, TEXT("Zoom Value: %f, NewLocation: %s"), Value, *NewLocation.ToString());
 }
 
 void APlayerCharacter::SprintStart()
@@ -290,8 +277,6 @@ void APlayerCharacter::SprintStart()
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 		ZoomTimeline->Play();
-
-		//UE_LOG(LogTemp, Warning, TEXT("ZoomTimeline Play"));
 	}
 }
 
@@ -301,8 +286,6 @@ void APlayerCharacter::SprintEnd()
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 		ZoomTimeline->Reverse();
-
-		//UE_LOG(LogTemp, Warning, TEXT("ZoomTimeline Reverse"));
 	}
 }
 
@@ -558,9 +541,6 @@ void APlayerCharacter::OnAttackBegin()
 	StatComponent->bIsAttacking = true;
 
 	CurrentEquipmentItem->OnAttackBegin();
-
-	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 }
 
 void APlayerCharacter::OnAttackEnd()
@@ -627,7 +607,6 @@ void APlayerCharacter::ChangeToAimCamera()
 
 void APlayerCharacter::FlashLightOn()
 {
-	bIsFlashLightOn = !bIsFlashLightOn;
 
 	if (FlashLightMontage && !GetMesh()->GetAnimInstance()->Montage_IsPlaying(FlashLightMontage))
 	{
@@ -638,14 +617,15 @@ void APlayerCharacter::FlashLightOn()
 	}
 
 	FlashLightSpot->SetVisibility(bIsFlashLightOn);
+	bIsFlashLightOn = !bIsFlashLightOn;
 }
 
 void APlayerCharacter::ToggleFlashLightVisibility()
 {
-	bIsFlashLightOn = !bIsFlashLightOn;
-
 	UGameplayStatics::PlaySoundAtLocation(this, FlashSound, GetActorLocation());
 	GetMesh()->GetAnimInstance()->Montage_Stop(0.0f, FlashLightMontage);
+
+	bIsFlashLightOn = !bIsFlashLightOn;
 }
 
 void APlayerCharacter::RevolverReload()

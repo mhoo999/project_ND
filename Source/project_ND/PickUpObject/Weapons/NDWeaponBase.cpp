@@ -19,8 +19,6 @@ void ANDWeaponBase::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
-
-	//BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
 }
 
 void ANDWeaponBase::Tick(float DeltaTime)
