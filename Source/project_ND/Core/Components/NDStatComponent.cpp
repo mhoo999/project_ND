@@ -99,9 +99,7 @@ void UNDStatComponent::TakeDamage(float DamagedAmount)
 	APawn* Player = Cast<APawn>(GetOwner());
 	EffectComponent->PlayHitEffect(Player->GetActorLocation());
 
-	UE_LOG(LogTemp, Log, TEXT("New HP: %f"), CurHP);
-
-
+	
 	
 	//UE_LOG(LogTemp, Log, TEXT("% s HP : % f"), *GetName(), CurHP);	
 }
@@ -133,8 +131,6 @@ void UNDStatComponent::IncreaseHungry(float Amount)
 	{
 		CurHungry = MaxHungry;
 	}
-
-
 }
 
 void UNDStatComponent::DecreaseHungry(float Amount)
@@ -144,6 +140,18 @@ void UNDStatComponent::DecreaseHungry(float Amount)
 	if (CurHungry <= 0)
 	{
 		CurHP -= Amount;
+
+		if (CurHP <= 0)
+		{
+			CurHP = 0;
+
+			APawn* Player = Cast<APawn>(GetOwner());
+			if (Player)
+			{
+				ANDMyCharacter* MyCharacter = Cast <ANDMyCharacter>(Player);
+				MyCharacter->Death();
+			}
+		}
 	}
 }
 

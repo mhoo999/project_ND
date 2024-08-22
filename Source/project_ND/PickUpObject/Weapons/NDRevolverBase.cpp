@@ -55,7 +55,8 @@ void ANDRevolverBase::OnAttackBegin()
 	if (CurBullets <= 0)
 	{
 		Reload();
-	
+
+		
 		return;
 	}
 
@@ -111,11 +112,7 @@ void ANDRevolverBase::Reload()
 			ReloadSound,
 			GetActorLocation()
 		);
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("aa"));
-
 	}
-	
-
 }
 
 void ANDRevolverBase::OnReloadMontageEnded(UAnimMontage* Montage, bool bInterrupted)

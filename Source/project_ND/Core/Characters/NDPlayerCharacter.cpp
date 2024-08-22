@@ -7,6 +7,7 @@
 #include "Components/SceneComponent.h"
 #include "Components/SplineComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/TimelineComponent.h"
 #include "Curves/CurveFloat.h"
@@ -35,6 +36,8 @@ APlayerCharacter::APlayerCharacter()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	PCamera   = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	AimCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("AimCamera"));
+	FlahsSpringArm  = CreateDefaultSubobject<USpringArmComponent>(TEXT("FlashSpringArm"));
+	FlashLightSpot = CreateDefaultSubobject<USpotLightComponent>(TEXT("FlashLightSport"));
 
 
 	ProjectilStart = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectilStart"));
@@ -44,6 +47,11 @@ APlayerCharacter::APlayerCharacter()
 	PCamera->SetupAttachment(SpringArm);
 	PCamera->bUsePawnControlRotation = true;
 	AimCamera->SetupAttachment(RootComponent);
+	FlahsSpringArm->SetupAttachment(RootComponent);
+	FlashLightSpot->SetupAttachment(FlahsSpringArm);
+	
+	FlashLightSpot->IsVisible();
+
 	
 
 	SpringArm->SetRelativeLocation(FVector(0.0f, 30.0f, 75.0f));
@@ -57,6 +65,7 @@ APlayerCharacter::APlayerCharacter()
 
 	MyInputComponent = CreateDefaultSubobject<UNDInputComponent>(TEXT("MyInputComponent"));
 	//MyInputComponent = Cast<UNDInputComponent>(GetComponentByClass(UNDInputComponent::StaticClass()));
+
 }
 
 // Called when the game starts or when spawned
@@ -104,6 +113,9 @@ void APlayerCharacter::BeginPlay()
 	OnPlayerDamaged.AddDynamic(this, &APlayerCharacter::HandlePlayerDamaged);
 
 	AimCamera->SetActive(false);
+
+	//bIsFlashLightOn = false;
+	FlashLightSpot->SetVisibility(false);
 }
 
 // Called every frame
@@ -151,7 +163,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::ChangeToAimCamera );
 		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Completed, this, &APlayerCharacter::ChangeToMainCamera);
 		
-		EnhancedInputComponent->BindAction(MyInputComponent->FlashLightOnAction, ETriggerEvent::Triggered, this, &APlayerCharacter::FlashLightOn);
+		EnhancedInputComponent->BindAction(MyInputComponent->FlashLightOnAction, ETriggerEvent::Started, this, &APlayerCharacter::FlashLightOn);
 
 		EnhancedInputComponent->BindAction(MyInputComponent->ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::RevolverReload);
 
@@ -318,6 +330,8 @@ void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 		}
 		else
 		{
+			//bHasWeaponEquip = true;
+
 			NextEquipmentItem = EquipComponent->GetFirstSlot();
 			NextEquipmentSLot = EEquipment::FIRSTSLOT;
 			
@@ -345,6 +359,8 @@ void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 		}
 		else
 		{
+			//bHasWeaponEquip = true;
+
 			NextEquipmentItem = EquipComponent->GetSecondSlot();
 			NextEquipmentSLot = EEquipment::SECONDSLOT;
 			
@@ -372,10 +388,25 @@ void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
 		}
 		else
 		{
-			NextEquipmentItem = EquipComponent->GetThirdSlot();
-			NextEquipmentSLot = EEquipment::THIRDSLOT;
-			
-			AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
+			//bHasWeaponEquip = false;
+
+			if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
+			{
+				
+				CurrentEquipmentItem = nullptr;
+				CurrentEquipmentSlot = EEquipment::UNARMED;
+			}
+			else
+			{
+				NextEquipmentItem = EquipComponent->GetThirdSlot();
+				NextEquipmentSLot = EEquipment::THIRDSLOT;
+				AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
+
+				//NextEquipmentItem = EquipComponent->GetThirdSlot();
+				//NextEquipmentSLot = EEquipment::THIRDSLOT;
+
+				//AnimInstance->Montage_Play(CurrentEquipmentItem->GetSheathMontage());
+			}
 		}
 	}
 }
@@ -494,8 +525,11 @@ void APlayerCharacter::OnAttack()
 	else if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
 	{
 		BPThrowable();
+		DefaultCameraLocation = SpringArm->GetRelativeLocation();
+		SpringArm->SetRelativeLocation(FVector(50.0f, 50.0f, 80.0f));
+		//bHasWeaponEquip = false;
 	}
-	
+
 	// switch (CurrentEquipmentSlot)
 	// {
 	// case EEquipment::UNARMED:
@@ -525,7 +559,6 @@ void APlayerCharacter::OnAttackBegin()
 
 	CurrentEquipmentItem->OnAttackBegin();
 
-	
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = false;*/
 }
@@ -534,7 +567,25 @@ void APlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
+	if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
+	{
+		SpringArm->SetRelativeLocation(DefaultCameraLocation);
+	}
+
 	CurrentEquipmentItem->OnAttackEnd();
+	
+	
+	/*if (bHasWeaponEquip)
+	{
+		CurrentEquipmentItem->OnAttackEnd();
+		SpringArm->SetRelativeLocation(DefaultCameraLocation);
+	}
+	else
+	{
+		CurrentEquipmentItem = nullptr;
+		CurrentEquipmentSlot = EEquipment::UNARMED;
+	}*/
+
 
 	/*Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Cast<ANDWeaponBase>(GetCurrentWeapon())->GetBodyCollider()->bHiddenInGame = true;*/
@@ -574,29 +625,27 @@ void APlayerCharacter::ChangeToAimCamera()
 	AimCamera->bUsePawnControlRotation = true;
 }
 
-
-
 void APlayerCharacter::FlashLightOn()
 {
-	//bool FlasLight = true;
+	bIsFlashLightOn = !bIsFlashLightOn;
 
+	if (FlashLightMontage && !GetMesh()->GetAnimInstance()->Montage_IsPlaying(FlashLightMontage))
+	{
+		PlayAnimMontage(FlashLightMontage);
 
-	//if (FlasLight) 
-	//{
-	//	// code
-	//	
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &APlayerCharacter::ToggleFlashLightVisibility, 1.0f, false);
+	}
 
-	//	FlasLight = false;
-	//}
-	//else 
-	//{
-	//	// code
-	//	FlasLight = true;
-	//}
+	FlashLightSpot->SetVisibility(bIsFlashLightOn);
+}
 
+void APlayerCharacter::ToggleFlashLightVisibility()
+{
+	bIsFlashLightOn = !bIsFlashLightOn;
 
-
-	//PlayAnimMontage(UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName = "Standing_Taunt_Chest_fix_Montage");
+	UGameplayStatics::PlaySoundAtLocation(this, FlashSound, GetActorLocation());
+	GetMesh()->GetAnimInstance()->Montage_Stop(0.0f, FlashLightMontage);
 }
 
 void APlayerCharacter::RevolverReload()
@@ -607,11 +656,6 @@ void APlayerCharacter::RevolverReload()
 		if (Revolver && !Revolver->IsReloading())
 		{
 			Revolver->Reload();
-			
-
 		}
 	}
 }
-
-
-

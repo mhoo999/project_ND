@@ -100,6 +100,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
 	void ShowDeathScreen();
 
+	void Death();
+
 private:
 
 
@@ -132,6 +134,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* DeathMontage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UAnimMontage* FlashLightMontage;
 
 	bool bIsCrouched = false;
 
