@@ -19,8 +19,6 @@ void ANDWeaponBase::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
-
-	//BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
 }
 
 void ANDWeaponBase::Tick(float DeltaTime)
@@ -33,6 +31,15 @@ void ANDWeaponBase::Attack()
 	if(OwnerCharacter && AttackMontage)
 	{
 		OwnerCharacter->PlayAnimMontage(AttackMontage);
+	}
+	if (ShootSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation
+		(
+			GetWorld(),
+			ShootSound,
+			GetActorLocation()
+		);
 	}
 }
 
@@ -56,9 +63,16 @@ void ANDWeaponBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 		return;
 	}
 
-	if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
+	
+	if (!bHasApplindDamage)
 	{
-		Zombie->TakeDamage(10.0f * DamageRate, OwnerCharacter, SweepResult);
+		if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
+		{
+			Zombie->TakeDamage(10.0f * DamageRate, OwnerCharacter, SweepResult);
+
+			bHasApplindDamage = true;
+		}
+
 	}
 
 	if (HitEffect)

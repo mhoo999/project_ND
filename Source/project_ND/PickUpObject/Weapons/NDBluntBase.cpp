@@ -22,7 +22,7 @@ void ANDBluntBase::BeginPlay()
 	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 
-	DamageRate = 1.1f;
+	DamageRate = 1.0f;
 }
 
 void ANDBluntBase::BluntSwingSound()
@@ -33,8 +33,6 @@ void ANDBluntBase::BluntSwingSound()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, SwingSound, GetActorLocation());
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("BluntSwing"));
 }
 
 void ANDBluntBase::Tick(float DeltaTime)
@@ -47,6 +45,7 @@ void ANDBluntBase::OnAttackBegin()
 {
 	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetBodyCollider()->bHiddenInGame = false;
+	bHasApplindDamage = false;
 }
 
 void ANDBluntBase::OnAttackEnd()

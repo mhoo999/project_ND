@@ -11,6 +11,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -113,9 +115,6 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 
 	StatComponent->TakeDamage(DamageAmount);
 
-	UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), *GetName(), StatComponent->GetCurHP());
-
-
 	if (StatComponent->GetCurHP() > 0)
 	{
 	
@@ -131,31 +130,7 @@ void ANDMyCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult
 	}
 	else
 	{
-		bIsDead = true;
-
-		if (DeathMontage)
-		{
-			PlayAnimMontage(DeathMontage);
-
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-			GetCharacterMovement()->DisableMovement();
-
-			if (OnPlayerDamaged.IsBound())
-			{
-				OnPlayerDamaged.Broadcast();
-			}
-
-			ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
-			if (PlayerController)
-			{
-				PlayerController->SetIgnoreMoveInput(true);
-				PlayerController->SetIgnoreLookInput(true);
-			}
-
-			ShowDeathScreen();
-			DeathMontage->bEnableAutoBlendOut = false;
-		}
+		Death();
 	}
 }
 
@@ -164,28 +139,46 @@ void ANDMyCharacter::Recovery(FString ItemType, float RecoveryAmount)
 	
 }
 
-
-//void ANDMyCharacter::Die()
-//{
-//
-//	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
-//}
-
-/*
-* float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void ANDMyCharacter::Death()
 {
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
+	DeathMontage->bEnableAutoBlendOut = false;
 
-	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
+	if (bIsDead)
+	{
+		return; 
+	}
 
-	if (StatComponent->CurHP > 0)
-		PlayAnimMontage(HitMontage);
-	else
+	bIsDead = true;
+
+
+
+	if (DeathMontage)
+	{
 		PlayAnimMontage(DeathMontage);
 
-	return 0.0f;
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		GetCharacterMovement()->DisableMovement();
+
+		if (OnPlayerDamaged.IsBound())
+		{
+			OnPlayerDamaged.Broadcast();
+		}
+
+		if (DeathSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+		}
+
+		ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
+		if (PlayerController)
+		{
+			PlayerController->SetIgnoreMoveInput(true);
+			PlayerController->SetIgnoreLookInput(true);
+		}
+
+		ShowDeathScreen();
+	}
 }
-*/
 

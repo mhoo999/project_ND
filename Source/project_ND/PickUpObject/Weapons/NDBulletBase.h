@@ -25,6 +25,8 @@ public:
 
 	void SetActive(bool IsActive);
 
+	void DestroyBullet();
+
 	bool GetIsActive() { return bIsActive; }
 
 	UFUNCTION()
@@ -52,6 +54,11 @@ protected:
 
 	bool bIsActive = false;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Bullet")
 	float BulletSpeed = 3000.0f;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Bullet")
+	float BulletLifespan = 5.0f;
+
+	FTimerHandle LifespanTimerHandle;
 };

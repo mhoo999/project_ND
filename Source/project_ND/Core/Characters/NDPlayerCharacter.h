@@ -53,7 +53,7 @@ protected:
 	void SprintStart();
 	void SprintEnd  ();
 
-	void FlashLightOn();
+	
 
 	void OnFlashLightKey(const FInputActionValue& Value);
 	void ChangeFirstSlotItem(const FInputActionValue& Value);
@@ -77,12 +77,8 @@ protected:
 
 	void OnAttack();
 
-
 	UFUNCTION(BlueprintImplementableEvent)
 	void Throwables();
-	void OnAttackPressed();
-	
-	void OnAttackReleased();
 
 
 	UFUNCTION(BlueprintCallable)
@@ -90,7 +86,6 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void OnAttackEnd();
-	//void Crouched(const FInputActionValue& Value);
 
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
@@ -100,6 +95,15 @@ protected:
 
 	void ChangeToMainCamera();
 	void ChangeToAimCamera();
+
+	UFUNCTION(BlueprintCallable)
+	void FlashLightOn();
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleFlashLightVisibility();
+
+	UFUNCTION(BlueprintCallable)
+	void RevolverReload();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
@@ -111,7 +115,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	class UTimelineComponent* CrouchTimeline;
 
-	// ÁÜ È¿°ú¸¦ À§ÇÑ °î¼±
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCurveFloat* ZoomCurve;
 
@@ -127,6 +130,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TSubclassOf<UCameraShakeBase> MyCameraShakeClass;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SportLight")
+	class USpringArmComponent* FlahsSpringArm;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SportLight")
+	class USpotLightComponent* FlashLightSpot;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class USceneComponent* ProjectilStart;
 
@@ -136,7 +145,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundBase* StepSound;
 
-	//ANDZombieBase* Target;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundBase* FlashSound;
+
 	class ANDZombieBase* Target;
 
 	//class ANDWeaponBase* weapon;
@@ -146,4 +157,8 @@ protected:
 
 	FVector DefaulCrouchLocation;
 	FVector CrouchedLocation;
+
+	bool bIsCharging = false;
+	bool bHasWeaponEquip;
+	bool bIsFlashLightOn;
 };
