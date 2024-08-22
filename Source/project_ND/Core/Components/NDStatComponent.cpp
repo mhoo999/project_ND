@@ -98,10 +98,6 @@ void UNDStatComponent::TakeDamage(float DamagedAmount)
 
 	APawn* Player = Cast<APawn>(GetOwner());
 	EffectComponent->PlayHitEffect(Player->GetActorLocation());
-
-	
-	
-	//UE_LOG(LogTemp, Log, TEXT("% s HP : % f"), *GetName(), CurHP);	
 }
 
 void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
@@ -109,6 +105,11 @@ void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
 	if (ItemInfo.Type == EItemType::HealthPotion)
 	{
 		SetCurHP(CurHP + ItemInfo.RecoveryAmount);
+
+		if (CurHP > MaxHP)
+		{
+			CurHP = MaxHP;
+		}
 	}
 	else if (ItemInfo.Type == EItemType::Food)
 	{

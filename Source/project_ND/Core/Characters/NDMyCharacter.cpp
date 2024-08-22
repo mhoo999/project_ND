@@ -11,6 +11,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -164,6 +166,11 @@ void ANDMyCharacter::Death()
 			OnPlayerDamaged.Broadcast();
 		}
 
+		if (DeathSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+		}
+
 		ANDPlayerController* PlayerController = Cast<ANDPlayerController>(GetController());
 		if (PlayerController)
 		{
@@ -174,29 +181,4 @@ void ANDMyCharacter::Death()
 		ShowDeathScreen();
 	}
 }
-
-
-//void ANDMyCharacter::Die()
-//{
-//
-//	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
-//}
-
-/*
-* float ANDMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
-	StatComponent->SetCurHP(StatComponent->CurHP - DamageAmount);
-
-	//UE_LOG(LogTemp, Log, TEXT("%s HP : %f"), GetName(), StatComponent->CurHP);
-
-	if (StatComponent->CurHP > 0)
-		PlayAnimMontage(HitMontage);
-	else
-		PlayAnimMontage(DeathMontage);
-
-	return 0.0f;
-}
-*/
 

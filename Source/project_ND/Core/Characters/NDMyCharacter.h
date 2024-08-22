@@ -89,7 +89,6 @@ private:
 	void SpawnWeapons();
 
 public:
-	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 	virtual void TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult) override;
 
 	virtual void Recovery(FString ItemType, float RecoveryAmount) override;
@@ -137,6 +136,9 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UAnimMontage* FlashLightMontage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	USoundBase* DeathSound;
 
 	bool bIsCrouched = false;
 
