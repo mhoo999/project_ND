@@ -9,10 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/WBP_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/WBP_Inventory.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Characters/NDPlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Characters/NDPlayerCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +254,8 @@
       <workItem from="1724302258090" duration="1256000" />
       <workItem from="1724324072547" duration="993000" />
       <workItem from="1724331899775" duration="144000" />
-      <workItem from="1724332103335" duration="5502000" />
+      <workItem from="1724332103335" duration="7174000" />
+      <workItem from="1724342349712" duration="208000" />
     </task>
     <servers />
   </component>

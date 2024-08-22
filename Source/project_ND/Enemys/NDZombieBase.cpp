@@ -164,10 +164,8 @@ void ANDZombieBase::PerformHandSphereTraces()
 	FHitResult LeftHitResult;
 	bool bLeftHit = GetWorld()->SweepSingleByChannel(LeftHitResult, LeftHandLocation, LeftHandEnd, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(TraceRadius),CollisionParams);
 
-	DrawDebugSphere(GetWorld(), LeftHandLocation, TraceRadius, 12, FColor::Red, false, 1.0f);
 	if (bLeftHit)
 	{
-		DrawDebugSphere(GetWorld(), LeftHandLocation, TraceRadius, 12, FColor::Green, false, 1.0f);
 		bIsAttackTrace = false;
 		ANDMyCharacter* Player = Cast<ANDMyCharacter>(LeftHitResult.GetActor());
 		if (Player)
@@ -181,10 +179,8 @@ void ANDZombieBase::PerformHandSphereTraces()
 	FHitResult RightHitResult;
 	bool bRightHit = GetWorld()->SweepSingleByChannel(RightHitResult, RightHandLocation, RightHandEnd, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(TraceRadius),CollisionParams);
 
-	DrawDebugSphere(GetWorld(), RightHandLocation, TraceRadius, 12, FColor::Red, false, 1.0f);
 	if (bRightHit)
 	{
-		DrawDebugSphere(GetWorld(), RightHandLocation, TraceRadius, 12, FColor::Green, false, 1.0f);
 		bIsAttackTrace = false;
 		ANDMyCharacter* Player = Cast<ANDMyCharacter>(RightHitResult.GetActor());
 		if (Player)

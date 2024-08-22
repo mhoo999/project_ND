@@ -567,7 +567,6 @@ void APlayerCharacter::OnAttackEnd()
 
 	CurrentEquipmentItem->OnAttackEnd();
 	
-	
 	/*if (bHasWeaponEquip)
 	{
 		CurrentEquipmentItem->OnAttackEnd();
