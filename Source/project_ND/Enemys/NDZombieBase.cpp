@@ -256,7 +256,7 @@ void ANDZombieBase::PlayExcitementAudio()
 
 void ANDZombieBase::PlayEatingAudio()
 {
-	if (EatingAudioComponent && EatingAudioComponent->IsPlaying())
+	if (EatingAudioComponent && !EatingAudioComponent->IsPlaying())
 	{
 		EatingAudioComponent->Play();
 	}

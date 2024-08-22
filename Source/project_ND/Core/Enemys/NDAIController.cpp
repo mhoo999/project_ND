@@ -131,6 +131,7 @@ void ANDAIController::RunCurrentBehaviorTree()
 		break;
 	case EAIState::Eating:
 		BeginEating();
+		Zombie->StopAllSounds();
 		Zombie->PlayEatingAudio();
 		RunBehaviorTree(EatingBehaviorTree);
 		break;

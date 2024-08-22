@@ -296,7 +296,7 @@ void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 
 void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetFirstSlot() == nullptr && bIsSwap)
+	if (EquipComponent->GetFirstSlot() == nullptr || bIsSwap)
 	{
 		return;
 	}
@@ -325,7 +325,7 @@ void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 
 void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetSecondSlot() == nullptr && bIsSwap)
+	if (EquipComponent->GetSecondSlot() == nullptr || bIsSwap)
 	{
 		return;
 	}
@@ -354,7 +354,7 @@ void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 
 void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
 {
-	if (EquipComponent->GetThirdSlot() == nullptr && bIsSwap)
+	if (EquipComponent->GetThirdSlot() == nullptr || bIsSwap)
 	{
 		return;
 	}
