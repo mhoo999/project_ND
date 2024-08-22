@@ -55,13 +55,14 @@ void ANDRevolverBase::OnAttackBegin()
 	if (CurBullets <= 0)
 	{
 		Reload();
-	
+
+		
 		return;
 	}
 
 	for (auto& Bullet : Bullets)
 	{
-		if (!Bullet->GetIsActive()) // 비활성화된 총알 찾기
+		if (!Bullet->GetIsActive())
 		{
 			FRotator ControlRotation = OwnerCharacter->GetControlRotation();
 			FVector FireDirection = ControlRotation.Vector();
@@ -88,19 +89,14 @@ void ANDRevolverBase::Reload()
 	
 	bIsReloading = true;
 
-	// 몽타주 재생
 	UAnimInstance* AnimInstance = OwnerCharacter->GetMesh()->GetAnimInstance();
 	if (AnimInstance)
 	{
 		FOnMontageEnded MontageEndedDelegate;
 		MontageEndedDelegate.BindUObject(this, &ANDRevolverBase::OnReloadMontageEnded);
 
-		
-		//AnimInstance->Montage_Stop(0.0f);
-
 		AnimInstance->Montage_Play(ReloadMontage);
 		AnimInstance->Montage_SetEndDelegate(MontageEndedDelegate, ReloadMontage);
-
 	}
 
 	if (ReloadSound)
@@ -111,11 +107,7 @@ void ANDRevolverBase::Reload()
 			ReloadSound,
 			GetActorLocation()
 		);
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("aa"));
-
 	}
-	
-
 }
 
 void ANDRevolverBase::OnReloadMontageEnded(UAnimMontage* Montage, bool bInterrupted)

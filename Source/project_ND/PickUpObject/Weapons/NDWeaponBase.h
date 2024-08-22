@@ -41,8 +41,6 @@ protected:
 	//UShapeComponent* BodyCollider;
 	
 public:
-	//UShapeComponent* GetBodyCollider() { return BodyCollider; }
-
 	void Attack();
 
 	virtual void OnAttackBegin();

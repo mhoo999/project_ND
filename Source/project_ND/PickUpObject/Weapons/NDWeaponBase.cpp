@@ -19,8 +19,6 @@ void ANDWeaponBase::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerCharacter = Cast <ANDMyCharacter>(GetOwner());
-
-	//BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
 }
 
 void ANDWeaponBase::Tick(float DeltaTime)
@@ -95,8 +93,6 @@ void ANDWeaponBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 			HitSound,
 			OverlappedComponent->GetComponentLocation()
 		);
-
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("dddddd"));
 	}
 
 }

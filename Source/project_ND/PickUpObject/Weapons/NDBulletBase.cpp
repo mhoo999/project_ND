@@ -96,13 +96,6 @@ void ANDBulletBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 		return;
 
 	SetActive(false);
-
-
-
-	/*if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OtherActor))
-	{
-		Zombie->TakeDamage(10.0f, Revolver->GetOwner(), SweepResult);
-	}*/
 }
 
 
