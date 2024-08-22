@@ -50,7 +50,7 @@ public:
 
 
 	float GetDamage();      
-
+	
 	UFUNCTION(BlueprintCallable)
 	float GetCurHungry(); 
 
@@ -141,9 +141,6 @@ private:
 	void TemporaryDecreaseHungry();
 
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float ATK;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float DEF;
 

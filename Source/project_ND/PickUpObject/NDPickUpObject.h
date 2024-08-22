@@ -153,4 +153,6 @@ public:
 	UShapeComponent* GetBodyCollider() { return BodyCollider; }
 
 	void SetSimulate();
+
+	float GetDamageAmount();
 };

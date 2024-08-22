@@ -90,3 +90,8 @@ void ANDPickUpObject::SetSimulate()
 {
 	ItemMesh->SetSimulatePhysics(true);
 }
+
+float ANDPickUpObject::GetDamageAmount()
+{
+	return DamageAmount;
+}

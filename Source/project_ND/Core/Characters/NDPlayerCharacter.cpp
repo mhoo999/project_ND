@@ -420,6 +420,13 @@ void APlayerCharacter::OnDrawEnd()
 	// 	StrafeOn();
 
 	CurrentEquipmentItem->AttachToHand(GetMesh());
+
+	const float WeaponDamage = CurrentEquipmentItem->GetDamageAmount();
+	if (StatComponent)
+	{
+		StatComponent->SetDamage(StatComponent->Damage + WeaponDamage);
+	}
+	
 	bIsSwap = false;
 }
 
@@ -440,6 +447,12 @@ void APlayerCharacter::OnSheathEnd()
 	// }
 
 	CurrentEquipmentItem->AttachToHolster(GetMesh());
+
+	const float WeaponDamage = CurrentEquipmentItem->GetDamageAmount();
+	if (StatComponent)
+	{
+		StatComponent->SetDamage(StatComponent->Damage - WeaponDamage);
+	}
 
 	if (NextEquipmentItem && CurrentEquipmentSlot != NextEquipmentSLot)
 	{

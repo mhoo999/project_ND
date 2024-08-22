@@ -12,7 +12,6 @@ UNDStatComponent::UNDStatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-	ATK = 10.0f;
 	DEF = 0.0f;
 	MoveSpeed = 300.0f;
 	AttackSpeed = 10.0f;
@@ -104,7 +103,7 @@ void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
 {
 	if (ItemInfo.Type == EItemType::HealthPotion)
 	{
-		SetCurHP(CurHP + ItemInfo.RecoveryAmount);
+		SetCurHP(FMath::Clamp(CurHP + ItemInfo.RecoveryAmount, 0, MaxHP));
 
 		if (CurHP > MaxHP)
 		{
@@ -126,22 +125,17 @@ void UNDStatComponent::UseItem(FItemBaseData ItemInfo)
 
 void UNDStatComponent::IncreaseHungry(float Amount)
 {
-	CurHungry += Amount;
-
-	if (CurHungry >= MaxHungry)
-	{
-		CurHungry = MaxHungry;
-	}
+	CurHungry = FMath::Clamp(CurHungry + Amount, 0, MaxHungry);
 }
 
 void UNDStatComponent::DecreaseHungry(float Amount)
 {
-	CurHungry -= Amount;
+	CurHungry = FMath::Clamp(CurHungry - Amount, 0, MaxHungry);
 
 	if (CurHungry <= 0)
 	{
-		CurHP -= Amount;
-
+		CurHP = FMath::Clamp(CurHP - Amount, 0, MaxHP);
+		
 		if (CurHP <= 0)
 		{
 			CurHP = 0;
