@@ -85,3 +85,8 @@ bool ANDPickUpObject::AttachToHand(USceneComponent* InParent)
 		EquipSocketName
 	);
 }
+
+void ANDPickUpObject::SetSimulate()
+{
+	ItemMesh->SetSimulatePhysics(true);
+}

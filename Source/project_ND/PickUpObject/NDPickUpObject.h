@@ -151,4 +151,6 @@ public:
 	class ANDMyCharacter* OwnerCharacter;
 
 	UShapeComponent* GetBodyCollider() { return BodyCollider; }
+
+	void SetSimulate();
 };

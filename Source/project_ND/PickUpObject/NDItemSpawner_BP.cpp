@@ -43,7 +43,10 @@ void ANDItemSpawner_BP::SpawnItem()
 			const float RandYaw = FMath::RandRange(0.0f, 360.0f);
 			const FRotator SpawnRotation = FRotator(GetActorRotation().Pitch, RandYaw, GetActorRotation().Roll);
 
-			GetWorld()->SpawnActor<ANDPickUpObject>(SelectedClass, SpawnLocation, SpawnRotation);
+			if (ANDPickUpObject* SpawnItem = GetWorld()->SpawnActor<ANDPickUpObject>(SelectedClass, SpawnLocation, SpawnRotation))
+			{
+				SpawnItem->SetSimulate();
+			}
 		}
 	}
 }
