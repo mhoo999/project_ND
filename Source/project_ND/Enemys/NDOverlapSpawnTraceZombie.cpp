@@ -6,6 +6,7 @@
 #include "NDTraceZombieSpawner.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "project_ND/Core/Characters/NDMyCharacter.h"
 
 
 ANDOverlapSpawnTraceZombie::ANDOverlapSpawnTraceZombie()
@@ -33,7 +34,7 @@ void ANDOverlapSpawnTraceZombie::Tick(float DeltaTime)
 void ANDOverlapSpawnTraceZombie::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (APawn* Player = Cast<APawn>(OtherActor))
+	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
 	{
 		for (auto Spawner : Spawners)
 		{
