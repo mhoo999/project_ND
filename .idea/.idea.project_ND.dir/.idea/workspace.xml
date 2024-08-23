@@ -8,9 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Items/NDThrowableBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Items/NDThrowableBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDRevolverBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDRevolverBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,6 +267,8 @@
       <workItem from="1724372972634" duration="1161000" />
       <workItem from="1724378670183" duration="716000" />
       <workItem from="1724380322129" duration="2130000" />
+      <workItem from="1724383947281" duration="95000" />
+      <workItem from="1724388044844" duration="491000" />
     </task>
     <servers />
   </component>
