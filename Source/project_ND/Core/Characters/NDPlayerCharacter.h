@@ -161,4 +161,8 @@ protected:
 	bool bIsCharging = false;
 	bool bHasWeaponEquip;
 	bool bIsFlashLightOn;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void ChangeState();
 };

@@ -372,6 +372,7 @@ void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
 		else
 		{
 			//bHasWeaponEquip = false;
+			bIsSwap = false;
 
 			if (CurrentEquipmentSlot == EEquipment::THIRDSLOT)
 			{
@@ -650,4 +651,9 @@ void APlayerCharacter::RevolverReload()
 			Revolver->Reload();
 		}
 	}
+}
+
+void APlayerCharacter::ChangeState()
+{
+	bIsSwap = false;
 }
