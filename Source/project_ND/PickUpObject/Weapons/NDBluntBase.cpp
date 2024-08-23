@@ -44,7 +44,7 @@ void ANDBluntBase::Tick(float DeltaTime)
 void ANDBluntBase::OnAttackBegin()
 {
 	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetBodyCollider()->bHiddenInGame = false;
+	GetBodyCollider()->bHiddenInGame = true;
 	bHasApplindDamage = false;
 }
 
