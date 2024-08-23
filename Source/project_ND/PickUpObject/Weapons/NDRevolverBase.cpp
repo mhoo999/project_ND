@@ -7,6 +7,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Perception/AISense_Hearing.h"
 
 // Sets default values
 ANDRevolverBase::ANDRevolverBase()
@@ -60,6 +61,9 @@ void ANDRevolverBase::OnAttackBegin()
 		return;
 	}
 
+	FVector NoiseLocation = this->GetActorLocation();
+	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
+	
 	for (auto& Bullet : Bullets)
 	{
 		if (!Bullet->GetIsActive())

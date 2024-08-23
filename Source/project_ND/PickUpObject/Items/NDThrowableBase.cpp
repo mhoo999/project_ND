@@ -33,8 +33,8 @@ void ANDThrowableBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 {
 	if (bCanNoise && OtherActor != Cast<ANDMyCharacter>(OtherActor))
 	{
-		FVector NoiseLocation = this->GetActorLocation();
 		// Make noise code
+		FVector NoiseLocation = this->GetActorLocation();
 		UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
 		// UE_LOG(LogTemp, Warning, TEXT("Make Noise : %lld.%lld.%lld"), FMath::TruncToInt(NoiseLocation.X), FMath::TruncToInt(NoiseLocation.Y), FMath::TruncToInt(NoiseLocation.Z));
 		
