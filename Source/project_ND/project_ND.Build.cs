@@ -11,7 +11,7 @@ public class project_ND : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
-			"AIModule", "NavigationSystem", "UMG", "ChaosNiagara"
+			"AIModule", "NavigationSystem", "UMG"
 		});
 
 	}
