@@ -8,8 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Movies/Start.avi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Movies/cityEx_(2).avi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Movies/cityEx_(3).avi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Movies/Start.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Movies/Start.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Movies/cityEx__2_.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Movies/cityEx__2_.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Movies/cityEx__3_.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Movies/cityEx__3_.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Title/WBP_TitleMenu.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Title/WBP_TitleMenu.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,6 +281,8 @@
       <workItem from="1724388044844" duration="993000" />
       <workItem from="1724389109229" duration="1239000" />
       <workItem from="1724391149949" duration="4962000" />
+      <workItem from="1724398080278" duration="764000" />
+      <workItem from="1724399252485" duration="664000" />
     </task>
     <servers />
   </component>
