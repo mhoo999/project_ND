@@ -7,7 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="" />
+    <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/quest/BP_QuestManager.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/quest/BP_QuestManager.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/Component/BPC_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/Component/BPC_Inventory.uasset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -264,6 +268,7 @@
       <workItem from="1724342349712" duration="208000" />
       <workItem from="1724372972634" duration="1161000" />
       <workItem from="1724378670183" duration="716000" />
+      <workItem from="1724380322129" duration="575000" />
     </task>
     <servers />
   </component>
