@@ -4,6 +4,7 @@
 #include "NDBTTask_DieAnimBefore.h"
 
 #include "AIController.h"
+#include "Components/CapsuleComponent.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 
 UNDBTTask_DieAnimBefore::UNDBTTask_DieAnimBefore()
@@ -16,6 +17,7 @@ EBTNodeResult::Type UNDBTTask_DieAnimBefore::ExecuteTask(UBehaviorTreeComponent&
 	if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(OwnerComp.GetAIOwner()->GetPawn()))
 	{
 		Zombie->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		Zombie->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	
 	return Super::ExecuteTask(OwnerComp, NodeMemory);

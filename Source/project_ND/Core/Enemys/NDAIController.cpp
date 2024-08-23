@@ -289,6 +289,7 @@ void ANDAIController::ToggleBeChasePlayer()
 
 void ANDAIController::ZombieDie_Implementation()
 {
+	Zombie->StopAllSounds();
 	// BP
 }
 

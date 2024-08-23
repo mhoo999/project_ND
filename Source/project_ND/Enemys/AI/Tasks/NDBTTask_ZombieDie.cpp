@@ -24,6 +24,7 @@ EBTNodeResult::Type UNDBTTask_ZombieDie::ExecuteTask(UBehaviorTreeComponent& Own
 	
 	AIController->ZombieDie();
 
+
 	return EBTNodeResult::Failed;
 	// return Super::ExecuteTask(OwnerComp, NodeMemory);
 }
