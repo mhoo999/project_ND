@@ -170,9 +170,7 @@ void ANDZombieBase::PerformHandSphereTraces()
 		ANDMyCharacter* Player = Cast<ANDMyCharacter>(LeftHitResult.GetActor());
 		if (Player)
 		{
-			// UE_LOG(LogTemp, Warning, TEXT("Left hand hit player"));
 			Player->TakeDamage(Damage, this, LeftHitResult);
-			UE_LOG(LogTemp, Warning, TEXT("NDZombieBase) MyDamage : %f, player HP : %f"), Damage, Player->GetStatComponent()->CurHP);
 		}
 	}
 
@@ -185,9 +183,7 @@ void ANDZombieBase::PerformHandSphereTraces()
 		ANDMyCharacter* Player = Cast<ANDMyCharacter>(RightHitResult.GetActor());
 		if (Player)
 		{
-			// UE_LOG(LogTemp, Warning, TEXT("Right hand hit player"));
 			Player->TakeDamage(Damage, this, RightHitResult);
-			UE_LOG(LogTemp, Warning, TEXT("NDZombieBase) MyDamage : %f, player HP : %f"), Damage, Player->GetStatComponent()->CurHP);
 		}
 	}
 }

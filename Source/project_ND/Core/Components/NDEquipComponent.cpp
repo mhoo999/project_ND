@@ -4,6 +4,7 @@
 #include "NDEquipComponent.h"
 
 #include "project_ND/Core/Characters/NDMyCharacter.h"
+#include "project_ND/PickUpObject/Weapons/NDBluntBase.h"
 
 
 UNDEquipComponent::UNDEquipComponent()
@@ -67,6 +68,11 @@ void UNDEquipComponent::EquipFirstSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 		FirstSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), FirstSlotSocketName);
 		FirstSlot->bIsEquipToggle();
 		FirstSlot->SetRenderCustomDepthFalse();
+
+		if (ANDBluntBase* BluntItem = Cast<ANDBluntBase>(FirstSlot))
+		{
+			BluntItem->InitializeBlunt();
+		}
 	}
 }
 

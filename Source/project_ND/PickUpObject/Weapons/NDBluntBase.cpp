@@ -18,9 +18,9 @@ void ANDBluntBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
-	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
+	// BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	// BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 
 	DamageRate = 1.0f;
 }
@@ -52,5 +52,12 @@ void ANDBluntBase::OnAttackEnd()
 {
 	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetBodyCollider()->bHiddenInGame = true;
+}
+
+void ANDBluntBase::InitializeBlunt()
+{
+	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 }
 

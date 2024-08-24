@@ -25,10 +25,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
 	USoundBase* SwingSound;
 
+	bool bIsAttackTrace;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnAttackBegin();
 	virtual void OnAttackEnd();
+
+	void InitializeBlunt();
 };
