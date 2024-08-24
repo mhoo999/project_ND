@@ -8,21 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/EquipSound.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/EquipSound_Cue.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TTest.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TTest.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_CanOfBeefStew.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_CanOfBeefStew.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_DriedMeat.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_DriedMeat.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_PackOfSugar.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_PackOfSugar.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_Snacks.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Food_Snacks.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_HealthPotion_Painkiller.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_HealthPotion_Painkiller.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_HealthPotion_RecoveryKit.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_HealthPotion_RecoveryKit.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Key.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Key.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Bottle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Bottle.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Brick.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Brick.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_BaseballBat.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_BaseballBat.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_CrowBar.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_CrowBar.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_Revolver.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_Revolver.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/BP_HUD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/BP_HUD.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Character/CharacterMesh/SK_Man_Full_03.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Character/CharacterMesh/SK_Man_Full_03.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/WBP_Inventory.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Inventory/WBP_Inventory.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDEquipComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDEquipComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.h" afterDir="false" />
@@ -282,6 +275,7 @@
       <workItem from="1724484692524" duration="1268000" />
       <workItem from="1724490162853" duration="168000" />
       <workItem from="1724490375948" duration="5693000" />
+      <workItem from="1724507388305" duration="2515000" />
     </task>
     <servers />
   </component>

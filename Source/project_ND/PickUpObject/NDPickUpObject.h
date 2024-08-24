@@ -169,6 +169,11 @@ private:
 	bool bIsEquip;
 
 public:
-	void bIsEquipTrue();
+	UFUNCTION(BlueprintCallable)
+	void bIsEquipToggle();
+
+	bool GetEquip();
+
+	void SetRenderCustomDepthFalse();
 
 };

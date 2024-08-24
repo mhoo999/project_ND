@@ -113,8 +113,6 @@ void ANDPickUpObject::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 
 	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("OnBoxBeginOverlap"));
-		
 		ItemMesh->SetRenderCustomDepth(true);
 	}
 }
@@ -123,13 +121,21 @@ void ANDPickUpObject::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, 
 {
 	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("OnBoxEndOverlap"));
-		
 		ItemMesh->SetRenderCustomDepth(false);
 	}
 }
 
-void ANDPickUpObject::bIsEquipTrue()
+void ANDPickUpObject::bIsEquipToggle()
 {
-	bIsEquip = true;
+	bIsEquip = !bIsEquip;
+}
+
+bool ANDPickUpObject::GetEquip()
+{
+	return bIsEquip;
+}
+
+void ANDPickUpObject::SetRenderCustomDepthFalse()
+{
+	ItemMesh->SetRenderCustomDepth(false);
 }
