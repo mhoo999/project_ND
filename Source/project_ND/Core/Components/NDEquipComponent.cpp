@@ -65,6 +65,7 @@ void UNDEquipComponent::EquipFirstSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 	if (FirstSlot)
 	{
 		FirstSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), FirstSlotSocketName);
+		FirstSlot->bIsEquipTrue();
 	}
 }
 
@@ -85,6 +86,7 @@ void UNDEquipComponent::EquipSecondSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 	if (SecondSlot)
 	{
 		SecondSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), SecondSlotSocketName);
+		SecondSlot->bIsEquipTrue();
 	}
 }
 
@@ -105,6 +107,7 @@ void UNDEquipComponent::EquipThirdSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 	if (ThirdSlot)
 	{
 		ThirdSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), ThirdSlotSocketName);
+		ThirdSlot->bIsEquipTrue();
 	}
 }
 
