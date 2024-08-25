@@ -8,9 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/LoadingMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/LoadingMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Components/NDStatComponent.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -273,6 +274,7 @@
       <workItem from="1724580808659" duration="667000" />
       <workItem from="1724582654631" duration="669000" />
       <workItem from="1724585043328" duration="649000" />
+      <workItem from="1724590385392" duration="677000" />
     </task>
     <servers />
   </component>
