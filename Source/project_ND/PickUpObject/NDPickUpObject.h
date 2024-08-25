@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "NDPickUpObject.generated.h"
 
+class ANDPlayerCharacter;
 class USphereComponent;
 class ANDPickUpObject;
 
@@ -136,7 +137,7 @@ protected:
 	USphereComponent* SphereComponent;
 
 public:
-	virtual void OnAttackBegin();
+	virtual void OnAttackBegin(ANDPlayerCharacter* Player);
 	virtual void OnAttackEnd();
 
 	virtual void OnPickedUp();
@@ -175,5 +176,7 @@ public:
 	bool GetEquip();
 
 	void SetRenderCustomDepthFalse();
+
+	UStaticMeshComponent* GetItemMeshComponent();
 
 };

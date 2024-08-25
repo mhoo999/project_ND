@@ -37,7 +37,7 @@ void ANDPickUpObject::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ANDPickUpObject::OnAttackBegin()
+void ANDPickUpObject::OnAttackBegin(ANDPlayerCharacter* Player)
 {
 }
 
@@ -138,4 +138,9 @@ bool ANDPickUpObject::GetEquip()
 void ANDPickUpObject::SetRenderCustomDepthFalse()
 {
 	ItemMesh->SetRenderCustomDepth(false);
+}
+
+UStaticMeshComponent* ANDPickUpObject::GetItemMeshComponent()
+{
+	return ItemMesh;
 }

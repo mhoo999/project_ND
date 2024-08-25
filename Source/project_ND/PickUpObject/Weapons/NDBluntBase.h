@@ -26,12 +26,15 @@ protected:
 	USoundBase* SwingSound;
 
 	bool bIsAttackTrace;
+
+	UPROPERTY()
+	ANDPlayerCharacter* PlayerCharacter;
 	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnAttackBegin();
+	virtual void OnAttackBegin(ANDPlayerCharacter* Player);
 	virtual void OnAttackEnd();
 
 	void InitializeBlunt();

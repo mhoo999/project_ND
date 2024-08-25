@@ -12,13 +12,13 @@ struct FInputActionValue;
 
 
 UCLASS()
-class PROJECT_ND_API APlayerCharacter : public ANDMyCharacter
+class PROJECT_ND_API ANDPlayerCharacter : public ANDMyCharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	APlayerCharacter();
+	ANDPlayerCharacter();
 
 protected:
 	// Called when the game starts or when spawned
@@ -165,4 +165,16 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 	void ChangeState();
+
+private:
+	bool bIsAttackTrace;
+
+	void PerformHandSphereTraces();
+
+	UPROPERTY()
+	ANDPickUpObject* TraceWeapon;
+	
+public:
+	void StartBluntAttack(ANDPickUpObject* Item);
+	void EndBluntAttack();
 };

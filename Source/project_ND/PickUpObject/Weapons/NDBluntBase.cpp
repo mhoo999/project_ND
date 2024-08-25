@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 #include "Components/ShapeComponent.h"
+#include "project_ND/Core/Characters/NDPlayerCharacter.h"
 #include "project_ND/Enemys/NDZombieBase.h"
 #include "project_ND/Core/Components/NDStatComponent.h"
 
@@ -41,23 +42,29 @@ void ANDBluntBase::Tick(float DeltaTime)
 }
 
 
-void ANDBluntBase::OnAttackBegin()
+void ANDBluntBase::OnAttackBegin(ANDPlayerCharacter* Player)
 {
-	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetBodyCollider()->bHiddenInGame = true;
-	bHasApplindDamage = false;
+	// GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	// GetBodyCollider()->bHiddenInGame = true;
+	// bHasApplindDamage = false;
+	
+	PlayerCharacter = Player;
+	PlayerCharacter->StartBluntAttack(this);
 }
 
 void ANDBluntBase::OnAttackEnd()
 {
-	GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetBodyCollider()->bHiddenInGame = true;
+	// GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// GetBodyCollider()->bHiddenInGame = true;
+
+	PlayerCharacter->EndBluntAttack();
+	PlayerCharacter = nullptr;
 }
 
 void ANDBluntBase::InitializeBlunt()
 {
-	BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
-	BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
+	// BodyCollider = Cast<UShapeComponent>(GetComponentByClass(UShapeComponent::StaticClass()));
+	// BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 }
 

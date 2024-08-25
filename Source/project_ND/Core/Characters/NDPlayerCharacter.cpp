@@ -23,12 +23,13 @@
 #include "Perception/AISense_Hearing.h"
 #include "Sound/SoundBase.h"
 #include "project_ND/PickUpObject/Weapons/NDRevolverBase.h"
+#include "DrawDebugHelpers.h"
 
 
 
 //class ANDWeapon;
 // Sets default values
-APlayerCharacter::APlayerCharacter()
+ANDPlayerCharacter::ANDPlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -66,7 +67,7 @@ APlayerCharacter::APlayerCharacter()
 }
 
 // Called when the game starts or when spawned
-void APlayerCharacter::BeginPlay()
+void ANDPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -107,7 +108,7 @@ void APlayerCharacter::BeginPlay()
 		CrouchTimeline->AddInterpFloat(ZoomCurve, TimelineCallback);
 	}
 
-	OnPlayerDamaged.AddDynamic(this, &APlayerCharacter::HandlePlayerDamaged);
+	OnPlayerDamaged.AddDynamic(this, &ANDPlayerCharacter::HandlePlayerDamaged);
 
 	AimCamera->SetActive(false);
 
@@ -116,7 +117,7 @@ void APlayerCharacter::BeginPlay()
 }
 
 // Called every frame
-void APlayerCharacter::Tick(float DeltaTime)
+void ANDPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -126,10 +127,15 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		ZoomTimeline->TickComponent(DeltaTime, ELevelTick::LEVELTICK_TimeOnly, nullptr);
 	}
+
+	if (bIsAttackTrace)
+	{
+		PerformHandSphereTraces();
+	}
 }
 
 // Called to bind functionality to input
-void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ANDPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -138,41 +144,41 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (IsValid(EnhancedInputComponent))
 	{
-		EnhancedInputComponent->BindAction(MyInputComponent->JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::OnJump);
+		EnhancedInputComponent->BindAction(MyInputComponent->JumpAction, ETriggerEvent::Started, this, &ANDPlayerCharacter::OnJump);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
-		EnhancedInputComponent->BindAction(MyInputComponent->LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
-		EnhancedInputComponent->BindAction(MyInputComponent->WalkAction, ETriggerEvent::Started  , this, &APlayerCharacter::Walk);
+		EnhancedInputComponent->BindAction(MyInputComponent->MoveAction, ETriggerEvent::Triggered, this, &ANDPlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(MyInputComponent->LookAction, ETriggerEvent::Triggered, this, &ANDPlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(MyInputComponent->WalkAction, ETriggerEvent::Started  , this, &ANDPlayerCharacter::Walk);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchStart);
+		EnhancedInputComponent->BindAction(MyInputComponent->CrouchAction, ETriggerEvent::Started, this, &ANDPlayerCharacter::CrouchStart);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::SprintStart);
-		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintEnd);
+		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Ongoing  , this, &ANDPlayerCharacter::SprintStart);
+		EnhancedInputComponent->BindAction(MyInputComponent->SprintAction, ETriggerEvent::Completed, this, &ANDPlayerCharacter::SprintEnd);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot , ETriggerEvent::Started, this, &APlayerCharacter::ChangeFirstSlotItem );
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeSecondSlot, ETriggerEvent::Started, this, &APlayerCharacter::ChangeSecondSlotItem);
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot , ETriggerEvent::Started, this, &APlayerCharacter::ChangeThirdSlotItem );
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeFirstSlot , ETriggerEvent::Started, this, &ANDPlayerCharacter::ChangeFirstSlotItem );
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeSecondSlot, ETriggerEvent::Started, this, &ANDPlayerCharacter::ChangeSecondSlotItem);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeThirdSlot , ETriggerEvent::Started, this, &ANDPlayerCharacter::ChangeThirdSlotItem );
 		
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::OnFlashLightKey);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeWeaponAction, ETriggerEvent::Started, this, &ANDPlayerCharacter::OnFlashLightKey);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OnAttack);
+		EnhancedInputComponent->BindAction(MyInputComponent->AttackAction, ETriggerEvent::Triggered, this, &ANDPlayerCharacter::OnAttack);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Ongoing  , this, &APlayerCharacter::ChangeToAimCamera );
-		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Completed, this, &APlayerCharacter::ChangeToMainCamera);
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Ongoing  , this, &ANDPlayerCharacter::ChangeToAimCamera );
+		EnhancedInputComponent->BindAction(MyInputComponent->ChangeCameraAction, ETriggerEvent::Completed, this, &ANDPlayerCharacter::ChangeToMainCamera);
 		
-		EnhancedInputComponent->BindAction(MyInputComponent->FlashLightOnAction, ETriggerEvent::Started, this, &APlayerCharacter::FlashLightOn);
+		EnhancedInputComponent->BindAction(MyInputComponent->FlashLightOnAction, ETriggerEvent::Started, this, &ANDPlayerCharacter::FlashLightOn);
 
-		EnhancedInputComponent->BindAction(MyInputComponent->ReloadAction, ETriggerEvent::Started, this, &APlayerCharacter::RevolverReload);
+		EnhancedInputComponent->BindAction(MyInputComponent->ReloadAction, ETriggerEvent::Started, this, &ANDPlayerCharacter::RevolverReload);
 
 	}
 }
 
-void APlayerCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
+void ANDPlayerCharacter::TakeDamage(float DamageAmount, AActor* Attacker, FHitResult HitResult)
 {
 	Super::TakeDamage(DamageAmount, Attacker, HitResult);
 }
 
-void APlayerCharacter::Move(const FInputActionValue& Value)
+void ANDPlayerCharacter::Move(const FInputActionValue& Value)
 {
 	//if (CurWeaponType != EWeaponType::UNARMED)
 	//	bUseControllerRotationYaw = true;
@@ -195,7 +201,7 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 	//bUseControllerRotationYaw = false;
 }
 
-void APlayerCharacter::Look(const FInputActionValue& Value)
+void ANDPlayerCharacter::Look(const FInputActionValue& Value)
 {
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -206,7 +212,7 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void APlayerCharacter::Walk(const FInputActionValue& Value)
+void ANDPlayerCharacter::Walk(const FInputActionValue& Value)
 {
 	StatComponent->bIsWalking = !StatComponent->bIsWalking;
 
@@ -224,7 +230,7 @@ void APlayerCharacter::Walk(const FInputActionValue& Value)
 	
 }
 
-void APlayerCharacter::OnJump()
+void ANDPlayerCharacter::OnJump()
 {
 	if (CurPickUpObjectType != EWeaponType::UNARMED || bIsCrouched)
 		return;
@@ -232,7 +238,7 @@ void APlayerCharacter::OnJump()
 	ACharacter::Jump();
 }
 
-void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
+void ANDPlayerCharacter::CrouchStart(const FInputActionValue& Value)
 {
 	bIsCrouched = !bIsCrouched;
 
@@ -256,20 +262,20 @@ void APlayerCharacter::CrouchStart(const FInputActionValue& Value)
 	}
 }
 
-void APlayerCharacter::HandleCrouchProgress(float Value)
+void ANDPlayerCharacter::HandleCrouchProgress(float Value)
 {
 	FVector NewLocation = FMath::Lerp(DefaulCrouchLocation, CrouchedLocation, Value);
 	SpringArm->SetRelativeLocation(NewLocation);
 }
 
-void APlayerCharacter::HandleZoomProgress(float Value)
+void ANDPlayerCharacter::HandleZoomProgress(float Value)
 {
 	FVector NewLocation = FMath::Lerp(DefaultCameraLocation, ZoomOutLocation, Value);
 	NewLocation.Y = DefaultCameraLocation.Y;
 	SpringArm->SetRelativeLocation(NewLocation);
 }
 
-void APlayerCharacter::SprintStart()
+void ANDPlayerCharacter::SprintStart()
 {
 	StatComponent->bIsWalking = false;
 
@@ -280,7 +286,7 @@ void APlayerCharacter::SprintStart()
 	}
 }
 
-void APlayerCharacter::SprintEnd()
+void ANDPlayerCharacter::SprintEnd()
 {
 	if (ZoomTimeline)
 	{
@@ -289,12 +295,12 @@ void APlayerCharacter::SprintEnd()
 	}
 }
 
-void APlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
+void ANDPlayerCharacter::OnFlashLightKey(const FInputActionValue& Value)
 {
 	ChangeWeapon(EWeaponType::FLASHLIGHT);
 }
 
-void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
+void ANDPlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 {
 	if (EquipComponent->GetFirstSlot() == nullptr || bIsSwap)
 	{
@@ -323,7 +329,7 @@ void APlayerCharacter::ChangeFirstSlotItem(const FInputActionValue& Value)
 	}
 }
 
-void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
+void ANDPlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 {
 	if (EquipComponent->GetSecondSlot() == nullptr || bIsSwap)
 	{
@@ -352,7 +358,7 @@ void APlayerCharacter::ChangeSecondSlotItem(const FInputActionValue& Value)
 	}
 }
 
-void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
+void ANDPlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
 {
 	if (EquipComponent->GetThirdSlot() == nullptr || bIsSwap)
 	{
@@ -395,21 +401,21 @@ void APlayerCharacter::ChangeThirdSlotItem(const FInputActionValue& Value)
 	}
 }
 
-void APlayerCharacter::StrafeOn()
+void ANDPlayerCharacter::StrafeOn()
 {
 	//bUseControllerRotationYaw = true;
 
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
-void APlayerCharacter::StrafeOff()
+void ANDPlayerCharacter::StrafeOff()
 {
 	//bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
-void APlayerCharacter::OnDrawEnd()
+void ANDPlayerCharacter::OnDrawEnd()
 {
 	// PickUpObjects[NextPickUpObjectType]->AttachToHand(GetMesh());
 	//
@@ -431,7 +437,7 @@ void APlayerCharacter::OnDrawEnd()
 	bIsSwap = false;
 }
 
-void APlayerCharacter::OnSheathEnd()
+void ANDPlayerCharacter::OnSheathEnd()
 {
 	// GetCurrentPickUpObject()->AttachToHolster(GetMesh());
 	//
@@ -473,7 +479,7 @@ void APlayerCharacter::OnSheathEnd()
 	}
 }
 
-void APlayerCharacter::FootStepSound()
+void ANDPlayerCharacter::FootStepSound()
 {
 	FVector NoiseLocation = this->GetActorLocation();
 	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
@@ -486,7 +492,7 @@ void APlayerCharacter::FootStepSound()
 
 
 
-void APlayerCharacter::OnAttack()
+void ANDPlayerCharacter::OnAttack()
 {
 	if (StatComponent->bIsAttacking)
 	{
@@ -539,7 +545,7 @@ void APlayerCharacter::OnAttack()
 	// 		BPThrowable();
 	// 		//OnMontageEnded(GetCurrentPickUpObject()->GetSheathMontage(), true);
 	// 		////FOnMontageEnded OnMontageEndeDelegate;
-	// 		////OnMontageEndeDelegate.BindUObject(this, &APlayerCharacter::OnMontageEnded);
+	// 		////OnMontageEndeDelegate.BindUObject(this, &ANDPlayerCharacter::OnMontageEnded);
 	// 		////PlayAnimMontage()->Montage_SetEndelegate(OnMontageEndeDelegate, GetSheathMontage());
 	//
 	// 	}	
@@ -550,14 +556,14 @@ void APlayerCharacter::OnAttack()
 	// }
 }
 
-void APlayerCharacter::OnAttackBegin()
+void ANDPlayerCharacter::OnAttackBegin()
 {
 	StatComponent->bIsAttacking = true;
 
-	CurrentEquipmentItem->OnAttackBegin();
+	CurrentEquipmentItem->OnAttackBegin(this);
 }
 
-void APlayerCharacter::OnAttackEnd()
+void ANDPlayerCharacter::OnAttackEnd()
 {
 	StatComponent->bIsAttacking = false;
 
@@ -585,12 +591,12 @@ void APlayerCharacter::OnAttackEnd()
 
 }
 
-void APlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+void ANDPlayerCharacter::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	// ChangeWeapon(EWeaponType::UNARMED);
 }
 
-void APlayerCharacter::HandlePlayerDamaged()
+void ANDPlayerCharacter::HandlePlayerDamaged()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (PlayerController && MyCameraShakeClass)
@@ -599,7 +605,7 @@ void APlayerCharacter::HandlePlayerDamaged()
 	}
 }
 
-void APlayerCharacter::ChangeToMainCamera()
+void ANDPlayerCharacter::ChangeToMainCamera()
 {
 	if (CurrentEquipmentSlot != EEquipment::SECONDSLOT)
 		return;
@@ -608,7 +614,7 @@ void APlayerCharacter::ChangeToMainCamera()
 	AimCamera->SetActive(false);
 }
 
-void APlayerCharacter::ChangeToAimCamera()
+void ANDPlayerCharacter::ChangeToAimCamera()
 {
 	if (CurrentEquipmentSlot != EEquipment::SECONDSLOT)
 		return;
@@ -618,7 +624,7 @@ void APlayerCharacter::ChangeToAimCamera()
 	AimCamera->bUsePawnControlRotation = true;
 }
 
-void APlayerCharacter::FlashLightOn()
+void ANDPlayerCharacter::FlashLightOn()
 {
 
 	if (FlashLightMontage && !GetMesh()->GetAnimInstance()->Montage_IsPlaying(FlashLightMontage))
@@ -626,14 +632,14 @@ void APlayerCharacter::FlashLightOn()
 		PlayAnimMontage(FlashLightMontage);
 
 		FTimerHandle TimerHandle;
-		GetWorldTimerManager().SetTimer(TimerHandle, this, &APlayerCharacter::ToggleFlashLightVisibility, 1.0f, false);
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ANDPlayerCharacter::ToggleFlashLightVisibility, 1.0f, false);
 	}
 
 	FlashLightSpot->SetVisibility(bIsFlashLightOn);
 	bIsFlashLightOn = !bIsFlashLightOn;
 }
 
-void APlayerCharacter::ToggleFlashLightVisibility()
+void ANDPlayerCharacter::ToggleFlashLightVisibility()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, FlashSound, GetActorLocation());
 	GetMesh()->GetAnimInstance()->Montage_Stop(0.0f, FlashLightMontage);
@@ -641,7 +647,7 @@ void APlayerCharacter::ToggleFlashLightVisibility()
 	bIsFlashLightOn = !bIsFlashLightOn;
 }
 
-void APlayerCharacter::RevolverReload()
+void ANDPlayerCharacter::RevolverReload()
 {
 	if (CurrentEquipmentSlot == EEquipment::SECONDSLOT)
 	{
@@ -653,7 +659,42 @@ void APlayerCharacter::RevolverReload()
 	}
 }
 
-void APlayerCharacter::ChangeState()
+void ANDPlayerCharacter::ChangeState()
 {
 	bIsSwap = false;
+}
+
+void ANDPlayerCharacter::PerformHandSphereTraces()
+{
+	FVector StartLoc = TraceWeapon->GetItemMeshComponent()->GetSocketLocation(FName("TraceStart"));
+	FVector EndLoc = TraceWeapon->GetItemMeshComponent()->GetSocketLocation(FName("TraceEnd"));
+	
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+	CollisionParams.AddIgnoredActor(TraceWeapon);
+	
+	FHitResult HitResult;
+
+	// DrawDebugLine(GetWorld(), StartLoc, EndLoc, FColor::Red, false, 1.f, 0, 1.f);
+
+	if (bool Hit = GetWorld()->SweepSingleByChannel(HitResult, StartLoc, EndLoc, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(20.f),CollisionParams))
+	{
+		bIsAttackTrace = false;
+		if (ANDZombieBase* Zombie = Cast<ANDZombieBase>(HitResult.GetActor()))
+		{
+			Zombie->TakeDamage(StatComponent->GetDamage(), this, HitResult);
+		}
+	}
+}
+
+void ANDPlayerCharacter::StartBluntAttack(ANDPickUpObject* Item)
+{
+	bIsAttackTrace = true;
+	TraceWeapon = Item;
+}
+
+void ANDPlayerCharacter::EndBluntAttack()
+{
+	bIsAttackTrace = false;
+	TraceWeapon = nullptr;
 }
