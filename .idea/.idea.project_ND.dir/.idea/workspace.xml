@@ -8,10 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/Attack/BP_CameraShake.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_BaseballBat.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_BaseballBat.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_BluntBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Weapons/BP_BluntBase.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Enemys/NDZombieBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +272,7 @@
       <workItem from="1724490162853" duration="168000" />
       <workItem from="1724490375948" duration="5693000" />
       <workItem from="1724507388305" duration="3980000" />
-      <workItem from="1724545222066" duration="2999000" />
+      <workItem from="1724545222066" duration="5072000" />
     </task>
     <servers />
   </component>

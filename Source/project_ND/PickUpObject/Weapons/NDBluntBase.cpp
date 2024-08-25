@@ -50,6 +50,8 @@ void ANDBluntBase::OnAttackBegin(ANDPlayerCharacter* Player)
 	
 	PlayerCharacter = Player;
 	PlayerCharacter->StartBluntAttack(this);
+
+	BluntCameraShake(PlayerCharacter);
 }
 
 void ANDBluntBase::OnAttackEnd()
@@ -59,6 +61,8 @@ void ANDBluntBase::OnAttackEnd()
 
 	PlayerCharacter->EndBluntAttack();
 	PlayerCharacter = nullptr;
+
+	// BluntCameraShake(PlayerCharacter);
 }
 
 void ANDBluntBase::InitializeBlunt()
@@ -67,4 +71,3 @@ void ANDBluntBase::InitializeBlunt()
 	// BodyCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// BodyCollider->OnComponentBeginOverlap.AddDynamic(this, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 }
-

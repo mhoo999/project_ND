@@ -38,4 +38,7 @@ public:
 	virtual void OnAttackEnd();
 
 	void InitializeBlunt();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BluntCameraShake(ANDPlayerCharacter* Player);
 };

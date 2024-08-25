@@ -212,7 +212,7 @@ void ANDAIController::InitializeAIPerception() const
 {
 	SightConfig->SightRadius = 700.0f;
 	SightConfig->LoseSightRadius = 900.0f;
-	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 90.0f;
 	SightConfig->SetMaxAge(5.0f);
 	SightConfig->AutoSuccessRangeFromLastSeenLocation = 500.0f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
@@ -275,6 +275,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 						}
 					}
 				}
+
 				
 				if (CurrentState == EAIState::Idle || CurrentState == EAIState::Eating)
 				{
