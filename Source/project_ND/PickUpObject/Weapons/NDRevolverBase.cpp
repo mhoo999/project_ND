@@ -72,7 +72,7 @@ void ANDRevolverBase::OnAttackBegin(ANDPlayerCharacter* Player)
 			FVector FireDirection = ControlRotation.Vector();
 
 			Bullet->SetActorRotation(ControlRotation);
-			Bullet->SetActorLocation(this->GetActorLocation() + FVector(0.0f, 0.0f, 10.0f)); 
+			Bullet->SetActorLocation(this->GetActorLocation() + FVector(10000000.0f, 0.0f, 10.0f)); 
 			Bullet->SetActive(true);
 
 			CurBullets--;
