@@ -113,4 +113,7 @@ public:
 	EAIState GetCurrentState();
 
 	void MakeExcitementZombie();
+
+private:
+	bool bIsStun;
 };

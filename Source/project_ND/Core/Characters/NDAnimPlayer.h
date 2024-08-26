@@ -41,7 +41,7 @@ protected:
 	bool bIsThrowring = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class APlayerCharacter* Player = nullptr;
+	class ANDPlayerCharacter* Player = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EEquipment CurWeapon;

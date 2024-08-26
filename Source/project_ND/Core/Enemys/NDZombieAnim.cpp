@@ -78,6 +78,8 @@ void UNDZombieAnim::AnimNotify_EndStunned()
 
 void UNDZombieAnim::PlayDamagedAnim()
 {
+	Montage_Stop(0.5f);
+	
 	if (DamagedAnim)
 	{
 		Montage_Play(DamagedAnim);
