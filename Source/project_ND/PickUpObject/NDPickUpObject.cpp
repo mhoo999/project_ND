@@ -3,16 +3,24 @@
 
 #include "NDPickUpObject.h"
 #include "Components/ShapeComponent.h"
+#include "Components/SphereComponent.h"
 #include "project_ND/Core/Characters/NDMyCharacter.h"
 
 
 ANDPickUpObject::ANDPickUpObject()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
 	SetRootComponent(ItemMesh);
 	ItemMesh->SetCollisionProfileName(TEXT("IgnoreOnlyPawn"));
+	
+	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
+	SphereComponent->SetupAttachment(RootComponent);
+	SphereComponent->SetRelativeScale3D(FVector(50.f));
+
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ANDPickUpObject::OnBoxBeginOverlap);
+	SphereComponent->OnComponentEndOverlap.AddDynamic(this, &ANDPickUpObject::OnBoxEndOverlap);
 }
 
 void ANDPickUpObject::BeginPlay()
@@ -29,7 +37,7 @@ void ANDPickUpObject::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ANDPickUpObject::OnAttackBegin()
+void ANDPickUpObject::OnAttackBegin(ANDPlayerCharacter* Player)
 {
 }
 
@@ -94,4 +102,45 @@ void ANDPickUpObject::SetSimulate()
 float ANDPickUpObject::GetDamageAmount()
 {
 	return DamageAmount;
+}
+
+void ANDPickUpObject::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (bIsEquip == true)
+	{
+		return;
+	}
+
+	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
+	{
+		ItemMesh->SetRenderCustomDepth(true);
+	}
+}
+
+void ANDPickUpObject::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
+	{
+		ItemMesh->SetRenderCustomDepth(false);
+	}
+}
+
+void ANDPickUpObject::bIsEquipToggle()
+{
+	bIsEquip = !bIsEquip;
+}
+
+bool ANDPickUpObject::GetEquip()
+{
+	return bIsEquip;
+}
+
+void ANDPickUpObject::SetRenderCustomDepthFalse()
+{
+	ItemMesh->SetRenderCustomDepth(false);
+}
+
+UStaticMeshComponent* ANDPickUpObject::GetItemMeshComponent()
+{
+	return ItemMesh;
 }

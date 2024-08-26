@@ -16,7 +16,7 @@ void UNDAnimPlayer::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	Player = Cast<APlayerCharacter>(TryGetPawnOwner());
+	Player = Cast<ANDPlayerCharacter>(TryGetPawnOwner());
 }
 
 void UNDAnimPlayer::NativeUpdateAnimation(float DeltaSeconds)

@@ -25,10 +25,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
 	USoundBase* SwingSound;
 
+	bool bIsAttackTrace;
+
+	UPROPERTY()
+	ANDPlayerCharacter* PlayerCharacter;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnAttackBegin();
+	virtual void OnAttackBegin(ANDPlayerCharacter* Player);
 	virtual void OnAttackEnd();
+
+	void InitializeBlunt();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BluntCameraShake(ANDPlayerCharacter* Player);
 };

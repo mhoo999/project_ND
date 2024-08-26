@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "NDPickUpObject.generated.h"
 
+class ANDPlayerCharacter;
+class USphereComponent;
 class ANDPickUpObject;
 
 UENUM(BlueprintType)
@@ -128,12 +130,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UAnimMontage* AttackMontage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectSettings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Component")
 	UShapeComponent* BodyCollider;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="Component")
+	USphereComponent* SphereComponent;
 
 public:
-	virtual void OnAttackBegin();
+	virtual void OnAttackBegin(ANDPlayerCharacter* Player);
 	virtual void OnAttackEnd();
 
 	virtual void OnPickedUp();
@@ -155,4 +159,24 @@ public:
 	void SetSimulate();
 
 	float GetDamageAmount();
+
+private:
+	UFUNCTION()
+	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
+	bool bIsEquip;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void bIsEquipToggle();
+
+	bool GetEquip();
+
+	void SetRenderCustomDepthFalse();
+
+	UStaticMeshComponent* GetItemMeshComponent();
+
 };

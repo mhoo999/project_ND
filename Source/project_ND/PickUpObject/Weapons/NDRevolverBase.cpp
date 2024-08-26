@@ -46,7 +46,7 @@ void ANDRevolverBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ANDRevolverBase::OnAttackBegin()
+void ANDRevolverBase::OnAttackBegin(ANDPlayerCharacter* Player)
 {
 	if (bIsReloading)
 	{

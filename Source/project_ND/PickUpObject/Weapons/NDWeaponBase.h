@@ -43,9 +43,6 @@ protected:
 public:
 	void Attack();
 
-	virtual void OnAttackBegin();
-	virtual void OnAttackEnd();
-
 	UFUNCTION()
 	void OnBodyColliderBeginOverlap
 	(

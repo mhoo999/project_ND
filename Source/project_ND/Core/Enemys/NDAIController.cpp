@@ -58,6 +58,15 @@ void ANDAIController::StopAllActions()
 {
 	BrainComponent->StopLogic(TEXT("StopLogic"));	
 	Zombie->GetMesh()->Stop();
+	bIsStun = true;
+	
+	FTimerHandle StunHandle;
+	GetWorld()->GetTimerManager().ClearTimer(StunHandle);
+	GetWorld()->GetTimerManager().SetTimer(StunHandle, FTimerDelegate::CreateLambda([&]
+	{
+		SetAIState("Chase");
+		bIsStun = false;
+	}), 1.f, false);
 }
 
 void ANDAIController::SetAIState(FString NewState)
@@ -203,7 +212,7 @@ void ANDAIController::InitializeAIPerception() const
 {
 	SightConfig->SightRadius = 700.0f;
 	SightConfig->LoseSightRadius = 900.0f;
-	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 90.0f;
 	SightConfig->SetMaxAge(5.0f);
 	SightConfig->AutoSuccessRangeFromLastSeenLocation = 500.0f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
@@ -233,48 +242,52 @@ void ANDAIController::GetRelax()
 
 void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 {
-	for (AActor* Actor : UpdatedActors)
+	if (bIsStun == false)
 	{
-		if (Actor == Cast<ANDZombieBase>(Actor))
+		for (AActor* Actor : UpdatedActors)
 		{
-			return;
-		}
-		
-		if (!bIsExcitement)
-		{
-			bIsExcitement = true;
-			GetExcitement();
-		}
-		
-		FActorPerceptionBlueprintInfo Info;
-		AIPerceptionComponent->GetActorsPerception(Actor, Info);
-		
-		for (const auto& Stimulus : Info.LastSensedStimuli)
-		{
-			if (bIsEating == false)
+			if (Actor == Cast<ANDZombieBase>(Actor))
 			{
-				if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
-				{
-					if (Stimulus.WasSuccessfullySensed())
-					{
-						SetAIState("Chase");
-						GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-						bChasePlayer = true;
-						return;
-					}
-				}
+				return;
 			}
 			
-			if (CurrentState == EAIState::Idle || CurrentState == EAIState::Eating)
+			if (!bIsExcitement)
 			{
-				if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
+				bIsExcitement = true;
+				GetExcitement();
+			}
+			
+			FActorPerceptionBlueprintInfo Info;
+			AIPerceptionComponent->GetActorsPerception(Actor, Info);
+			
+			for (const auto& Stimulus : Info.LastSensedStimuli)
+			{
+				if (bIsEating == false)
 				{
-					if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+					if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 					{
-						SetAIState("Patrol");
-						GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-						GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
-						return;
+						if (Stimulus.WasSuccessfullySensed())
+						{
+							SetAIState("Chase");
+							GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+							bChasePlayer = true;
+							return;
+						}
+					}
+				}
+
+				
+				if (CurrentState == EAIState::Idle || CurrentState == EAIState::Eating)
+				{
+					if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
+					{
+						if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+						{
+							SetAIState("Patrol");
+							GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+							GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
+							return;
+						}
 					}
 				}
 			}
