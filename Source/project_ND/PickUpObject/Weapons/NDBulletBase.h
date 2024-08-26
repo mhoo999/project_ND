@@ -58,7 +58,7 @@ protected:
 	float BulletSpeed = 3000.0f;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Bullet")
-	float BulletLifespan = 5.0f;
+	float BulletLifespan = 2.0f;
 
 	FTimerHandle LifespanTimerHandle;
 };

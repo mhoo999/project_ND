@@ -63,7 +63,6 @@ void ANDWeaponBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 
 			bHasApplindDamage = true;
 		}
-
 	}
 
 	if (HitEffect)

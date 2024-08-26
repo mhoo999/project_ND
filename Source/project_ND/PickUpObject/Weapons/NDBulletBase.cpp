@@ -36,7 +36,7 @@ void ANDBulletBase::BeginPlay()
 
 	Collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Collider->OnComponentBeginOverlap.AddDynamic(this,     &ANDBulletBase::OnBodyColliderBeginOverlap);
-	Collider->OnComponentBeginOverlap.AddDynamic(Revolver, &ANDWeaponBase::OnBodyColliderBeginOverlap);
+	// Collider->OnComponentBeginOverlap.AddDynamic(Revolver, &ANDWeaponBase::OnBodyColliderBeginOverlap);
 }
 
 // Called every frame
@@ -95,6 +95,12 @@ void ANDBulletBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 	if (OtherActor == Revolver->GetOwner())
 		return;
 
+	FHitResult HitResult;
+	if (ANDZombieBase* ZombieBase = Cast<ANDZombieBase>(OtherActor))
+	{
+		ZombieBase->TakeDamage(20.0f, this, HitResult);
+	}
+	
 	SetActive(false);
 }
 
