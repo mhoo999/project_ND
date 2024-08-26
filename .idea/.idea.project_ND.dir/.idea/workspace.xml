@@ -8,8 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Character/LaserPointer/LaserPointerMeshSA.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Character/LaserPointer/MI_NewLaser.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Project_ND/Character/LaserPointer/M_NewLaser.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TTest.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TTest.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/Material/Mt_Outline_Inst.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/Material/Mt_Outline_Inst.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDRevolverBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDRevolverBase.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -287,6 +294,7 @@
       <workItem from="1724590385392" duration="677000" />
       <workItem from="1724635654328" duration="2955000" />
       <workItem from="1724642435888" duration="1538000" />
+      <workItem from="1724655495030" duration="1286000" />
     </task>
     <servers />
   </component>

@@ -56,7 +56,6 @@ void ANDRevolverBase::OnAttackBegin(ANDPlayerCharacter* Player)
 	if (CurBullets <= 0)
 	{
 		Reload();
-
 		
 		return;
 	}
