@@ -175,3 +175,8 @@ void UNDStatComponent::TemporaryDecreaseHungry()
 {
 	DecreaseHungry(HungryActionDecreasePoint);
 }
+
+void UNDStatComponent::SetDamageAmount(float DamageAmount)
+{
+	Damage += DamageAmount;
+}

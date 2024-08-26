@@ -149,4 +149,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float AttackSpeed;
+
+	UFUNCTION(BlueprintCallable)
+	void SetDamageAmount(float DamageAmount);
 };
