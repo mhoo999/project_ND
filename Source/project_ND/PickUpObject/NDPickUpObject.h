@@ -178,5 +178,7 @@ public:
 	void SetRenderCustomDepthFalse();
 
 	UStaticMeshComponent* GetItemMeshComponent();
+	
+	void SphereComponentOverlapEventClear();
 
 };

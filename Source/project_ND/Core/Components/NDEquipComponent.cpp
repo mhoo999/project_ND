@@ -68,6 +68,7 @@ void UNDEquipComponent::EquipFirstSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 		FirstSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), FirstSlotSocketName);
 		FirstSlot->bIsEquipToggle();
 		FirstSlot->SetRenderCustomDepthFalse();
+		FirstSlot->SphereComponentOverlapEventClear();
 
 		if (ANDBluntBase* BluntItem = Cast<ANDBluntBase>(FirstSlot))
 		{
@@ -95,6 +96,7 @@ void UNDEquipComponent::EquipSecondSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 		SecondSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), SecondSlotSocketName);
 		SecondSlot->bIsEquipToggle();
 		SecondSlot->SetRenderCustomDepthFalse();
+		SecondSlot->SphereComponentOverlapEventClear();
 	}
 }
 
@@ -117,6 +119,7 @@ void UNDEquipComponent::EquipThirdSlot(TSubclassOf<ANDPickUpObject> ItemClass)
 		ThirdSlot->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), ThirdSlotSocketName);
 		ThirdSlot->bIsEquipToggle();
 		ThirdSlot->SetRenderCustomDepthFalse();
+		ThirdSlot->SphereComponentOverlapEventClear();
 	}
 }
 

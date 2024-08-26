@@ -144,3 +144,11 @@ UStaticMeshComponent* ANDPickUpObject::GetItemMeshComponent()
 {
 	return ItemMesh;
 }
+
+void ANDPickUpObject::SphereComponentOverlapEventClear()
+{
+	SphereComponent->OnComponentBeginOverlap.Clear();
+	SphereComponent->OnComponentEndOverlap.Clear();
+	SphereComponent->DestroyComponent();
+	SphereComponent = nullptr;
+}
