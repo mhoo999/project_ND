@@ -167,13 +167,13 @@ private:
 	UFUNCTION()
 	void OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
-	bool bIsEquip;
-
 	bool bIsInPlayer;
 
 	void ScanPlayer();
 
 protected:
+	bool bIsEquip;
+	
 	UPROPERTY()
 	ANDMyCharacter* NDPlayer;
 	

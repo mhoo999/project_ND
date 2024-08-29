@@ -36,9 +36,12 @@ void ANDPickUpObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsInPlayer)
+	if (bIsEquip == false)
 	{
-		ScanPlayer();
+		if (bIsInPlayer)
+		{
+			ScanPlayer();
+		}
 	}
 }
 
@@ -111,7 +114,7 @@ float ANDPickUpObject::GetDamageAmount()
 
 void ANDPickUpObject::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bIsEquip == true)
+	if (bIsEquip)
 	{
 		return;
 	}
@@ -135,18 +138,21 @@ void ANDPickUpObject::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 void ANDPickUpObject::ScanPlayer()
 {
-	FVector PlayerLocation = NDPlayer->GetActorLocation();
-	
-	FHitResult HitResult;
-	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(this);
-							
-	GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), PlayerLocation, ECC_Visibility, Params);
-	// DrawDebugLine(GetWorld(), GetActorLocation(), PlayerLocation, FColor::Yellow, false, 5.f, 0, 2.f);
-
-	if (Cast<ANDMyCharacter>(HitResult.GetActor()))
+	if (NDPlayer)
 	{
-		ItemMesh->SetRenderCustomDepth(true);
+		FVector PlayerLocation = NDPlayer->GetActorLocation();
+		
+		FHitResult HitResult;
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+								
+		GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), PlayerLocation, ECC_Visibility, Params);
+		// DrawDebugLine(GetWorld(), GetActorLocation(), PlayerLocation, FColor::Yellow, false, 5.f, 0, 2.f);
+
+		if (Cast<ANDMyCharacter>(HitResult.GetActor()))
+		{
+			ItemMesh->SetRenderCustomDepth(true);
+		}
 	}
 }
 

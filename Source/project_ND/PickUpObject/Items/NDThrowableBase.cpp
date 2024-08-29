@@ -47,7 +47,9 @@ void ANDThrowableBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		GetWorld()->GetTimerManager().SetTimer(NoiseTimerHandle, FTimerDelegate::CreateLambda([&]
 		{
 			bCanNoise = true;
-		}), 10.0f, false);
+		}), 5.0f, false);
+
+		bIsEquip = false;
 	}
 }
 
