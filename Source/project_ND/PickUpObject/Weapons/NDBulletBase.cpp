@@ -98,7 +98,7 @@ void ANDBulletBase::OnBodyColliderBeginOverlap(UPrimitiveComponent* OverlappedCo
 	FHitResult HitResult;
 	if (ANDZombieBase* ZombieBase = Cast<ANDZombieBase>(OtherActor))
 	{
-		ZombieBase->TakeDamage(20.0f, this, HitResult);
+		ZombieBase->TakeDamage(30.0f, this, HitResult);
 	}
 	
 	SetActive(false);
