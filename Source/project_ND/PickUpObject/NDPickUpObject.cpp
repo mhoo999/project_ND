@@ -35,6 +35,11 @@ void ANDPickUpObject::BeginPlay()
 void ANDPickUpObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bIsInPlayer)
+	{
+		ScanPlayer();
+	}
 }
 
 void ANDPickUpObject::OnAttackBegin(ANDPlayerCharacter* Player)
@@ -111,17 +116,37 @@ void ANDPickUpObject::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		return;
 	}
 
-	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
+	NDPlayer = Cast<ANDMyCharacter>(OtherActor);
+	if (NDPlayer)
 	{
-		ItemMesh->SetRenderCustomDepth(true);
+		bIsInPlayer = true;
 	}
 }
 
 void ANDPickUpObject::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (ANDMyCharacter* Player = Cast<ANDMyCharacter>(OtherActor))
+	if (NDPlayer == Cast<ANDMyCharacter>(OtherActor))
 	{
 		ItemMesh->SetRenderCustomDepth(false);
+		bIsInPlayer = false;
+		NDPlayer = nullptr;
+	}
+}
+
+void ANDPickUpObject::ScanPlayer()
+{
+	FVector PlayerLocation = NDPlayer->GetActorLocation();
+	
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+							
+	GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), PlayerLocation, ECC_Visibility, Params);
+	// DrawDebugLine(GetWorld(), GetActorLocation(), PlayerLocation, FColor::Yellow, false, 5.f, 0, 2.f);
+
+	if (Cast<ANDMyCharacter>(HitResult.GetActor()))
+	{
+		ItemMesh->SetRenderCustomDepth(true);
 	}
 }
 

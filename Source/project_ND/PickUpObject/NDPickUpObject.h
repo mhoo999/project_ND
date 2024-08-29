@@ -169,6 +169,14 @@ private:
 	
 	bool bIsEquip;
 
+	bool bIsInPlayer;
+
+	void ScanPlayer();
+
+protected:
+	UPROPERTY()
+	ANDMyCharacter* NDPlayer;
+	
 public:
 	UFUNCTION(BlueprintCallable)
 	void bIsEquipToggle();
@@ -180,5 +188,4 @@ public:
 	UStaticMeshComponent* GetItemMeshComponent();
 	
 	void SphereComponentOverlapEventClear();
-
 };

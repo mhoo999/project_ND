@@ -42,16 +42,18 @@ void ANDBluntBase::Tick(float DeltaTime)
 }
 
 
-void ANDBluntBase::OnAttackBegin(ANDPlayerCharacter* Player)
+void ANDBluntBase::OnAttackBegin(ANDPlayerCharacter* PlayerCharacter)
 {
 	// GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	// GetBodyCollider()->bHiddenInGame = true;
 	// bHasApplindDamage = false;
-	
-	PlayerCharacter = Player;
-	PlayerCharacter->StartBluntAttack(this);
 
-	BluntCameraShake(PlayerCharacter);
+	NDPlayer = PlayerCharacter;
+	ANDPlayerCharacter* Player = Cast<ANDPlayerCharacter>(NDPlayer);
+	
+	Player->StartBluntAttack(this);
+
+	BluntCameraShake(Player);
 }
 
 void ANDBluntBase::OnAttackEnd()
@@ -59,8 +61,10 @@ void ANDBluntBase::OnAttackEnd()
 	// GetBodyCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// GetBodyCollider()->bHiddenInGame = true;
 
-	PlayerCharacter->EndBluntAttack();
-	PlayerCharacter = nullptr;
+	ANDPlayerCharacter* Player = Cast<ANDPlayerCharacter>(NDPlayer);
+	
+	Player->EndBluntAttack();
+	Player = nullptr;
 
 	// BluntCameraShake(PlayerCharacter);
 }

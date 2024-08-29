@@ -9,13 +9,15 @@
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/NDTitle.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_ThrowableBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_ThrowableBase.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Brick.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Brick.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Characters/NDPlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Characters/NDPlayerCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/Material/Mt_Outline_Inst.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/Material/Mt_Outline_Inst.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/NDPickUpObject.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/PickUpObject/Weapons/NDBluntBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,31 +44,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Uproject.project_ND.executor": "Run",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.editor",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Uproject.project_ND.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\mhoo9\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\mhoo9\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\mhoo9\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\mhoo9\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\mhoo9\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\mhoo9\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="project_ND" type="Uproject" factoryName="rider.uproject">
       <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
@@ -285,6 +287,7 @@
       <workItem from="1724665774547" duration="1514000" />
       <workItem from="1724831156450" duration="880000" />
       <workItem from="1724910363521" duration="5398000" />
+      <workItem from="1724931388445" duration="3065000" />
     </task>
     <servers />
   </component>

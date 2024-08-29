@@ -26,9 +26,6 @@ protected:
 	USoundBase* SwingSound;
 
 	bool bIsAttackTrace;
-
-	UPROPERTY()
-	ANDPlayerCharacter* PlayerCharacter;
 	
 public:
 	// Called every frame
@@ -40,5 +37,5 @@ public:
 	void InitializeBlunt();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void BluntCameraShake(ANDPlayerCharacter* Player);
+	void BluntCameraShake(ANDPlayerCharacter* PlayerCharacter);
 };

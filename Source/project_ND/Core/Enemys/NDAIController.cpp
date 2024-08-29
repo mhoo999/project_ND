@@ -290,7 +290,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 							Params.AddIgnoredActor(Zombie);
 							
 							GetWorld()->LineTraceSingleByChannel(HearingHitResult, Zombie->GetActorLocation(), StimulusLocation, ECC_Visibility, Params);
-							DrawDebugLine(GetWorld(), Zombie->GetActorLocation(), StimulusLocation, FColor::Yellow, false, 5.f, 0, 2.f);
+							// DrawDebugLine(GetWorld(), Zombie->GetActorLocation(), StimulusLocation, FColor::Yellow, false, 5.f, 0, 2.f);
 
 							if (ANDPlayerCharacter* DetectedActor = Cast<ANDPlayerCharacter>(HearingHitResult.GetActor()))
 							{
