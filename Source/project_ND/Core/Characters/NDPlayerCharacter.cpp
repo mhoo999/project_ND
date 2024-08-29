@@ -482,7 +482,7 @@ void ANDPlayerCharacter::OnSheathEnd()
 void ANDPlayerCharacter::FootStepSound()
 {
 	FVector NoiseLocation = this->GetActorLocation();
-	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this);
+	UAISense_Hearing::ReportNoiseEvent(GetWorld(), NoiseLocation, 1.0f, this, 0.f, TEXT("Player"));
 
 	if (StepSound)
 	{

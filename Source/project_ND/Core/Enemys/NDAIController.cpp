@@ -11,7 +11,9 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "project_ND/Core/Characters/NDPlayerCharacter.h"
 #include "project_ND/Enemys/NDZombieBase.h"
+#include "project_ND/PickUpObject/Items/NDThrowableBase.h"
 #include "UObject/ConstructorHelpers.h"
 
 
@@ -266,7 +268,7 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 				{
 					if (Stimulus.Type == UAISense_Sight::GetSenseID<UAISense_Sight>())
 					{
-						if (Stimulus.WasSuccessfullySensed())
+						if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
 						{
 							SetAIState("Chase");
 							GetBlackboardComponent()->SetValueAsObject("Target", Actor);
@@ -275,18 +277,41 @@ void ANDAIController::OnPerceptionUpdate(const TArray<AActor*>& UpdatedActors)
 						}
 					}
 				}
-
 				
 				if (CurrentState == EAIState::Idle || CurrentState == EAIState::Eating)
 				{
 					if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 					{
-						if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+						if (Stimulus.Tag == TEXT("Player"))
 						{
-							SetAIState("Patrol");
-							GetBlackboardComponent()->SetValueAsObject("Target", Actor);
-							GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
-							return;
+							FVector StimulusLocation = Stimulus.StimulusLocation;
+							FHitResult HearingHitResult;
+							FCollisionQueryParams Params;
+							Params.AddIgnoredActor(Zombie);
+							
+							GetWorld()->LineTraceSingleByChannel(HearingHitResult, Zombie->GetActorLocation(), StimulusLocation, ECC_Visibility, Params);
+							DrawDebugLine(GetWorld(), Zombie->GetActorLocation(), StimulusLocation, FColor::Yellow, false, 5.f, 0, 2.f);
+
+							if (ANDPlayerCharacter* DetectedActor = Cast<ANDPlayerCharacter>(HearingHitResult.GetActor()))
+							{
+								if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+								{
+									SetAIState("Patrol");
+									GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+									GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
+									return;
+								}
+							}
+						}
+						else
+						{
+							if (Stimulus.WasSuccessfullySensed() && CurrentState != EAIState::Chase)
+							{
+								SetAIState("Patrol");
+								GetBlackboardComponent()->SetValueAsObject("Target", Actor);
+								GetBlackboardComponent()->SetValueAsVector("Destination", Actor->GetActorLocation());
+								return;
+							}
 						}
 					}
 				}

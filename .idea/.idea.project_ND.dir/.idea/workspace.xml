@@ -9,11 +9,13 @@
   <component name="ChangeListManager">
     <list default="true" id="5e95778e-c2c7-453b-a798-0c37ea135922" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.project_ND.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Core/Character/BPC_NDPlayerCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/TestMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/TestPawn/BP_NDTestGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/TestPawn/BP_NDTestGameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/quest/BP_QuestManager.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/BluePrints/quest/BP_QuestManager.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Tutorial/WBP_Quest.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/UI/WidgetBP/Tutorial/WBP_Quest.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/Maps/building_v001.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_ThrowableBase.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_ThrowableBase.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Brick.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Project_ND/PickUpObject/Items/BP_Trowable_Brick.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Characters/NDPlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Characters/NDPlayerCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/project_ND/Core/Enemys/NDAIController.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,81 +61,70 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\Assort_c4\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Assort_c4\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\Assort_c4\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\mhoo9\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\mhoo9\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\mhoo9\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
   <component name="RunManager">
     <configuration name="project_ND" type="Uproject" factoryName="rider.uproject">
-      <configuration_1>
+      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
+      <configuration_2>
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\Assort_c4\Documents\Unreal Projects\project_ND\project_ND.uproject&quot;" />
-        <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
-        <option name="PASS_PARENT_ENVS" value="1" />
-        <option name="USE_EXTERNAL_CONSOLE" value="0" />
-        <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_1>
-      <configuration_2>
-        <option name="CONFIGURATION" value="DebugGame Editor" />
-        <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\Assort_c4\Documents\Unreal Projects\project_ND\project_ND.uproject&quot;" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\mhoo9\Documents\Unreal Projects\project_ND\project_ND.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_2>
       <configuration_3>
-        <option name="CONFIGURATION" value="DebugGame" />
+        <option name="CONFIGURATION" value="DebugGame Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\Assort_c4\Documents\Unreal Projects\project_ND\Binaries\Win64\project_ND-Win64-DebugGame.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
-        <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\mhoo9\Documents\Unreal Projects\project_ND\project_ND.uproject&quot;" />
+        <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_3>
       <configuration_4>
-        <option name="CONFIGURATION" value="Development" />
+        <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\Assort_c4\Documents\Unreal Projects\project_ND\Binaries\Win64\project_ND.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\mhoo9\Documents\Unreal Projects\project_ND\Binaries\Win64\project_ND-Win64-DebugGame.exe" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_4>
       <configuration_5>
-        <option name="CONFIGURATION" value="Shipping" />
+        <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\Assort_c4\Documents\Unreal Projects\project_ND\Binaries\Win64\project_ND-Win64-Shipping.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\mhoo9\Documents\Unreal Projects\project_ND\Binaries\Win64\project_ND.exe" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
       </configuration_5>
-      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/project_ND.uproject" />
-      <option name="AUTO_SELECT_PRIORITY" value="10010" />
+      <configuration_6>
+        <option name="CONFIGURATION" value="Shipping" />
+        <option name="PLATFORM" value="Win64" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\mhoo9\Documents\Unreal Projects\project_ND\Binaries\Win64\project_ND-Win64-Shipping.exe" />
+        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.4" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
+        <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="PASS_PARENT_ENVS" value="1" />
+        <option name="USE_EXTERNAL_CONSOLE" value="0" />
+        <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+      </configuration_6>
       <method v="2">
         <option name="Build" />
       </method>
@@ -293,6 +284,7 @@
       <workItem from="1724655495030" duration="1286000" />
       <workItem from="1724665774547" duration="1514000" />
       <workItem from="1724831156450" duration="880000" />
+      <workItem from="1724910363521" duration="5398000" />
     </task>
     <servers />
   </component>
